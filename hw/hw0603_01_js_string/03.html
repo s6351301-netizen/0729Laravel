@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .box {
+            width: 300px;
+            height: 300px;
+            background-color: lightblue;
+            margin: auto;
+            text-align: center;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <p>
+            <input type="text" id="name" value="小明" placeholder="請輸入名字"></input>
+        </p>
+        <p>
+            <input type="text" id="text" value="站著會比坐著高" placeholder="請輸入內容"></input>
+        </p>
+        <p>
+            <button id="btn">送出</button>
+        </p>
+        <span id="result">點開有驚喜</span>
+
+    </div>
+    <script>
+        //綁定
+        let btn = document.querySelector('#btn');
+        let name = document.querySelector('#name');
+        let text = document.querySelector('#text');
+        let result = document.querySelector('#result');
+        //先看輸出
+        console.log(btn, name, text, result);
+        //action、組合
+        btn.addEventListener('click', function () {
+            result.innerHTML = `我是: ${name.value}<br> 我的人生座右銘: ${text.value}`;
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
+        /* mobile first */
+        /* 1. 預設樣式：手機（螢幕寬度小於 768px） */
+        body {
+            background-color: pink;
+            /* 手機是粉紅色 */
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: grid;
+            gap: 15px;
+            /* 小尺寸：一次秀1個box */
+            grid-template-columns: 1fr;
+        }
+
+        .box {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .box a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+        }
+
+        .box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .box:hover img {
+            transform: scale(1.05);
+        }
+
+        /* 图片放大到屏幕1/2的modal */
+        .box.enlarged {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50vw;
+            height: 50vh;
+            z-index: 1000;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .box.enlarged img {
+            transform: scale(1);
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            display: none;
+        }
+
+        .modal-overlay.show {
+            display: block;
+        }
+
+        /* 2. 平板樣式：螢幕寬度大於或等於 768px */
+        @media screen and (min-width: 768px) {
+            body {
+                background-color: lightgreen;
+                /* 平板是淺綠色 */
+            }
+
+            .container {
+                /* 中尺寸：一次秀3個box */
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .box img {
+                object-fit: cover;
+            }
+        }
+
+        /* 3. 電腦樣式：螢幕寬度大於或等於 1024px */
+        @media screen and (min-width: 1024px) {
+            body {
+                background-color: lightblue;
+                /* 電腦是淺藍色 */
+            }
+
+            .container {
+                /* 最大尺寸：一次秀6個box */
+                grid-template-columns: repeat(6, 1fr);
+                gap: 10px;
+            }
+
+            .box img {
+                object-fit: cover;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>縮放瀏覽器視窗看看效果吧！</h1>
+    <p>目前設定的斷點（Breakpoints）為：</p>
+    <ul>
+        <li><strong>手機 (< 768px)：</strong>粉紅色 (pink) - 一次秀 <strong>1個box</strong></li>
+        <li><strong>平板 (768px ~ 1023px)：</strong>淺綠色 (lightgreen) - 一次秀 <strong>3個box</strong></li>
+        <li><strong>電腦 (>= 1024px)：</strong>淺藍色 (lightblue) - 一次秀 <strong>6個box</strong></li>
+    </ul>
+
+    <div class="modal-overlay" id="modalOverlay"></div>
+
+    <div class="container">
+        <div class="box">
+            <a href="#" onclick="enlargeImage(event)">
+                <img src="https://picsum.photos/400/400?random=1" alt="Image 1">
+            </a>
+        </div>
+        <div class="box">
+            <a href="#" onclick="enlargeImage(event)">
+                <img src="https://picsum.photos/400/400?random=2" alt="Image 2">
+            </a>
+        </div>
+        <div class="box">
+            <a href="#" onclick="enlargeImage(event)">
+                <img src="https://picsum.photos/400/400?random=3" alt="Image 3">
+            </a>
+        </div>
+        <div class="box">
+            <a href="#" onclick="enlargeImage(event)">
+                <img src="https://picsum.photos/400/400?random=4" alt="Image 4">
+            </a>
+        </div>
+        <div class="box">
+            <a href="#" onclick="enlargeImage(event)">
+                <img src="https://picsum.photos/400/400?random=5" alt="Image 5">
+            </a>
+        </div>
+        <div class="box">
+            <a href="#" onclick="enlargeImage(event)">
+                <img src="https://picsum.photos/400/400?random=6" alt="Image 6">
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function enlargeImage(event) {
+            event.preventDefault();
+            const box = event.currentTarget.closest('.box');
+            const overlay = document.getElementById('modalOverlay');
+            
+            box.classList.toggle('enlarged');
+            overlay.classList.toggle('show');
+            document.body.classList.toggle('modal-open');
+        }
+
+        // 点击overlay关闭
+        document.getElementById('modalOverlay').addEventListener('click', function() {
+            const enlargedBox = document.querySelector('.box.enlarged');
+            if (enlargedBox) {
+                enlargedBox.classList.remove('enlarged');
+                this.classList.remove('show');
+                document.body.classList.remove('modal-open');
+            }
+        });
+
+        // 按ESC键关闭
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const enlargedBox = document.querySelector('.box.enlarged');
+                if (enlargedBox) {
+                    enlargedBox.classList.remove('enlarged');
+                    document.getElementById('modalOverlay').classList.remove('show');
+                    document.body.classList.remove('modal-open');
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

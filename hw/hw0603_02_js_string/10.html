@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .box {
+        width: 300px;
+        height: 300px;
+        background-color: aqua;
+        margin: auto;
+        text-align: center;
+        box-shadow: 10px 8px 2px rgb(75, 75, 75);
+        border-radius: 40px;
+        padding: 20px;
+    }
+</style>
+
+<body>
+
+    <div class="box">
+
+        <p>
+            <input type="text" id="name" value="1234" placeholder="name.....">
+        </p>
+
+        <p>
+            <input type="text" id="text" value="人生哪有那麼多正確答案。" placeholder="text.....">
+        </p>
+
+        <p>
+            <button type="button" id="mybtn">click</button>
+        </p>
+        <span id="myspan">我是XXXX , 人生座右銘XXXXX</span>
+    </div>
+    <script>
+        let myName = document.querySelector('#name');
+        let myText = document.querySelector('#text');
+        let mybtn = document.querySelector('#mybtn');
+        let myspan = document.querySelector('#myspan');
+
+        console.log('myName', myName);
+        console.log('myText', myText);
+        console.log('mybtn', mybtn);
+        console.log('myspan', myspan);
+
+
+        mybtn.addEventListener('click', function () {
+            console.log('mybtn', mybtn);
+
+            let getName = myName.value;
+            let getText = myText.value;
+            console.log('myName', myName);
+            console.log('myText', myText);
+
+            let tmpText = `我是${getName}, 座右銘:${getText}`;
+            console.log('tmpText', tmpText);
+            myspan.innerText = tmpText;
+
+        })
+
+
+    </script>
+</body>
+
+</html>

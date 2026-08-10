@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 450px;
+            height: 450px;
+            background-color: aqua;
+            border: 2px solid black;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <p>
+            <input type="text" id="name" placeholder="填入姓名"> 
+        </p>
+
+        <p>
+            <input type="text" id="text" placeholder="填入座右銘"> 
+
+        </p>
+
+        <p>
+            <button type="button" id="mybtn">送出</button>
+
+        </p>
+
+        <span id="myspan">我是預設的文字，我的的人生座右銘：不要害怕犯錯，那只是在除錯</span>
+    </div>
+
+    <script>
+        
+        let mybtn = document.querySelector('#mybtn');
+        let name = document.querySelector('#name');
+        let mytext = document.querySelector('#text');
+        let myspan = document.querySelector('#myspan');
+        
+
+         mybtn.addEventListener('click', function (){
+            //let getname = $(this).attr('name');
+           // console.log('mybtn',mybtn);
+            let getname = name.value;
+           // console.log('getname',getname);
+            let gettext = mytext.value;
+            //console.log('gettext',gettext);
+            let tmptext = `我是 ${getname} ，我的的人生座右銘：${gettext}`;
+            //myspan.attr('span', tmpText);
+           // console.log('tmptext',tmptext);
+
+            myspan.innerText = tmptext;
+
+            }
+
+            
+
+
+        );
+
+        
+    </script>
+</body>
+
+</html>

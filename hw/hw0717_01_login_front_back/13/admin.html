@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+     <title>禾米眼鏡 HOME OPTICAL - 後台管理系統</title>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <!-- 引入 Bootstrap 5 與 Bootstrap Icons 繪製圖示 -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+     <style>
+          /* 🎯 全域中文字型美化與防爆框 */
+          * {
+               box-sizing: border-box;
+               font-family: "Microsoft JhengHei", -apple-system, sans-serif;
+          }
+
+          body {
+               background-color: #f8f9fa;
+          }
+
+          /* 🎯 導覽列與標誌樣式 */
+          .navbar-brand-logo {
+               height: 30px;
+               width: auto;
+               margin-right: 10px;
+          }
+
+          .navbar-brand {
+               font-size: 16px;
+               font-weight: bold;
+          }
+
+          .nav-link {
+               font-size: 14px;
+               letter-spacing: 1px;
+          }
+
+          /* 🎯 後台雙欄版面配置 */
+          .admin-container {
+               min-height: calc(100vh - 56px - 60px); /* 扣除導覽列與頁尾的高度 */
+          }
+
+          /* 左側側邊欄樣式 */
+          .sidebar {
+               background-color: #ffffff;
+               border-right: 1px solid #dee2e6;
+          }
+
+          .sidebar .nav-link {
+               color: #495057;
+               padding: 12px 20px;
+               border-radius: 8px;
+               margin-bottom: 5px;
+               font-weight: 500;
+               display: flex;
+               align-items: center;
+               gap: 10px;
+               transition: all 0.2s;
+          }
+
+          .sidebar .nav-link:hover, .sidebar .nav-link.active {
+               background-color: #e9ecef;
+               color: #0dcaf0; /* 使用你設定的水藍色作為選取特效 */
+          }
+
+          /* 右側主內容區 */
+          .main-content {
+               background-color: #f8f9fa;
+               padding: 30px;
+          }
+
+          /* 統計數據小卡 */
+          .stat-card {
+               background-color: #ffffff;
+               border: none;
+               border-radius: 12px;
+               box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+               transition: transform 0.2s;
+          }
+
+          .stat-card:hover {
+               transform: translateY(-3px);
+          }
+
+          /* 數據表格包裝盒 */
+          .table-container {
+               background-color: #ffffff;
+               border-radius: 16px;
+               padding: 24px;
+               box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+               border: none;
+          }
+
+          /* 頁尾樣式 */
+          .footer-copy {
+               background-color: #212529;
+               color: #6c757d;
+               text-align: center;
+               padding: 20px 0;
+               font-size: 12px;
+               letter-spacing: 1px;
+          }
+
+          .footer-copy p {
+               margin: 0;
+          }
+     </style>
+</head>
+
+<body>
+
+     <!-- 🎯 頂部導覽列 (與前台一致) -->
+     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+          <div class="container-fluid">
+               <a href="./index.html">
+                    <img src="./image/01brand logo.png" class="navbar-brand-logo" alt="Logo">
+               </a>
+               <a class="navbar-brand" title="禾米眼鏡" href="./index.html">禾米眼鏡後台管理
+                    <p class="m-0" style="font-size: 10px; font-weight: normal; letter-spacing: 1px;">HOME OPTICAL</p>
+               </a>
+
+               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                    <span class="navbar-toggler-icon"></span>
+               </button>
+
+               <div class="collapse navbar-collapse" id="mynavbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                         <li class="nav-item">
+                              <a class="nav-link active" href="javascript:void(0)" onclick="switchTab('customer')">
+                                   <span class="en-text"></span>
+                              </a>
+                         </li>
+                    </ul>
+
+                    <div class="d-flex align-items-center">
+                         <span class="text-light me-3" style="font-size: 14px;"><i class="bi bi-person-circle"></i> 管理員 您好</span>
+                         <a href="./index.html" class="btn btn-sm btn-outline-danger">登出</a>
+                    </div>
+               </div>
+          </div>
+     </nav>
+
+     <!-- 🎯 後台雙欄控制台主體 -->
+     <div class="container-fluid admin-container">
+          <div class="row min-vh-100">
+               
+               <!-- 1. 左側側邊欄 -->
+               <div class="col-md-3 col-lg-2 sidebar py-4 d-none d-md-block">
+                    <div class="px-3 mb-4">
+                         <h6 class="text-uppercase text-muted fw-bold" style="font-size: 12px; letter-spacing: 1px;">管理選單</h6>
+                    </div>
+                    <ul class="nav flex-column px-2">
+                         <li class="nav-item">
+                              <a id="side-customer" class="nav-link active" href="javascript:void(0)" onclick="switchTab('customer')">
+                                   <i class="bi bi-people-fill"></i> 客戶管理
+                              </a>
+                         </li>
+                         <li class="nav-item">
+                              <a id="side-product" class="nav-link" href="javascript:void(0)" onclick="switchTab('product')">
+                                   <i class="bi bi-sunglasses"></i> 商品管理
+                              </a>
+                         </li>
+                         <li class="nav-item">
+                              <a id="side-article" class="nav-link" href="javascript:void(0)" onclick="switchTab('journal-text')">
+                                   <i class="bi bi-file-earmark-text-fill"></i> 文章管理
+                              </a>
+                         </li>
+                         <li class="nav-item">
+                              <a id="side-news" class="nav-link" href="javascript:void(0)" onclick="switchTab('news')">
+                                   <i class="bi bi-megaphone-fill"></i> 最新消息
+                              </a>
+                         </li>
+                    </ul>
+               </div>
+
+               <!-- 2. 右側主要資料內容區 -->
+               <div class="col-12 col-md-9 col-lg-10 main-content">
+                    
+                    <!-- 頂部儀表板小卡 (客戶、商品、文章統計) -->
+                    <div class="row mb-4">
+                         <div class="col-12 col-sm-4 mb-3 mb-sm-0">
+                              <div class="card stat-card p-3 d-flex flex-row align-items-center justify-content-between">
+                                   <div>
+                                        <h6 class="text-muted mb-1" style="font-size: 14px;">客戶總數</h6>
+                                        <h3 class="fw-bold mb-0 text-dark">1,248</h3>
+                                   </div>
+                                   <div class="bg-info-subtle text-info p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-people" style="font-size: 24px;"></i>
+                                   </div>
+                              </div>
+                         </div>
+                         <div class="col-12 col-sm-4 mb-3 mb-sm-0">
+                              <div class="card stat-card p-3 d-flex flex-row align-items-center justify-content-between">
+                                   <div>
+                                        <h6 class="text-muted mb-1" style="font-size: 14px;">在架商品</h6>
+                                        <h3 class="fw-bold mb-0 text-dark">320</h3>
+                                   </div>
+                                   <div class="bg-success-subtle text-success p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-sunglasses" style="font-size: 24px;"></i>
+                                   </div>
+                              </div>
+                         </div>
+                         <div class="col-12 col-sm-4">
+                              <div class="card stat-card p-3 d-flex flex-row align-items-center justify-content-between">
+                                   <div>
+                                        <h6 class="text-muted mb-1" style="font-size: 14px;">文章發表</h6>
+                                        <h3 class="fw-bold mb-0 text-dark">45</h3>
+                                   </div>
+                                   <div class="bg-warning-subtle text-warning p-3 rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                        <i class="bi bi-file-earmark-text" style="font-size: 24px;"></i>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+
+                    <!-- 資料控制台與表格區 -->
+                    <div class="table-container">
+                         
+                         <!-- 表格頂部控制按鈕 -->
+                         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-2">
+                              <h5 id="table-title" class="fw-bold m-0 text-secondary"><i class="bi bi-table"></i> 客戶資料管理</h5>
+                              <button class="btn btn-info btn-sm text-white px-3" data-bs-toggle="modal" data-bs-target="#addModal">
+                                    <i class="bi bi-plus-lg"></i>
+                              </button>
+                         </div>
+
+                         <!-- 響應式資料表格 -->
+                         <div class="table-responsive">
+                              <table class="table table-hover align-middle">
+                                   <thead class="table-light">
+                                        <tr id="table-headers">
+                                             <th>編號</th>
+                                             <th>客戶姓名</th>
+                                             <th>聯絡電話</th>
+                                             <th>電子信箱</th>
+                                             <th>加入日期</th>
+                                             <th class="text-center">操作</th>
+                                        </tr>
+                                   </thead>
+                                   <tbody id="table-body">
+                                        <!-- 預設動態載入客戶資料 -->
+                                        <tr>
+                                             <td>#C001</td>
+                                             <td class="fw-bold">陳大同</td>
+                                             <td>0912-345-678</td>
+                                             <td>datong@example.com</td>
+                                             <td>2026-03-12</td>
+                                             <td class="text-center">
+                                                  <button class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i> 編輯</button>
+                                                  <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('#C001')"><i class="bi bi-trash"></i> 刪除</button>
+                                             </td>
+                                        </tr>
+                                        <tr>
+                                             <td>#C002</td>
+                                             <td class="fw-bold">林小美</td>
+                                             <td>0923-456-789</td>
+                                             <td>xiaomei@example.com</td>
+                                             <td>2026-04-18</td>
+                                             <td class="text-center">
+                                                  <button class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i> 編輯</button>
+                                                  <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('#C002')"><i class="bi bi-trash"></i> 刪除</button>
+                                             </td>
+                                        </tr>
+                                   </tbody>
+                              </table>
+                         </div>
+
+                    </div>
+               </div>
+
+          </div>
+     </div>
+
+     <!-- 🎯 彈出視窗 (Modal) - 用於新增管理項目 -->
+     <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+               <div class="modal-content">
+                    <div class="modal-header">
+                         <h5 class="modal-title fw-bold" id="addModalLabel">新增項目資料</h5>
+                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form>
+                         <div class="modal-body">
+                              <div class="mb-3">
+                                   <label class="form-label">名稱 / 標題</label>
+                                   <input type="text" class="form-control" required placeholder="請輸入名稱">
+                              </div>
+                              <div class="mb-3">
+                                   <label class="form-label">內容描述</label>
+                                   <textarea class="form-control" rows="3" placeholder="請輸入詳細內容說明"></textarea>
+                              </div>
+                              <div class="mb-3">
+                                   <label class="form-label">備註 / 分類</label>
+                                   <input type="text" class="form-control" placeholder="請輸入分類標籤">
+                              </div>
+                         </div>
+                         <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                              <button type="submit" class="btn btn-info text-white">確認儲存</button>
+                         </div>
+                    </form>
+               </div>
+          </div>
+     </div>
+
+     <!-- 🎯 頁尾宣告 -->
+     <footer class="footer-copy">
+          <p>Copyright &copy; 2026 禾米眼鏡 後台管理系統 版權所有</p>
+     </footer>
+
+     <!-- 🎯 切換分頁的動態 JS 控制腳本 -->
+     <script>
+          // 點擊導覽列或側邊欄，動態切換表格內容
+          function switchTab(type) {
+               const title = document.getElementById('table-title');
+               const headers = document.getElementById('table-headers');
+               const body = document.getElementById('table-body');
+               
+               // 移除側邊欄全部 active 狀態
+               document.querySelectorAll('.sidebar .nav-link').forEach(link => link.classList.remove('active'));
+
+               if (type === 'customer') {
+                    document.getElementById('side-customer').classList.add('active');
+                    title.innerHTML = '<i class="bi bi-table"></i> 客戶資料管理';
+                    headers.innerHTML = `
+                         <th>編號</th>
+                         <th>客戶姓名</th>
+                         <th>聯絡電話</th>
+                         <th>電子信箱</th>
+                         <th>加入日期</th>
+                         <th class="text-center">操作</th>
+                    `;
+                    body.innerHTML = `
+                         <tr>
+                              <td>#C001</td>
+                              <td class="fw-bold">陳大同</td>
+                              <td>0912-345-678</td>
+                              <td>datong@example.com</td>
+                              <td>2026-03-12</td>
+                              <td class="text-center">
+                                   <button class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i> 編輯</button>
+                                   <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('#C001')"><i class="bi bi-trash"></i> 刪除</button>
+                              </td>
+                         </tr>
+                    `;
+               } else if (type === 'product') {
+                    document.getElementById('side-product').classList.add('active');
+                    title.innerHTML = '<i class="bi bi-table"></i> 商品目錄管理';
+                    headers.innerHTML = `
+                         <th>商品代碼</th>
+                         <th>商品圖片</th>
+                         <th>眼鏡款式</th>
+                         <th>材質</th>
+                         <th>售價 (NTD)</th>
+                         <th class="text-center">操作</th>
+                    `;
+                    body.innerHTML = `
+                         <tr>
+                              <td>#P058</td>
+                              <td><span class="badge bg-secondary p-2">👓 經典波士頓</span></td>
+                              <td class="fw-bold">復古金屬細框鏡架</td>
+                              <td>純鈦 Titanium</td>
+                              <td>$3,280</td>
+                              <td class="text-center">
+                                   <button class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i> 編輯</button>
+                                   <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('#P058')"><i class="bi bi-trash"></i> 刪除</button>
+                              </td>
+                         </tr>
+                    `;
+               } else if (type === 'article') {
+                    document.getElementById('side-article').classList.add('active');
+                    title.innerHTML = '<i class="bi bi-table"></i> 專欄文章管理';
+                    headers.innerHTML = `
+                         <th>文章ID</th>
+                         <th>專欄標題</th>
+                         <th>作者</th>
+                         <th>發布狀態</th>
+                         <th>更新時間</th>
+                         <th class="text-center">操作</th>
+                    `;
+                    body.innerHTML = `
+                         <tr>
+                              <td>#A012</td>
+                              <td class="fw-bold">【護眼專欄】長時間配戴藍光眼鏡真的有用嗎？</td>
+                              <td>特約專業驗光師</td>
+                              <td><span class="badge bg-success">已發布</span></td>
+                              <td>2026-06-05</td>
+                              <td class="text-center">
+                                   <button class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i> 編輯</button>
+                                   <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('#A012')"><i class="bi bi-trash"></i> 刪除</button>
+                              </td>
+                         </tr>
+                    `;
+               } else if (type === 'news') {
+                    document.getElementById('side-news').classList.add('active');
+                    title.innerHTML = '<i class="bi bi-table"></i> 最新消息公告';
+                    headers.innerHTML = `
+                         <th>公告ID</th>
+                         <th>消息主旨</th>
+                         <th>類別</th>
+                         <th>置頂</th>
+                         <th>發布日期</th>
+                         <th class="text-center">操作</th>
+                    `;
+                    body.innerHTML = `
+                         <tr>
+                              <td>#N004</td>
+                              <td class="fw-bold">【禾米年中慶】配鏡享 85 折起，預約再送葉黃素！</td>
+                              <td><span class="badge bg-info text-white">促銷活動</span></td>
+                              <td><span class="badge bg-danger">置頂</span></td>
+                              <td>2026-07-01</td>
+                              <td class="text-center">
+                                   <button class="btn btn-sm btn-outline-primary me-1"><i class="bi bi-pencil"></i> 編輯</button>
+                                   <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete('#N004')"><i class="bi bi-trash"></i> 刪除</button>
+                              </td>
+                         </tr>
+                    `;
+               }
+          }
+
+          // 刪除按鈕防呆提示
+          function confirmDelete(id) {
+               if(confirm("確定要刪除該筆資料 (" + id + ") 嗎？此操作無法還原。")) {
+                    alert("資料已成功刪除！(模擬動作)");
+               }
+          }
+     </script>
+
+</body>
+
+</html>

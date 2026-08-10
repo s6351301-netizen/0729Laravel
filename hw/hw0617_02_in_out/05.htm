@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 AI職涯顧問</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2563eb;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            height: 45px;
+            border-radius: 10px;
+            margin-top: 5px;
+            padding: 0 10px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            height: 50px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .job-card {
+            background: #f8fafc;
+            border-left: 6px solid #2563eb;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 10px;
+        }
+
+        .special {
+            border-left: 6px solid gold;
+            background: #fff7ed;
+        }
+
+        .score {
+            color: #dc2626;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .salary {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+        <h1>🤖 AI 職涯顧問</h1>
+
+        <label>興趣</label>
+        <select id="interest">
+            <option>程式設計</option>
+            <option>設計美編</option>
+            <option>商業管理</option>
+            <option>混吃等死</option>
+        </select>
+
+        <label>邏輯能力</label>
+        <select id="logic">
+            <option>高</option>
+            <option>中</option>
+            <option>低</option>
+        </select>
+
+        <label>英文能力</label>
+        <select id="english">
+            <option>高</option>
+            <option>中</option>
+            <option>低</option>
+        </select>
+
+        <label>年齡</label>
+        <input type="number" id="age" value="85" min="0" max="100">
+
+        <button id="myBtn">🚀 AI分析</button>
+    </div>
+
+    <div class="card">
+        <div id="result">請開始分析...</div>
+    </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    const jobs = [
+        {
+            name: "前端工程師",
+            interest: "程式設計",
+            logic: "高",
+            english: "中",
+            salary: "45K ~ 80K",
+            skills: ["HTML", "CSS", "JS"]
+        },
+        {
+            name: "AI工程師",
+            interest: "程式設計",
+            logic: "高",
+            english: "高",
+            salary: "60K ~ 150K",
+            skills: ["Python", "AI", "ML"]
+        },
+        {
+            name: "UI設計師",
+            interest: "設計美編",
+            logic: "中",
+            english: "低",
+            salary: "40K ~ 80K",
+            skills: ["Figma", "PS", "UI"]
+        },
+        {
+            name: "產品經理",
+            interest: "商業管理",
+            logic: "中",
+            english: "中",
+            salary: "60K ~ 120K",
+            skills: ["管理", "簡報", "溝通"]
+        }
+    ];
+
+    $("#myBtn").click(function () {
+
+        let interest = $("#interest").val();
+        let logic = $("#logic").val();
+        let english = $("#english").val();
+        let age = parseInt($("#age").val() || 0);
+
+        let remain = Math.max(0, 100 - age);
+
+        // ⭐ 彩蛋：混吃等死 → 董事長
+        if (interest === "混吃等死") {
+
+            let rate = Math.floor(Math.random() * 10) + 91;
+
+            $("#result").html(`
+                <div class="job-card special">
+
+                    <h2>🤖 AI傳說分析</h2>
+
+                    <h2 style="color:gold">👑 董事長</h2>
+
+                    <p class="score">適配度：100%</p>
+
+                    <p class="score">董事長潛力評分：${rate}%</p>
+
+                    <p>年齡：${age} 歲</p>
+                    <p>剩餘年限：${remain} 年（假設100歲人生上限）</p>
+
+                    <h3>AI分析</h3>
+                    <ul>
+                        <li>不想工作</li>
+                        <li>但想領薪水</li>
+                        <li>擅長決策（但不執行）</li>
+                    </ul>
+
+                    <h3>未來職涯</h3>
+                    <ul>
+                        <li>董事長</li>
+                        <li>榮譽董事長</li>
+                        <li>集團總裁</li>
+                    </ul>
+
+                    <p class="salary">月薪：自己決定 💰</p>
+
+                </div>
+            `);
+
+            return;
+        }
+
+        let result = [];
+
+        jobs.forEach(job => {
+
+            let score = 0;
+
+            if (job.interest === interest) score += 40;
+            if (job.logic === logic) score += 25;
+            if (job.english === english) score += 20;
+
+            result.push({ ...job, score });
+
+        });
+
+        result.sort((a, b) => b.score - a.score);
+
+        let html = `<h2>🎯 AI推薦結果</h2>`;
+
+        result.forEach(job => {
+
+            html += `
+                <div class="job-card">
+
+                    <h3>${job.name}</h3>
+
+                    <p class="score">適配度：${job.score}%</p>
+
+                    <p class="salary">薪資：${job.salary}</p>
+
+                    <p>年齡：${age} 歲</p>
+                    <p>剩餘年限：${remain} 年（假設100歲人生上限）</p>
+
+                    <b>技能：</b>
+                    <ul>
+                        ${job.skills.map(s => `<li>${s}</li>`).join("")}
+                    </ul>
+
+                </div>
+            `;
+        });
+
+        $("#result").html(html);
+
+    });
+
+});
+</script>
+
+</body>
+</html>

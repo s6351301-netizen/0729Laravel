@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(154, 149, 150);
+        }
+
+        @media screen and (min-width: 768px) {
+            body {
+                background-color: rgb(107, 107, 107);
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            body {
+                background-color: rgb(61, 61, 61);
+            }
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .item {
+            width: 80%;
+            height: 30%;
+            margin: 10px;
+
+        }
+
+        .item img {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            object-fit: cover;
+        }
+
+        @media screen and (min-width: 1024px) {
+            .container {
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center;
+                gap: 16px;
+            }
+
+            .item {
+                width: 30%;
+                height: 30%;
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="item"><img src="https://picsum.photos/600/400?random=1" alt="photo"></div>
+        <div class="item"><img src="https://picsum.photos/600/400?random=2" alt="photo"></div>
+        <div class="item"><img src="https://picsum.photos/600/400?random=3" alt="photo"></div>
+        <div class="item"><img src="https://picsum.photos/600/400?random=4" alt="photo"></div>
+        <div class="item"><img src="https://picsum.photos/600/400?random=5" alt="photo"></div>
+        <div class="item"><img src="https://picsum.photos/600/400?random=6" alt="photo"></div>
+    </div>
+</body>
+
+</html>

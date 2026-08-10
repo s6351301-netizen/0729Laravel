@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>貓咪展示頁面</title>
+  <!-- 引入 Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <style>
+    /* 輪播器容器樣式 */
+    .custom-carousel {
+      width: 1300px; 
+      height: 400px;
+      margin: 40px auto 30px auto; /* 上40px 下30px，左右置中 */
+      overflow: hidden;           /* 裁切圖片溢出部分 */
+      border-radius: 10px;        /* 增加圓角更美觀 */
+    }
+
+    .carousel-item {
+      width: 100%;
+      height: 400px;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* 圖片填滿容器且不變形 */
+    }
+
+    /* 圖片 Hover 放大效果的容器 */
+    .img-wrapper {
+      overflow: hidden; /* 確保放大時圖片不會超出邊框 */
+      border-radius: 0.5rem; /* 與 Bootstrap rounded 類別一致 */
+    }
+
+    /* 圖片動畫設定 */
+    .img-wrapper img {
+      transition: transform 0.4s ease; /* 設定平滑過渡效果 */
+    }
+
+    .img-wrapper img:hover {
+      transform: scale(1.1); /* 滑鼠懸停時放大至 110% */
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 導覽列 -->
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link active" href="#">只是想給你看貓</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <a href="back.html" class="btn btn-warning">登入後台</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- 輪播 Banner -->
+<div id="carouselExampleIndicators" class="carousel slide custom-carousel" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"></button>
+  </div>
+
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="./images/01.jpg" alt="第一張">
+    </div>
+    <div class="carousel-item">
+      <img src="./images/02.jpg" alt="第二張">
+    </div>
+    <div class="carousel-item">
+      <img src="./images/03.jpg" alt="第三張">
+    </div>
+  </div>
+
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+  </button>
+</div>
+
+<!-- 圖片展示格線區 -->
+<div class="container mt-4">
+  <div class="row">
+    <!-- 為了達到 Hover 放大效果，每一張圖都必須包在 img-wrapper 裡面 -->
+    <div class="col-4 mb-3">
+      <div class="img-wrapper">
+        <img src="./images/11.jpg" class="img-fluid" alt="Image 11">
+      </div>
+    </div>
+    <div class="col-4 mb-3">
+      <div class="img-wrapper">
+        <img src="./images/12.jpg" class="img-fluid" alt="Image 12">
+      </div>
+    </div>
+    <div class="col-4 mb-3">
+      <div class="img-wrapper">
+        <img src="./images/13.jpg" class="img-fluid" alt="Image 13">
+      </div>
+    </div>
+    <div class="col-4 mb-3">
+      <div class="img-wrapper">
+        <img src="./images/21.jpg" class="img-fluid" alt="Image 21">
+      </div>
+    </div>
+    <div class="col-4 mb-3">
+      <div class="img-wrapper">
+        <img src="./images/22.jpg" class="img-fluid" alt="Image 22">
+      </div>
+    </div>
+    <div class="col-4 mb-3">
+      <div class="img-wrapper">
+        <img src="./images/23.jpg" class="img-fluid" alt="Image 23">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 引入 Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

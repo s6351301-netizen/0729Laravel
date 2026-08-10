@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    /* 1. 全域初始化：讓背景與字體更好看 */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+
+    /* 2. 主容器（外卡片）：將輸入與輸出融合成一個精緻的卡片 */
+    .box {
+        width: 100%;
+        max-width: 360px; /* 限制最大寬度，手機版也完美適配 */
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* 柔和的陰影 */
+        overflow: hidden;
+        margin-bottom: 24px;
+        transition: transform 0.3s ease;
+    }
+
+    /* 滑鼠懸停在外殼時的微調特效 */
+    .box:hover {
+        transform: translateY(-2px);
+    }
+
+    /* 3. 輸入區塊排版優化 */
+    .input-container {
+        padding: 30px 24px;
+        display: flex;
+        flex-direction: column; /* 改為垂直單欄排列，更符合現代 UI 邏輯 */
+        gap: 16px; /* 讓每個元素之間保持完美的黃金間距 */
+    }
+
+    /* 4. 輸出區塊美化 */
+    .output-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 時尚的漸層背景 */
+        color: #ffffff; /* 文字改為白色 */
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        height: 70px; /* 稍微加高，讓結果更顯眼 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 10px 20px rgba(118, 75, 162, 0.2);
+    }
+
+    /* 5. 輸入框與下拉選單的細節打磨 */
+    input, select {
+        width: 100%; /* 寬度佔滿容器（扣除內邊距） */
+        height: 46px; /* 加高輸入框，點擊體感更好 */
+        border: 1px solid #e2e8f0;
+        border-radius: 10px; /* 圓角微調，看起來更現代 */
+        text-align: center;
+        font-size: 1rem;
+        color: #334155;
+        background-color: #f8fafc;
+        box-sizing: border-box;
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* 當滑鼠點擊輸入框時的亮藍色外框特效 (Focus 狀態) */
+    input:focus, select:focus {
+        outline: none;
+        border-color: #3b82f6;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    /* 6. 按鈕設計：改為具有高級感的漸層與懸停動效 */
+    button {
+        width: 100%;
+        height: 46px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        transition: all 0.2s ease;
+        margin-top: 8px;
+    }
+
+    /* 按鈕滑鼠懸停效果 */
+    button:hover {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        box-shadow: 0 6px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    /* 按鈕點擊下去的瞬間縮小反饋 */
+    button:active {
+        transform: scale(0.98);
+    }
+</style>
+</head>
+
+<body>
+    <div class="box input-container">
+        <input type="text" name="num1" id="num1" value="" placeholder="請填寫數字">
+        <input type="text" name="num2" id="num2" value="" placeholder="請填寫數字">
+        <!-- <input type="text" name="opt" id="opt" value="+" placeholder="opt?"> -->
+        <select name="opt" id="opt">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <button type="button" id="myBtn">點我計算</button>
+    </div>
+    <div class="box output-container">
+        <span id="mySpan">結果顯示</span>
+    </div>
+
+    <!-- jquery  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        // 確保整個網頁的 HTML 元素都載入完成後，才開始執行內部的 jQuery 程式碼
+        //$(document).ready(function () {
+        // [拓展TEST] 監聽 num1, num2 的輸入，以及 opt 的改變
+        $('#num1, #num2, #opt').on('input change', function() {
+
+            // ----------------------------------------------------
+            // 1. 綁定元素 (DOM 選擇器)
+            // ----------------------------------------------------
+            // 使用 jQuery 選擇器 ($) 取得 HTML 的 ID 元素，並存入常數中方便後續使用
+            const myBtn = $('#myBtn');      // 計算按鈕
+            const num1 = $('#num1');        // 第一個數字輸入框
+            const num2 = $('#num2');        // 第二個數字輸入框
+            const opt = $('#opt');          // 運算子選擇框 (下拉選單 select)
+            const mySpan = $('#mySpan');    // 顯示結果的文字區域
+
+            // ----------------------------------------------------
+            // 2. 動作處理 (事件監聽)
+            // ----------------------------------------------------
+            // 當使用者點擊「計算按鈕」時，觸發以下事件
+            //myBtn.click(function (e) {
+
+                // 取得輸入框的值，並強制轉換為「數字型態 (Number)」，避免變成字串相加
+                let getNum1 = Number(num1.val());
+                let getNum2 = Number(num2.val());
+
+                // 取得運算子選擇框目前被選中的值（例如："+"、"-"、"*"、"/"）
+                let getOpt = opt.val();
+
+                // 宣告一個變數用來儲存計算結果，預設值為 0
+                let result = 0;
+
+                // 根據取得的運算子 (getOpt)，判斷要執行哪一種數學運算
+                switch (getOpt) {
+                    case "+":
+                        result = getNum1 + getNum2; // 執行加法
+                        break;
+                    case "-":
+                        result = getNum1 - getNum2; // 執行減法
+                        break;
+                    case "*":
+                        result = getNum1 * getNum2; // 執行乘法
+                        break;
+                    case "/":
+                        result = getNum1 / getNum2; // 執行除法
+                        break;
+                }
+
+                // 使用樣板字串 (Template Literals) 組合出最後要顯示的算式與結果
+                // 例如： 5 + 3 = 8
+                let tmpText = `${getNum1} ${getOpt} ${getNum2} = ${result}`;
+
+                // 將組合好的算式文字，寫入到網頁上的 mySpan 標籤中呈現至前端畫面
+                mySpan.text(tmpText);
+
+            //});
+
+        });
+    </script>
+
+</body>
+
+</html>

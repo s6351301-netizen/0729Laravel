@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <title>尋找貓咪的家 - 貓咪詳細介紹</title>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+     <style>
+          body {
+               background: #faf8f6;
+               font-family: system-ui, sans-serif;
+          }
+
+          .navbar {
+               background: #fff !important;
+               border-bottom: 1px solid #eae5e0;
+               padding: 12px 16px;
+          }
+
+          .navbar-brand {
+               color: #c08a70 !important;
+               font-weight: bold;
+               font-size: 18px;
+               letter-spacing: 0.5px;
+          }
+
+          .nav-link {
+               color: #7d756d !important;
+               font-weight: 500;
+               margin-right: 15px;
+               font-size: 14px;
+          }
+
+          .nav-link:hover {
+               color: #c08a70 !important;
+          }
+
+          .nav-link.admin-link {
+               color: #c08a70 !important;
+               border: 1px dashed #c08a70;
+               border-radius: 4px;
+               padding: 2px 8px !important;
+               margin-top: 2px;
+          }
+          .nav-link.admin-link:hover {
+               background: #c08a70;
+               color: #fff !important;
+          }
+
+          .navbar .btn-primary {
+               display: inline-block;
+               background: #c08a70;
+               color: #fff !important;
+               border: none;
+               border-radius: 6px;
+               font-size: 14px;
+               font-weight: 500;
+               padding: 6px 16px;
+               margin-left: 8px;
+               text-decoration: none;
+          }
+
+          .navbar .btn-danger {
+               display: inline-block;
+               background: #a84a4a;
+               color: #fff !important;
+               border: none;
+               border-radius: 6px;
+               font-size: 14px;
+               font-weight: 500;
+               padding: 6px 16px;
+               margin-left: 8px;
+               text-decoration: none;
+               transition: background 0.2s;
+          }
+
+          .navbar .btn-danger:hover {
+               background: #913d3d;
+          }
+
+          /* ==========================================================================
+             詳細頁專用樣式
+             ========================================================================== */
+          .detail-container {
+               background: #fff;
+               border: 1px solid #eae5e0;
+               border-radius: 16px;
+               box-shadow: 0 8px 24px rgba(140, 131, 123, 0.05);
+               padding: 30px;
+               margin-top: 40px;
+               margin-bottom: 60px;
+          }
+
+          /* 拍立得大圖外框：contain 絕對不切圖 */
+          .detail-img-wrapper {
+               width: 100%;
+               height: 380px;
+               background: #faf8f6;
+               border-radius: 12px;
+               border: 1px solid #eae5e0;
+               padding: 16px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+          }
+
+          .detail-img-wrapper img {
+               max-width: 100%;
+               max-height: 100%;
+               object-fit: contain;
+          }
+
+          .cat-name-title {
+               color: #4a4540;
+               font-weight: 700;
+               font-size: 28px;
+               margin-bottom: 15px;
+          }
+
+          .info-badge {
+               display: inline-block;
+               font-size: 13px;
+               background: #f5f0eb;
+               color: #7d756d;
+               padding: 4px 14px;
+               border-radius: 20px;
+               margin-right: 8px;
+               margin-bottom: 20px;
+               font-weight: 500;
+          }
+
+          .info-badge.primary-badge {
+               background: #c08a70;
+               color: #fff;
+          }
+
+          .info-table {
+               width: 100%;
+               margin-bottom: 25px;
+          }
+
+          .info-table td {
+               padding: 10px 0;
+               font-size: 15px;
+               border-bottom: 1px dashed #eae5e0;
+          }
+
+          .info-table td.label-td {
+               color: #8c837b;
+               width: 30%;
+               font-weight: 500;
+          }
+
+          .info-table td.value-td {
+               color: #4a4540;
+               font-weight: 600;
+          }
+
+          .story-box {
+               background: #fffcf9;
+               border-left: 4px solid #c08a70;
+               padding: 16px;
+               border-radius: 0 8px 8px 0;
+               margin-bottom: 30px;
+          }
+
+          .story-box p {
+               color: #5c554e;
+               font-size: 14.5px;
+               line-height: 1.7;
+               margin: 0;
+          }
+
+          .btn-back {
+               background: transparent;
+               border: 1px solid #c08a70;
+               color: #c08a70;
+               padding: 10px 24px;
+               font-size: 14px;
+               font-weight: 500;
+               border-radius: 6px;
+               transition: all 0.2s;
+               text-decoration: none;
+               display: inline-block;
+          }
+
+          .btn-back:hover {
+               background: #c08a70;
+               color: #fff;
+          }
+
+          .btn-adopt {
+               background: #c08a70;
+               color: #fff;
+               padding: 10px 30px;
+               font-size: 14px;
+               font-weight: 500;
+               border-radius: 6px;
+               transition: background 0.2s;
+               text-decoration: none;
+               display: inline-block;
+               border: none;
+               margin-left: 12px;
+          }
+
+          .btn-adopt:hover {
+               background: #ab775e;
+               color: #fff;
+          }
+     </style>
+</head>
+
+<body>
+
+     <!-- 導覽列 -->
+     <nav class="navbar navbar-expand-sm navbar-light bg-white">
+          <div class="container-fluid">
+               <a class="navbar-brand" href="../index.html">🐾 尋找貓咪的家</a>
+               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                    <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="mynavbar">
+                    <ul class="navbar-nav me-auto">
+                         <li class="nav-item">
+                              <a class="nav-link" href="../index.html">待收養貓咪</a>
+                         </li>
+                         <li class="nav-item">
+                              <a class="nav-link" href="">志工夥伴</a>
+                         </li>
+                         <li class="nav-item">
+                              <a class="nav-link" href="javascript:void(0)">領養諮詢</a>
+                         </li>
+                         
+                         <!-- 管理員專用後台連結（沒登入會自動隱藏） -->
+                         <li class="nav-item" id="admin-nav-item">
+                              <a class="nav-link admin-link" href="../admin.html">⚙️ 後台管理</a>
+                         </li>
+                    </ul>
+                    
+                    <form class="d-flex align-items-center m-0">
+                         <!-- 未登入狀態 -->
+                         <a href="./login.html" id="guest-btn" class="btn btn-primary">登入</a>
+
+                         <!-- 已登入狀態 -->
+                         <span id="admin-welcome" class="d-none" style="color: #7d756d; font-size: 14px; margin-left: 15px; white-space: nowrap; font-weight: 500;">
+                              🔑 管理員
+                         </span>
+                         <button type="button" id="logout-btn" class="btn btn-danger d-none">登出</button>
+                    </form>
+               </div>
+          </div>
+     </nav>
+
+     <!-- 詳細介紹區塊 -->
+     <div class="container">
+          <div class="detail-container">
+               <div class="row g-5">
+                    
+                    <!-- 左側：完美照片區 -->
+                    <div class="col-md-5">
+                         <div class="detail-img-wrapper">
+                              <img id="cat-detail-img" src="" alt="貓咪照片">
+                         </div>
+                    </div>
+
+                    <!-- 右側：文字詳細資料區 -->
+                    <div class="col-md-7">
+                         <h1 class="cat-name-title" id="cat-detail-name">載入中...</h1>
+                         
+                         <div>
+                              <span class="info-badge primary-badge" id="cat-detail-status">待領養</span>
+                              <span class="info-badge" id="cat-detail-tag">特色標籤</span>
+                         </div>
+
+                         <table class="info-table">
+                              <tr>
+                                   <td class="label-td">🐾 貓咪編號</td>
+                                   <td class="value-td" id="cat-detail-id">-</td>
+                              </tr>
+                              <tr>
+                                   <td class="label-td">📌 性別 / 年齡</td>
+                                   <td class="value-td" id="cat-detail-age">-</td>
+                              </tr>
+                              <tr>
+                                   <td class="label-td">🎨 毛色健康</td>
+                                   <td class="value-td" id="cat-detail-color">-</td>
+                              </tr>
+                         </table>
+
+                         <h5 style="color: #4a4540; font-weight: 700; margin-bottom: 12px;">🐱 貓咪小故事</h5>
+                         <div class="story-box">
+                              <p id="cat-detail-story">正在為您尋找這隻小貓咪的故事...</p>
+                         </div>
+
+                         <div class="mt-4">
+                              <a href="../index.html" class="btn-back">⬅️ 返回列表</a>
+                              <button class="btn-adopt" onclick="alert('感謝您的愛心！諮詢預約表單已寄出，志工將盡快與您聯繫！')">🐾 申請預約領養</button>
+                         </div>
+                    </div>
+
+               </div>
+          </div>
+     </div>
+
+     <!-- 核心邏輯：動態讀取網址參數與登入控制 -->
+     <script>
+          // 1. 建立貓咪的靜態資料庫（與首頁、後台完全同步）
+          const catDatabase = {
+               "1": {
+                    name: "阿福 (Fuku)",
+                    img: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=500&h=500&fit=crop",
+                    tag: "親人溫和",
+                    age: "男生 / 約 1 歲",
+                    color: "經典虎斑 / 已結紮、已施打疫苗",
+                    story: "個性非常溫和、親人，最喜歡黏在身邊呼嚕嚕討摸摸，是一個溫慢的大乖乖。非常適合第一次養貓的家庭喔！"
+               },
+               "2": {
+                    name: "咪咪 (Mimi)",
+                    img: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=500&h=500&fit=crop",
+                    tag: "優雅慢熟",
+                    age: "女生 / 約 8 個月",
+                    color: "白底橘貓 / 已結紮、晶片已植入",
+                    story: "優雅迷人的小公主，雖然剛開始到新環境有點慢熟，但只要你拿出肉泥，熟悉後她就會露出非常撒嬌、愛蹭人的一面。"
+               },
+               "3": {
+                    name: "歐歐 (Oreo)",
+                    img: "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=500&h=500&fit=crop",
+                    tag: "活潑好動",
+                    age: "男生 / 約 6 個月",
+                    color: "橘貓 / 已施打第一劑疫苗",
+                    story: "活潑好動的橘貓，擁有極其豐沛的體力，超級熱愛玩逗貓棒！天天都充滿活力，是家裡的開心果。"
+               },
+               "4": {
+                    name: "炭炭 (Tantan)",
+                    img: "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=500&h=500&fit=crop",
+                    tag: "貼心聰明",
+                    age: "男生 / 約 2 歲",
+                    color: "帥氣純黑貓 / 已結紮、身體極度健康",
+                    story: "有著一身帥氣柔順的亮麗黑毛，眼神充滿好奇心。個性非常貼心又聰明，聽得懂自己的名字，是個不折不扣的小紳士。"
+               },
+               "5": {
+                    name: "拿鐵 (Latte)",
+                    img: "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=500&h=500&fit=crop",
+                    tag: "安靜沉穩",
+                    age: "女生 / 約 3 歲",
+                    color: "混血長毛虎斑貓 / 已結紮、定期驅蟲",
+                    story: "花色像濃郁拿鐵一樣溫柔美麗，個性安靜沉穩不吵鬧，平常最喜歡待在陽光灑落的窗邊看小鳥、曬太陽，陪伴感十足。"
+               }
+          };
+
+          document.addEventListener("DOMContentLoaded", function() {
+               
+               // ==================== 邏輯 A: 解析網址參數並渲染網頁 ====================
+               const urlParams = new URLSearchParams(window.location.search);
+               const catId = urlParams.get('id'); // 取得 ?id=X 的數字
+
+               // 檢查這個編號在資料庫裡有沒有存在
+               if (catId && catDatabase[catId]) {
+                    const cat = catDatabase[catId];
+                    
+                    // 把資料塞進對應的 HTML 標籤裡
+                    document.getElementById("cat-detail-id").innerText = catId;
+                    document.getElementById("cat-detail-name").innerText = `🐾 ${cat.name}`;
+                    document.getElementById("cat-detail-img").src = cat.img;
+                    document.getElementById("cat-detail-img").alt = cat.name;
+                    document.getElementById("cat-detail-tag").innerText = cat.tag;
+                    document.getElementById("cat-detail-age").innerText = cat.age;
+                    document.getElementById("cat-detail-color").innerText = cat.color;
+                    document.getElementById("cat-detail-story").innerText = cat.story;
+                    
+                    document.title = `尋找貓咪的家 - 認識 ${cat.name}`;
+               } else {
+                    // 如果網址亂打找不到，顯示錯誤提示
+                    document.getElementById("cat-detail-name").innerText = "找不到這隻貓咪 😿";
+                    document.getElementById("cat-detail-story").innerText = "抱歉，該編號的貓咪可能已經被幸運領養，或是網址輸入錯誤囉。";
+               }
+
+               // ==================== 邏輯 B: 管理員登入防護與導覽列控制 ====================
+               const isLoggedIn = localStorage.getItem("isLoggedIn");
+               const adminName = localStorage.getItem("adminName"); 
+
+               const guestBtn = document.getElementById("guest-btn");
+               const adminWelcome = document.getElementById("admin-welcome");
+               const logoutBtn = document.getElementById("logout-btn");
+               const adminNavItem = document.getElementById("admin-nav-item");
+
+               if (isLoggedIn === "true") {
+                    guestBtn.classList.add("d-none");
+                    if (adminName) {
+                         adminWelcome.innerHTML = `🔑 管理員 ${adminName}`;
+                    }
+                    adminWelcome.classList.remove("d-none");
+                    logoutBtn.classList.remove("d-none");
+
+                    // 如果已登入，讓後台按鈕顯現
+                    if (adminNavItem) {
+                         adminNavItem.style.setProperty('display', 'block', 'important');
+                    }
+               } else {
+                    guestBtn.classList.remove("d-none");
+                    adminWelcome.classList.add("d-none");
+                    logoutBtn.classList.add("d-none");
+
+                    // 沒登入時，嚴格隱藏後台入口
+                    if (adminNavItem) {
+                         adminNavItem.style.setProperty('display', 'none', 'important');
+                    }
+               }
+
+               // 登出按鈕事件
+               if (logoutBtn) {
+                    logoutBtn.addEventListener("click", function() {
+                         localStorage.removeItem("isLoggedIn");
+                         localStorage.removeItem("adminName");
+                         alert("已成功登出管理系統！");
+                         window.location.reload();
+                    });
+               }
+          });
+     </script>
+
+</body>
+
+</html>

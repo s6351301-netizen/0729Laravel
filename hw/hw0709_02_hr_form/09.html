@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>姜玉珍的日式浪漫風履歷表</title>
+    <style>
+        /* 引入日系可愛卡通感字體 */
+        @import url('https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+        :root {
+            --primary-pink: #FFD3E1;
+            /* 浪漫櫻花粉 */
+            --soft-blue: #E8F4F8;
+            /* 輕盈天藍粉 */
+            --text-color: #6C5555;
+            /* 溫柔可可褐（代替死黑更具動漫感） */
+            --accent-orange: #FFB3A7;
+            /* 溫暖甜橙 */
+            --bg-color: #FFFDF9;
+            /* 柔和奶油白 */
+            --dark-pink: #FF94B4;
+        }
+
+        body {
+            font-family: 'Kiwi Maru', 'Noto Sans TC', sans-serif;
+            background-color: #FFF5F7;
+            /* 日式浪漫卡通波點微風背景 */
+            background-image: radial-gradient(var(--primary-pink) 15%, transparent 16%),
+                radial-gradient(var(--soft-blue) 15%, transparent 16%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* 履歷外觀大卡片 */
+        .resume-container {
+            width: 100%;
+            max-width: 850px;
+            background-color: var(--bg-color);
+            border: 4px solid var(--primary-pink);
+            border-radius: 30px;
+            box-shadow: 0 12px 30px rgba(255, 182, 193, 0.4);
+            padding: 40px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* 櫻花小裝飾 */
+        .resume-container::after {
+            content: "🌸";
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 1.8rem;
+            opacity: 0.8;
+        }
+
+        /* 頂部個人基本資料表格 */
+        table.header-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            border-bottom: 3px dashed var(--primary-pink);
+        }
+
+        .avatar-td {
+            width: 160px;
+            vertical-align: middle;
+            padding-bottom: 25px;
+        }
+
+        /* 浪漫日系照片相框 */
+        .avatar-frame {
+            width: 140px;
+            height: 140px;
+            background-color: var(--soft-blue);
+            border: 3px solid var(--accent-orange);
+            border-radius: 40px;
+            /* 營造軟萌圓角感 */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 4px 5px 0px var(--accent-orange);
+        }
+
+        .avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info-td {
+            vertical-align: middle;
+            padding-left: 30px;
+            padding-bottom: 25px;
+        }
+
+        .info-td h1 {
+            margin: 0 0 12px 0;
+            font-size: 2.6rem;
+            color: #554141;
+            letter-spacing: 4px;
+            text-shadow: 2px 2px 0px var(--primary-pink);
+        }
+
+        .info-p {
+            margin: 6px 0;
+            font-size: 1rem;
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        /* 主架構排版表格 */
+        table.main-content-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 20px;
+        }
+
+        /* 左側大區塊標題欄位 */
+        .section-title-td {
+            width: 25%;
+            vertical-align: top;
+            padding-right: 15px;
+            padding-top: 5px;
+        }
+
+        /* 標題小徽章 */
+        .title-badge {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, #FFAEC9 100%);
+            color: #554141;
+            font-weight: bold;
+            padding: 10px 14px;
+            border-radius: 18px;
+            display: block;
+            text-align: center;
+            box-shadow: 2px 3px 0px var(--accent-orange);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        /* 右側詳細內容大區塊欄位 */
+        .section-content-td {
+            width: 75%;
+            background: linear-gradient(135deg, #ffffff 0%, var(--soft-blue) 100%);
+            border: 2px solid var(--primary-pink);
+            border-radius: 22px;
+            padding: 24px;
+            box-shadow: 4px 4px 0px rgba(255, 182, 193, 0.3);
+        }
+
+        /* 經歷項目內部細分表格 */
+        .inner-item-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .inner-item-tr {
+            border-bottom: 1px dashed var(--primary-pink);
+        }
+
+        .inner-item-tr:last-child {
+            border-bottom: none;
+        }
+
+        .job-title-td {
+            font-weight: 700;
+            color: #4A3E3E;
+            font-size: 1.05rem;
+            padding: 12px 0;
+            vertical-align: top;
+            width: 45%;
+        }
+
+        .job-detail-td {
+            padding: 12px 0;
+            vertical-align: top;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            width: 55%;
+        }
+
+        /* 可愛的時間小標籤 */
+        .time-tag {
+            color: #9E8888;
+            background-color: #ffffff;
+            padding: 3px 10px;
+            border-radius: 10px;
+            border: 1px solid var(--primary-pink);
+            display: inline-block;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+            font-weight: 300;
+        }
+
+        /* 技能/特長標籤專用樣式 */
+        .skill-container {
+            padding: 5px 0;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            background-color: #ffffff;
+            border: 2px solid var(--primary-pink);
+            color: var(--text-color);
+            padding: 6px 14px;
+            border-radius: 14px;
+            margin: 6px;
+            font-size: 0.9rem;
+            font-weight: 300;
+            box-shadow: 2px 2px 0px var(--primary-pink);
+            transition: transform 0.2s;
+        }
+
+        .skill-group-title {
+            font-weight: bold;
+            color: #4A3E3E;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="resume-container">
+        <table class="header-table">
+            <tr>
+                <td class="avatar-td">
+                    <div class="avatar-frame">
+                        <img src="79284.jpg" alt="姜玉珍 履歷相片">
+                    </div>
+                </td>
+                <td class="info-td">
+                    <h1>姜玉珍</h1>
+                    <div>
+                        <p class="info-p">🌸 <b>性別：</b>女</p>
+                        <p class="info-p">📅 <b>出生年：</b>1971 年</p>
+                        <p class="info-p">📍 <b>通訊縣市：</b>新北市三芝區</p>
+                    </div>
+                    <div style="margin-top: 4px;">
+                        <p class="info-p">📱 <b>電話：</b>0908-159287</p>
+                        <p class="info-p">📬 <b>電子郵件：</b>chen666chen666c@yahoo.com.tw</p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <table class="main-content-table">
+
+            <tr>
+                <td class="section-title-td">
+                    <span class="title-badge">職前訓練</span>
+                </td>
+                <td class="section-content-td">
+                    <table class="inner-item-table">
+                        <tr class="inner-item-tr">
+                            <td class="job-title-td">
+                                全端網頁開發與AI應用<br>(泰山)第01期
+                            </td>
+                            <td class="job-detail-td">
+                                <span class="time-tag">2026-04-09 ～ 2026-09-23</span><br>
+                                勞動力發展署北基宜花金馬分署
+                            </td>
+                        </tr>
+                        <tr class="inner-item-tr">
+                            <td class="job-title-td">
+                                數位圖文傳播-商品圖文設計<br>(泰山)第1期
+                            </td>
+                            <td class="job-detail-td">
+                                <span class="time-tag">2023-05-25 ～ 2023-11-23</span><br>
+                                勞動力發展署北基宜花金馬分署<br>
+                                <small style="color:var(--dark-pink);">（共 968 小時 ／ 結訓）</small>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="section-title-td">
+                    <span class="title-badge">工作經歷</span>
+                </td>
+                <td class="section-content-td">
+                    <table class="inner-item-table">
+                        <tr class="inner-item-tr">
+                            <td class="job-title-td">
+                                阿諾手工餅乾<br>
+                                <span style="font-size:0.9rem; font-weight:normal; color:#8A7373;">職稱：業務人員</span>
+                            </td>
+                            <td class="job-detail-td">
+                                <span class="time-tag">2018/06 ～ 2018/12</span><br>
+                                <b>薪資待遇：</b>30,000 元<br>
+                                <b>行職業別：</b>其他食品批發業<br>
+                                <b>工作說明：</b>手工餅乾製作、包裝設計、門市銷售、業務接洽。
+                            </td>
+                        </tr>
+                        <tr class="inner-item-tr">
+                            <td class="job-title-td">
+                                宏崑股份有限公司<br>
+                                <span style="font-size:0.9rem; font-weight:normal; color:#8A7373;">職稱：會計人員</span>
+                            </td>
+                            <td class="job-detail-td">
+                                <span class="time-tag">2016/12 ～ 2017/09</span><br>
+                                <b>行職業別：</b>螺絲、螺帽及鉚釘製造業<br>
+                                <b>工作說明：</b>內帳、出納、財務報表、行政庶務。
+                            </td>
+                        </tr>
+                        <tr class="inner-item-tr">
+                            <td class="job-title-td">
+                                診所<br>
+                                <span style="font-size:0.9rem; font-weight:normal; color:#8A7373;">職稱：診所助理 (書記)</span>
+                            </td>
+                            <td class="job-detail-td">
+                                <span class="time-tag">2005/09 ～ 2006/12</span><br>
+                                <b>工作說明：</b>掛號、勞健保申報、行政庶務。
+                            </td>
+                        </tr>
+                        <tr class="inner-item-tr">
+                            <td class="job-title-td">
+                                金車飲料聯運<br>
+                                <span style="font-size:0.9rem; font-weight:normal; color:#8A7373;">職稱：帳務會計</span>
+                            </td>
+                            <td class="job-detail-td">
+                                <span class="time-tag">1991/03 ～ 1992/09</span><br>
+                                <b>工作說明：</b>日常會計內帳核對與帳務登錄處理。
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="section-title-td">
+                    <span class="title-badge">教育背景</span>
+                </td>
+                <td class="section-content-td">
+                    <table class="inner-item-table">
+                        <tr class="inner-item-tr">
+                            <td class="job-title-td">
+                                國立空中大學<br>
+                                <span style="font-size:0.9rem; font-weight:normal; color:#8A7373;">基礎法律學類</span>
+                            </td>
+                            <td class="job-detail-td">
+                                <span class="time-tag">2004/06 肄業</span><br>
+                                學歷順位：最高學歷
+                            </td>
+                        </tr>
+                        <tr class="inner-item-tr">
+                            <td class="job-title-td">
+                                私立清傳高商<br>
+                                <span style="font-size:0.9rem; font-weight:normal; color:#8A7373;">綜合商業科</span>
+                            </td>
+                            <td class="job-detail-td">
+                                <span class="time-tag">1990/06 畢業</span><br>
+                                學歷順位：次高學歷（高職畢業）
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="section-title-td">
+                    <span class="title-badge">專業技能</span>
+                </td>
+                <td class="section-content-td">
+                    <div class="skill-container">
+                        <div style="margin-bottom: 12px; font-size: 1rem;">
+                            🗣️ <b>語文能力：</b>國語（精通）／ 台語（普通）
+                        </div>
+
+                        <div class="skill-group-title">⌨️ 辦公文書與檢定專長：</div>
+                        <span class="skill-tag">中文打字 30字/分</span>
+                        <span class="skill-tag">英打一分鐘 28字</span>
+                        <span class="skill-tag">珠算 三級</span>
+                        <span class="skill-tag">會計 二級</span>
+                        <span class="skill-tag">Office 文書處理</span>
+                        <span class="skill-tag">網際網路應用</span>
+                        <span class="skill-tag">電腦基本操作</span>
+
+                        <div class="skill-group-title">🎨 數位圖文與網頁多媒體：</div>
+                        <span class="skill-tag">Adobe Photoshop</span>
+                        <span class="skill-tag">Adobe Illustrator</span>
+                        <span class="skill-tag">Adobe InDesign</span>
+                        <span class="skill-tag">HTML 網頁表格排版</span>
+                        <span class="skill-tag">全端網頁開發與AI應用</span>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+
+</body>
+
+</html>

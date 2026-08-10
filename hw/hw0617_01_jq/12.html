@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>櫻花科學計算機 Pro</title>
+
+<style>
+body {
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg,#ffe6ee,#ffd6e7,#f8bbd0);
+    font-family: sans-serif;
+}
+
+/* 外框 */
+.calculator {
+    width: 420px;
+    padding: 20px;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 20px 50px rgba(255,105,180,0.25);
+}
+
+/* 顯示器 */
+.display {
+    width: 100%;
+    height: 90px;
+    border: none;
+    border-radius: 20px;
+    font-size: 34px;
+    text-align: right;
+    padding: 15px;
+    box-sizing: border-box;
+    color: #c2185b;
+    background: linear-gradient(90deg,#fff8fb,#ffe4ec,#fff8fb);
+    background-size: 200% 100%;
+    animation: shimmer 6s infinite linear;
+}
+
+@keyframes shimmer {
+    0% { background-position: 0% }
+    100% { background-position: 200% }
+}
+
+/* 按鈕 */
+.buttons {
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:10px;
+    margin-top:15px;
+}
+
+button {
+    height:60px;
+    border:none;
+    border-radius:18px;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.15s;
+}
+
+button:active { transform: scale(0.92); }
+button:hover { transform: translateY(-2px); }
+
+.number { background:#ffe4ec; color:#ad1457; }
+.operator { background:#ff8fb1; color:white; }
+.function { background:#fff0f5; color:#ad1457; }
+.science { background:#fce4ec; color:#880e4f; }
+
+.zero { grid-column: span 2; }
+</style>
+</head>
+
+<body>
+
+<div class="calculator">
+
+<input id="display" class="display" value="0" readonly>
+
+<div class="buttons">
+
+<!-- 科學 -->
+<button class="science" onclick="append('(')">(</button>
+<button class="science" onclick="append(')')">)</button>
+<button class="science" onclick="append('Math.sin(')">sin</button>
+<button class="function" onclick="clearAll()">AC</button>
+
+<button class="science" onclick="append('Math.cos(')">cos</button>
+<button class="science" onclick="append('Math.tan(')">tan</button>
+<button class="science" onclick="append('Math.sqrt(')">√</button>
+<button class="function" onclick="back()">⌫</button>
+
+<button class="function" onclick="append(String(Math.PI))">π</button>
+<button class="function" onclick="append(String(Math.E))">e</button>
+<button class="science" onclick="append('/100')">%</button>
+<button class="operator" onclick="append('/')">÷</button>
+
+<!-- 數字 -->
+<button class="number" onclick="append('7')">7</button>
+<button class="number" onclick="append('8')">8</button>
+<button class="number" onclick="append('9')">9</button>
+<button class="operator" onclick="append('*')">×</button>
+
+<button class="number" onclick="append('4')">4</button>
+<button class="number" onclick="append('5')">5</button>
+<button class="number" onclick="append('6')">6</button>
+<button class="operator" onclick="append('-')">−</button>
+
+<button class="number" onclick="append('1')">1</button>
+<button class="number" onclick="append('2')">2</button>
+<button class="number" onclick="append('3')">3</button>
+<button class="operator" onclick="append('+')">+</button>
+
+<button class="number zero" onclick="append('0')">0</button>
+<button class="number" onclick="append('.')">.</button>
+<button class="operator" onclick="calc()">=</button>
+
+</div>
+</div>
+
+<script>
+    let expr = "";
+    const display = document.getElementById("display");
+
+    // 更新顯示器的內容
+    function append(v) {
+        expr += v;
+        display.value = expr;
+    }
+
+    // 清除所有內容
+    function clearAll() {
+        expr = "";
+        display.value = "0";
+    }
+
+    // 核心計算邏輯
+    function calc() {
+        try {
+            // 1. 自動補全括號：如果使用者忘了按右括號，我們幫他補上
+            let openCount = (expr.match(/\(/g) || []).length;
+            let closeCount = (expr.match(/\)/g) || []).length;
+            let tempExpr = expr + ")".repeat(openCount - closeCount);
+
+            // 2. 正規化數學表達式
+            // 將 sin, cos, tan 轉為 Math.xxx 並將角度轉弧度
+            let safeExpr = tempExpr
+                .replace(/sin\(([^)]+)\)/g, "Math.sin($1 * Math.PI / 180)")
+                .replace(/cos\(([^)]+)\)/g, "Math.cos($1 * Math.PI / 180)")
+                .replace(/tan\(([^)]+)\)/g, "Math.tan($1 * Math.PI / 180)")
+                .replace(/sqrt\(([^)]+)\)/g, "Math.sqrt($1)");
+
+            // 3. 安全計算
+            let result = new Function('return ' + safeExpr)();
+
+            // 4. 處理精度 (解決如 0.1+0.2=0.30000000004 的問題)
+            result = Math.round(result * 1000000000000) / 1000000000000;
+            
+            expr = String(result);
+            display.value = expr;
+        } catch (e) {
+            display.value = "Error";
+            expr = "";
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Text 範例</title>
+    <style>
+        /* 依據截圖畫面簡化之藍色卡片樣式 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .card {
+            background-color: #a8dadc;
+            padding: 30px;
+            border-radius: 15px;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        input, button {
+            margin: 5px 0;
+            padding: 5px;
+            width: 80%;
+            box-sizing: border-box;
+        }
+        #mySpan {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- 依據主控台第 49、50 行的 placeholder 與 id 還原 -->
+        <input type="text" id="name" placeholder="name....">
+        <input type="text" id="text" placeholder="text....">
+        
+        <!-- 依據主控台第 51 行還原按鈕 -->
+        <button type="button" id="myBtn">myBtn</button>
+        
+        <!-- 依據主控台第 52 行還原顯示文字區域 -->
+        <span id="mySpan">我是aaa，座右銘bbbbbb</span>
+    </div>
+
+    <script>
+        // 取得 DOM 元素
+        const myName = document.getElementById('name');
+        const myText = document.getElementById('text');
+        const myBtn = document.getElementById('myBtn');
+        const mySpan = document.getElementById('mySpan');
+
+        // 主控台第 49-52 行的印出測試
+        console.log('myName', myName);
+        console.log('myText', myText);
+        console.log('myBtn', myBtn);
+        console.log('mySpan', mySpan);
+
+        // 綁定按鈕點擊事件（對應主控台第 57 行開始的邏輯與第 68-73 行的輸出）
+        myBtn.addEventListener('click', function() {
+            console.log('myBtn', myBtn); // 第 57 行
+
+            // 取得輸入框數值
+            const getName = myName.value; // kai
+            const getText = myText.value; // 抱大腿
+
+            console.log('getName', getName); // 第 68 行
+            console.log('getText', getText); // 第 69 行
+
+            // 組合字串並更新畫面
+            const tmpText = `我是${getName}，座右銘${getText}`;
+            console.log('tmpText', tmpText); // 第 73 行
+
+            mySpan.textContent = tmpText;
+        });
+    </script>
+
+</body>
+</html>

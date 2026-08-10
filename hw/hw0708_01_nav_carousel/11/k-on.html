@@ -1,0 +1,559 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-On! 輕音部</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        :root {
+            --bg-light: #fff7ff;
+            --bg-soft: #f8e6ff;
+            --accent: #a75cff;
+            --accent-soft: #f4c5ff;
+            --text-dark: #352244;
+            --text-muted: #6d5478;
+            --card: rgba(255, 255, 255, 0.92);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 20%),
+                linear-gradient(135deg, #f9e6ff 0%, #f7f0ff 45%, #fff8f2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            padding: 0;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.92);
+            border-bottom: 1px solid rgba(167, 92, 255, 0.18);
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            color: var(--accent);
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .nav-link:hover {
+            color: var(--accent);
+        }
+
+        .outer-container {
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 32px 20px 60px;
+        }
+
+        .hero {
+            padding: 2rem 0 3rem;
+        }
+
+        .hero-card {
+            background: var(--card);
+            box-shadow: 0 20px 60px rgba(129, 65, 173, 0.12);
+            border-radius: 28px;
+            border: 1px solid rgba(167, 92, 255, 0.14);
+            overflow: hidden;
+        }
+
+        .hero-card .card-body {
+            padding: 3rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2.8rem, 4vw, 4.4rem);
+            font-weight: 800;
+            margin-bottom: 0.8rem;
+            line-height: 1.05;
+        }
+
+        .hero-text {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .badge-theme {
+            background: linear-gradient(135deg, #ffd4ff 0%, #f1b3ff 100%);
+            color: #6f2c7d;
+            font-weight: 700;
+            border-radius: 999px;
+            padding: 0.65rem 1rem;
+            margin-bottom: 1.6rem;
+            display: inline-flex;
+        }
+
+        .btn-hero {
+            background: linear-gradient(135deg, #9f5bff 0%, #f27cff 100%);
+            border: none;
+            color: #fff;
+            padding: 0.95rem 2rem;
+            border-radius: 999px;
+            font-weight: 700;
+            box-shadow: 0 14px 30px rgba(159, 91, 255, 0.24);
+        }
+
+        .btn-hero:hover {
+            transform: translateY(-2px);
+        }
+
+        .hero-image {
+            min-height: 400px;
+            background: linear-gradient(135deg, rgba(255, 205, 255, 0.5), rgba(160, 92, 255, 0.18));
+            border-radius: 2rem;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            color: rgba(79, 35, 113, 0.72);
+            font-weight: 700;
+            padding: 2rem;
+        }
+
+        .kon-carousel .carousel-item {
+            min-height: 320px;
+        }
+
+        .kon-carousel .carousel-item img {
+            width: 100%;
+            min-height: 320px;
+            object-fit: cover;
+            border-radius: 24px;
+        }
+
+        .kon-carousel .carousel-caption {
+            background: rgba(255, 255, 255, 0.82);
+            color: var(--text-dark);
+            padding: 1rem 1.25rem;
+            border-radius: 18px;
+            backdrop-filter: blur(8px);
+        }
+
+        .kon-carousel .carousel-indicators [data-bs-target] {
+            background-color: rgba(167, 92, 255, 0.65);
+        }
+
+        .kon-carousel .carousel-control-prev-icon,
+        .kon-carousel .carousel-control-next-icon {
+            filter: invert(1);
+        }
+
+        .section-title {
+            margin: 3rem 0 1.4rem;
+            text-align: center;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .feature-card {
+            border: none;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.94);
+            box-shadow: 0 20px 50px rgba(117, 61, 168, 0.1);
+            overflow: hidden;
+        }
+
+        .feature-card .card-body {
+            padding: 1.75rem;
+        }
+
+        .feature-card .img-placeholder {
+            min-height: 220px;
+            background: linear-gradient(135deg, rgba(163, 108, 255, 0.18), rgba(255, 158, 218, 0.22));
+            display: grid;
+            place-items: center;
+            color: rgba(111, 67, 145, 0.75);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .feature-card h5 {
+            margin-top: 1.25rem;
+            font-weight: 800;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .feature-card .small-text {
+            color: #8d72ab;
+            font-size: 0.92rem;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(255, 214, 255, 0.55), rgba(250, 246, 255, 0.9));
+            border: 1px solid rgba(167, 92, 255, 0.18);
+            border-radius: 24px;
+            padding: 1.75rem;
+            min-height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .info-box h4 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .info-box p {
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding-top: 1.5rem;
+            }
+
+            .hero-image {
+                min-height: 280px;
+            }
+
+            .section-title {
+                margin-top: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="outer-container">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid px-0">
+                <a class="navbar-brand ms-3" href="#">放學後的下午茶時間</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">首頁</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#members">成員</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#shows">演出</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#daily">日常</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero">
+            <div class="card hero-card">
+                <div class="row g-0 align-items-center">
+                    <div class="col-lg-6">
+                        <div class="card-body">
+                            <span class="badge-theme">K-On! 輕音部</span>
+                            <h1 class="hero-title">友情與音樂交織的輕鬆時光</h1>
+                            <p class="hero-text">「放學後的點心時間，伴隨著輕快旋律，屬於我們的青春搖滾正式開演！」</p>
+                            <a class="btn btn-hero" href="#members">探索成員</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 p-5">
+                        <div id="heroCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"
+                                    aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"
+                                    aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"
+                                    aria-label="Slide 3"></button>
+                                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"
+                                    aria-label="Slide 4"></button>
+                                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="4"
+                                    aria-label="Slide 5"></button>
+                            </div>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <div class="hero-image">
+                                        <div>
+                                            <img src="./images/konchar1.jpg" alt="秋山澪"
+                                                style="width: 300px; height: 300px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="hero-image">
+                                        <div>
+                                            <img src="./images/konchar2.jpg" alt="田井中律"
+                                                style="width: 300px; height: 300px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="hero-image">
+                                        <div>
+                                            <img src="./images/konchar3.jpg" alt="平澤唯"
+                                                style="width: 300px; height: 200px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="hero-image">
+                                        <div>
+                                            <img src="./images/konchar4.jpg" alt="琴吹紬"
+                                                style="width: 300px; height: 300px;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="hero-image">
+                                        <div>
+                                            <img src="./images/konchar5.jpg" alt="中野梓"
+                                                style="width: 300px; height: 300px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">上一張</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">下一張</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <div class="section-title">
+                <h2>HTT</h2>
+                <p>一起輕鬆地玩音樂吧。</p>
+            </div>
+            <div id="konCarousel" class="carousel slide kon-carousel" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#konCarousel" data-bs-slide-to="0" class="active"
+                        aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#konCarousel" data-bs-slide-to="1"
+                        aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#konCarousel" data-bs-slide-to="2"
+                        aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="./images/koncarousel1.jpg" class="d-block" alt="K-On 角色 1">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>夢幻音樂時刻</h5>
+                            <p>演唱會結束慶功合影。</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="./images/koncarousel2.jpg" class="d-block" alt="K-On 角色 2">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>日常點滴</h5>
+                            <p>團練就是要喝下午茶。</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="./images/koncarousel3.jpg" class="d-block" alt="K-On 角色 3">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>音樂與友情</h5>
+                            <p>音樂連接著是我們的友誼。</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#konCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">上一張</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#konCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">下一張</span>
+                </button>
+            </div>
+        </section>
+
+        <section id="members">
+            <div class="section-title">
+                <h2>輕音部成員</h2>
+                <p>四位女孩一起編織夢想、排練與歡笑的音樂故事。</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-xl-3">
+                    <div class="card feature-card">
+                        <div class="img-placeholder">
+                            <img src="./images/kon 3.png" alt="">
+                        </div>
+                        <div class="card-body">
+                            <h5>平澤唯</h5>
+                            <p class="small-text">吉他 / 主唱</p>
+                            <p>夢想成為搖滾樂手，充滿熱情與可愛活力。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                    <div class="card feature-card">
+                        <div class="img-placeholder">
+                            <img src="./images/kon 4.png" alt="">
+                        </div>
+                        <div class="card-body">
+                            <h5>秋山澪</h5>
+                            <p class="small-text">貝斯 / 和聲</p>
+                            <p>內向且認真，有著驚人的音樂天賦與深情。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                    <div class="card feature-card">
+                        <div class="img-placeholder">
+                            <img src="./images/kon 5.png" alt="">
+                        </div>
+                        <div class="card-body">
+                            <h5>田井中律</h5>
+                            <p class="small-text">鼓手 / 生活康樂</p>
+                            <p>充滿活力的隊長，喜歡熱鬧與突發奇想的計畫。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-xl-3">
+                    <div class="card feature-card">
+                        <div class="img-placeholder">
+                            <img src="./images/kon 1.png" alt="">
+                        </div>
+                        <div class="card-body">
+                            <h5>琴吹紬</h5>
+                            <p class="small-text">鍵盤 / 溫柔支援</p>
+                            <p>優雅又貼心的學姊，總是提供最舒服的後援。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="shows">
+            <div class="section-title">
+                <h2>精彩演出</h2>
+                <p>巡迴音樂會、校園祭與每一次演唱都充滿感動。</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <div class="card feature-card">
+                        <div class="img-placeholder">
+                            <img src="./images/kon 1.jpg" alt="" style="width: auto; height: 150px;">
+                        </div>
+                        <div class="card-body">
+                            <h5>校園祭現場</h5>
+                            <p class="small-text">青春熱血 x 音樂</p>
+                            <p>第一場校園演出，大家一起用音樂點亮青春。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card feature-card">
+                        <div class="img-placeholder">
+                            <img src="./images/kon 2.jpg" alt="" style="width: auto; height: 150px;">
+                        </div>
+                        <div class="card-body">
+                            <h5>室內排練</h5>
+                            <p class="small-text">磨練默契</p>
+                            <p>每次練習都更加堅定，為下一次舞臺努力準備。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card feature-card">
+                        <div class="img-placeholder">
+                            <img src="./images/kon 3.jpg" alt="" style="width: auto; height: 150px;">
+                        </div>
+                        <div class="card-body">
+                            <h5>甜美日常</h5>
+                            <p class="small-text">友情小劇場</p>
+                            <p>不只是表演，還有每一次的溫馨小故事。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pilgrimage" class="py-5"> <!-- 修改 id 讓語意更精準 -->
+            <div class="section-title text-center mb-5">
+                <h2>聖地巡禮</h2>
+                <!-- 導言改寫為聖地氛圍，提示未來可補上實際朝聖照片 -->
+                <p class="text-muted">踏入櫻丘高中的現實原型，尋找屬於放學後茶會的青春足跡。圖片可在此後補。</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-12 col-lg-6">
+                    <div class="info-box p-4 h-100 border rounded shadow-sm">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="fs-3 me-2">🏫</span>
+                            <h4 class="mb-0 fw-bold">櫻丘高中原型：豐鄉小學</h4>
+                        </div>
+                        <img src="./images/kon 4.jpg" alt="">
+                        <p class="text-muted mb-0">
+                            位於日本滋賀縣的豐鄉小學舊校舍，是劇中學校的完整原型。
+                            走廊上光滑的木地板、經典的西洋風建築外觀，還有扶手上的「烏龜與兔子」銅雕，
+                            完完整整還原了小唯她們每天奔跑、遲到的青春校園場景。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <div class="info-box p-4 h-100 border rounded shadow-sm">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="fs-3 me-2">☕</span>
+                            <h4 class="mb-0 fw-bold">放學後的茶會：舊酬德堂</h4>
+                        </div>
+                        <img src="./images/kon 5.jpg" alt="">
+                        <p class="text-muted mb-0">
+                            最令人嚮往的輕音部社辦！這裡擺放著與動畫中一模一樣的黑板、課桌椅、
+                            精緻的茶具下午茶組，甚至是團員們的樂器模型。
+                            無數粉絲來到這裡，都會在黑板上留下專屬的留言，彷彿走進了小唯她們喝茶聊天的悠閒午後。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer">
+            <p>&copy; 2026 放課後 Tea Time / 櫻丘高中輕音部. All Rights Reserved.</p>
+        </div>
+    </div>
+</body>
+
+</html>

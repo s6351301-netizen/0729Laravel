@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>專屬吐槽特區</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f8fafc; }
+    .bg-light-purple { background-color: #ebdcfc !important; }
+    .roast-box { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .roast-item { background-color: #ffffff; border-radius: 8px; padding: 10px 12px; border-left: 4px solid #dc3545; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand bg-light-purple navbar-light px-3 mb-4">
+    <a class="btn btn-sm btn-outline-dark me-2" href="index.html">⬅ 回首頁看板</a>
+    <span class="navbar-brand fw-bold">💥 專屬吐槽特區</span>
+  </nav>
+
+  <div class="container" style="max-width: 600px;">
+    
+    <div class="card roast-box p-4 bg-white mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span class="fw-bold text-muted small">📌 發布的話題</span>
+        <small id="topicTime" class="text-muted" style="font-size:0.75rem;"></small>
+      </div>
+      <p id="topicContent" class="mb-0 fs-5 fw-bold text-secondary mt-2"></p>
+    </div>
+
+    <div class="card roast-box p-4 bg-white">
+      <h5 class="fw-bold mb-3 text-danger">💬 網友毒舌吐槽</h5>
+      
+      <div id="roastList" class="d-flex flex-column gap-2 mb-4"></div>
+
+      <hr>
+
+      <form id="roastForm">
+        <div class="input-group">
+          <input type="text" id="roastContent" class="form-control" placeholder="火力全開！請留下你的神吐槽..." required>
+          <button class="btn btn-danger fw-bold" type="submit">💥 吐槽</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    // 讀取共用資料庫
+    let comments = JSON.parse(localStorage.getItem('roast_wall_data')) || [];
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const topicId = parseInt(urlParams.get('id')); 
+
+    const currentTopic = comments.find(c => c.id === topicId);
+
+    if (currentTopic) {
+      document.getElementById('topicTime').textContent = currentTopic.time;
+      document.getElementById('topicContent').textContent = currentTopic.content;
+      renderRoastList();
+    } else {
+      document.getElementById('topicContent').textContent = "找不到該話題！";
+    }
+
+    function renderRoastList() {
+      const listEl = document.getElementById('roastList');
+      listEl.innerHTML = "";
+
+      if(currentTopic.roasts.length === 0) {
+        listEl.innerHTML = `<p class="text-muted small text-center my-2">目前沒有吐槽，快來當第一個！</p>`;
+        return;
+      }
+
+      currentTopic.roasts.forEach(r => {
+        listEl.innerHTML += `
+          <div class="roast-item">
+            <span class="text-dark small">💬 ${r.content}</span>
+          </div>
+        `;
+      });
+    }
+
+    document.getElementById('roastForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const contentInput = document.getElementById('roastContent').value.trim();
+
+      // 因為你不需要填名字了，後台資料直接寫死為 "路過吐槽" 或不寫，純存內容
+      currentTopic.roasts.push({
+        content: contentInput
+      });
+
+      localStorage.setItem('roast_wall_data', JSON.stringify(comments));
+
+      renderRoastList(); 
+      document.getElementById('roastContent').value = ""; 
+    });
+  </script>
+</body>
+</html>

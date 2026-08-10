@@ -1,0 +1,55 @@
+[
+  {
+    "id": 1,
+    "title": "天若有情 (追夢人)",
+    "link": "https://youtu.be/47_DvrWSMwk?si=m2AccNKjAQScFx_F",
+    "description": "香港經典愛情電影《天若有情》是1990年上映的作品，電影上映30年後，將再度紀念上映，《天若有情》是90年代香港極具代表性的話題作品，讓劉德華更站穩在影壇的地位，讓女星吳倩蓮出道便一砲而紅，也是導演陳木勝首部電影作品。",
+    "image": "https://s.yimg.com/lo/mysterio/api/4e4ee2c21e35ebfdad59262d4e921a222025a61945d532ffe5b526f18fee57c6/lightyear_networkapi/resizefill_w960;quality_80;format_webp/https:%2F%2Fmedia.zenfs.com%2Fzh-TW%2Fctwant_com_582%2F605922ecfcb429db9a951cdfb1482f08",
+    "rating": 8.8,
+    "year": 2010
+  },
+  {
+    "id": 2,
+    "title": "星際效應 (Interstellar)",
+    "link": "https://youtu.be/47_DvrWSMwk?si=m2AccNKjAQScFx_F",
+    "description": "地球環境日益惡化，為了拯救人類，一組探險家利用新發現的蟲洞，踏上了一場穿越星際的旅程，尋找人類的新家園。",
+    "image": "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    "rating": 8.6,
+    "year": 2014
+  },
+  {
+    "id": 3,
+    "title": "駭客任務 (The Matrix)",
+    "link": "https://youtu.be/47_DvrWSMwk?si=m2AccNKjAQScFx_F",
+    "description": "一名電腦駭客發現他所認知的世界其實是一個被稱為「母體」的虛擬實境，他決定加入反抗軍，對抗控制人類的機器。",
+    "image": "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    "rating": 8.7,
+    "year": 1999
+  },
+  {
+    "id": 4,
+    "title": "沙丘 (Dune)",
+    "link": "https://youtu.be/47_DvrWSMwk?si=m2AccNKjAQScFx_F",
+    "description": "天賦異稟的少年保羅·亞崔迪必須前往宇宙中最危險的星球，以確保他家人和人民的未來。各方勢力為了爭奪最珍貴的資源而爆發衝突。",
+    "image": "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    "rating": 8.0,
+    "year": 2021
+  },
+  {
+    "id": 5,
+    "title": "黑暗騎士 (The Dark Knight)",
+    "link": "https://youtu.be/47_DvrWSMwk?si=m2AccNKjAQScFx_F",
+    "description": "蝙蝠俠面臨著他最大的敵人——小丑，一個為了製造混亂而存在的精神病罪犯。蝙蝠俠必須超越自己的極限，保護高譚市。",
+    "image": "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    "rating": 9.0,
+    "year": 2008
+  },
+  {
+    "id": 6,
+    "title": "復仇者聯盟：終局之戰",
+    "description": "薩諾斯彈指後，宇宙半數生命灰飛煙滅。倖存的復仇者聯盟成員必須集結起來，想盡辦法逆轉薩諾斯的行動，恢復宇宙的秩序。",
+    "image": "https://images.unsplash.com/photo-1608889175123-8ee362201f81?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    "rating": 8.4,
+    "year": 2019
+  }
+]

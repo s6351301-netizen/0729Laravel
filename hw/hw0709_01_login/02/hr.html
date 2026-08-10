@@ -1,0 +1,569 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>士林高商教師甄試系統 - 人事資料表</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <style>
+        :root {
+            --academic-blue: #0A3D62;
+            --tech-accent: #0984E3;
+            --bg-gradient: radial-gradient(circle at 10% 20%, rgba(9, 132, 227, 0.05) 0%, transparent 20%), radial-gradient(circle at 90% 80%, rgba(10, 61, 98, 0.05) 0%, transparent 20%);
+        }
+
+        body {
+            font-family: 'Roboto', 'Noto Sans TC', sans-serif;
+            background-image: var(--bg-gradient);
+            min-height: 100vh;
+            background-attachment: fixed;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--academic-blue), var(--tech-accent));
+            color: white;
+            border-radius: 12px 12px 0 0 !important;
+            font-weight: bold;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--tech-accent);
+            box-shadow: 0 0 0 0.25rem rgba(9, 132, 227, 0.25);
+        }
+
+        .btn-primary {
+            background-color: var(--tech-accent);
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 2rem;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--academic-blue);
+        }
+
+        .exp-card {
+            border-left: 4px solid var(--tech-accent);
+            background-color: #f8f9fa;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .section-title {
+            color: var(--academic-blue);
+            border-bottom: 2px solid var(--tech-accent);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            populateDateSelects();
+            var loggedInSsn = sessionStorage.getItem('ssn');
+            if (loggedInSsn) {
+                $('#display_ssn').text(loggedInSsn);
+                loadXmlData(loggedInSsn);
+            }
+        });
+
+        function populateDateSelects() {
+            // Generate Year Options (40 to 115)
+            var yearHtml = '<option value="">年</option>';
+            for (var y = 40; y <= 115; y++) yearHtml += '<option value="' + y + '">' + y + '</option>';
+
+            // Generate Month Options (1 to 12)
+            var monthHtml = '<option value="">月</option>';
+            for (var m = 1; m <= 12; m++) monthHtml += '<option value="' + m + '">' + m + '</option>';
+
+            // Generate Day Options (1 to 31)
+            var dayHtml = '<option value="">日</option>';
+            for (var d = 1; d <= 31; d++) dayHtml += '<option value="' + d + '">' + d + '</option>';
+
+            // Inject into all selects based on their name suffix
+            $('select').each(function () {
+                var name = $(this).attr('name');
+                if (name) {
+                    if (name.endsWith('y')) $(this).html(yearHtml);
+                    if (name.endsWith('m')) $(this).html(monthHtml);
+                    if (name.endsWith('d')) $(this).html(dayHtml);
+                }
+            });
+        }
+
+        function loadXmlData(ssn) {
+            var xmlUrl = ssn + ".xml";
+            var baseUrl = window.location.protocol === 'file:' ? 'http://localhost:8080/' : '';
+
+            fetch(baseUrl + xmlUrl)
+                .then(function (response) {
+                    if (response.ok) {
+                        return response.text();
+                    } else {
+                        var lowerUrl = ssn.toLowerCase() + ".xml";
+                        return fetch(baseUrl + lowerUrl).then(function (res2) {
+                            if (res2.ok) return res2.text();
+                            throw new Error("找不到對應的 XML 檔案");
+                        });
+                    }
+                })
+                .then(function (str) {
+                    var xmlDoc = (new window.DOMParser()).parseFromString(str, "text/xml");
+                    parseXmlAndFillForm(xmlDoc);
+                })
+                .catch(function (err) {
+                    console.log("未找到資料表檔案或因 CORS 無法讀取: ", err);
+                });
+        }
+
+        function parseXmlAndFillForm(xmlDoc) {
+            var dataNode = xmlDoc.getElementsByTagName("data")[0];
+            if (!dataNode) return;
+            for (var i = 0; i < dataNode.children.length; i++) {
+                var node = dataNode.children[i];
+                var tagName = node.tagName;
+                var textContent = node.textContent;
+                var $input = $('input[name="' + tagName + '"]');
+                if ($input.length > 0) {
+                    $input.val(textContent);
+                } else {
+                    var $select = $('select[name="' + tagName + '"]');
+                    if ($select.length > 0) {
+                        $select.val(textContent);
+                    }
+                }
+            }
+        }
+
+        function saveForm() {
+            var ssn = sessionStorage.getItem('ssn');
+            if (!ssn) { alert('無法取得身分證字號！'); return; }
+
+            var by = $('select[name="fby"]').val() || '00';
+            var bm = $('select[name="fbm"]').val() || '00';
+            var bd = $('select[name="fbd"]').val() || '00';
+            var password = ssn + by.padStart(2, '0') + bm.padStart(2, '0') + bd.padStart(2, '0');
+
+            var newUserXml = '    <user>\\n        <ssn>' + ssn + '</ssn>\\n        <password>' + password + '</password>\\n    </user>\\n';
+            var baseUrl = window.location.protocol === 'file:' ? 'http://localhost:8080/' : '';
+
+            fetch(baseUrl + 'login.xml')
+                .then(r => r.text())
+                .then(xmlStr => {
+                    if (xmlStr.indexOf('<ssn>' + ssn + '</ssn>') !== -1) {
+                        alert('該帳號已經存在 login.xml 中，無需重複新增！\\n您的預設密碼為：' + password + "\n 如果您忘記密碼,請聯絡管理人員 0971711278。");
+                        return;
+                    }
+                    var updatedXml = xmlStr.replace('</users>', newUserXml + '</users>');
+                    fetch('http://localhost:8080/api/save_login', {
+                        method: 'POST', body: updatedXml, headers: { 'Content-Type': 'text/plain' }
+                    })
+                        .then(response => {
+                            if (response.ok) alert('🎉 儲存成功！系統已自動更新 login.xml。\\n您的預設密碼為：' + password);
+                            else alert('儲存失敗，請確認伺服器有在執行。');
+                        })
+                        .catch(err => { alert('儲存失敗，無法連線到本機伺服器。'); console.error(err); });
+                })
+                .catch(err => { alert('儲存失敗，無法讀取 login.xml。'); console.error(err); });
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container py-5">
+        <form id="MyForm">
+            <!-- 報考資訊 -->
+            <div class="card mb-4">
+                <div class="card-header"><i class="bi bi-file-earmark-person me-2"></i>教師甄試系統報名表</div>
+                <div class="card-body">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-4">
+                            <label class="form-label text-academic">報考科目:</label>
+                            <select id="fsubject" name="fsubject" class="form-select text-primary fw-bold">
+                                <option value="資處科">資處科</option>
+                                <option value="健康與護理科">健康與護理科</option>
+                                <option value="國文科">國文科</option>
+                                <option value="英文科">英文科</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="badge bg-danger p-2 fs-6">報名未完成(未繳費)</span>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light rounded border">
+                                <label class="form-label text-danger fw-bold">請務必填寫志願序(1,2)</label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" id="wd" name="wd" class="form-control text-center text-purple"
+                                        maxlength="1" style="width: 50px;">
+                                    <span class="text-purple">日間部</span>
+                                    <input type="text" id="wn" name="wn" class="form-control text-center text-success"
+                                        maxlength="1" style="width: 50px;">
+                                    <span class="text-success">進修部</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 基本資料 -->
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <h5 class="section-title"><i class="bi bi-person-lines-fill me-2"></i>基本資料</h5>
+                    <div class="row g-3">
+                        <div class="col-md-2">
+                            <label class="form-label">姓名</label>
+                            <input type="text" name="fname" class="form-control" maxlength="20">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">身份證號</label>
+                            <div class="form-control-plaintext fw-bold text-academic" id="display_ssn"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">生日</label>
+                            <div class="input-group">
+                                <select name="fby" class="form-select"></select><span class="input-group-text">年</span>
+                                <select name="fbm" class="form-select"></select><span class="input-group-text">月</span>
+                                <select name="fbd" class="form-select"></select><span class="input-group-text">日</span>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">通訊處</label>
+                            <input type="text" name="faddress" class="form-control" maxlength="70">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">住家電話</label>
+                            <input type="text" name="ftelephone" class="form-control" maxlength="16">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">行動電話</label>
+                            <input type="text" name="fmobile" class="form-control" maxlength="15">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 學歷 -->
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <h5 class="section-title"><i class="bi bi-mortarboard-fill me-2"></i>學歷</h5>
+
+                    <!-- 大學 -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-1 fw-bold align-self-center text-primary">大學</div>
+                        <div class="col-md-2"><input type="text" name="funame" class="form-control" placeholder="學校名稱">
+                        </div>
+                        <div class="col-md-2"><input type="text" name="fudept" class="form-control" placeholder="科系">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text">自</span>
+                                <select name="fuby" class="form-select" style="width:30%;"></select>
+                                <select name="fubm" class="form-select" style="width:30%;"></select>
+                                <span class="input-group-text">至</span>
+                                <select name="fuey" class="form-select" style="width:30%;"></select>
+                                <select name="fuem" class="form-select" style="width:30%;"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 碩士 -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-1 fw-bold align-self-center text-primary">碩士</div>
+                        <div class="col-md-2"><input type="text" name="fmname" class="form-control" placeholder="學校名稱">
+                        </div>
+                        <div class="col-md-2"><input type="text" name="fmdept" class="form-control" placeholder="科系">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text">自</span>
+                                <select name="fmby" class="form-select" style="width:30%;"></select>
+                                <select name="fmbm" class="form-select" style="width:30%;"></select>
+                                <span class="input-group-text">至</span>
+                                <select name="fmey" class="form-select" style="width:30%;"></select>
+                                <select name="fmem" class="form-select" style="width:30%;"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 博士 -->
+                    <div class="row g-3">
+                        <div class="col-md-1 fw-bold align-self-center text-primary">博士</div>
+                        <div class="col-md-2"><input type="text" name="fdname" class="form-control" placeholder="學校名稱">
+                        </div>
+                        <div class="col-md-2"><input type="text" name="fddept" class="form-control" placeholder="科系">
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <span class="input-group-text">自</span>
+                                <select name="fdby" class="form-select" style="width:30%;"></select>
+                                <select name="fdbm" class="form-select" style="width:30%;"></select>
+                                <span class="input-group-text">至</span>
+                                <select name="fdey" class="form-select" style="width:30%;"></select>
+                                <select name="fdem" class="form-select" style="width:30%;"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 經歷 -->
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <h5 class="section-title"><i class="bi bi-briefcase-fill me-2"></i>經歷</h5>
+                    <div class="exp-card">
+                        <div class="row g-2">
+                            <div class="col-md-1 fw-bold align-self-center">經歷 1</div>
+                            <div class="col-md-2"><input type="text" name="fh1name" class="form-control"
+                                    placeholder="服務機關"></div>
+                            <div class="col-md-2"><input type="text" name="fh1title" class="form-control"
+                                    placeholder="職稱"></div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">自</span>
+                                    <select name="fh1by" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh1bm" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh1bd" class="form-select" style="width: 30%;"></select>
+                                    <span class="input-group-text">至</span>
+                                    <select name="fh1ey" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh1em" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh1ed" class="form-select" style="width: 30%;"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-card">
+                        <div class="row g-2">
+                            <div class="col-md-1 fw-bold align-self-center">經歷 2</div>
+                            <div class="col-md-2"><input type="text" name="fh2name" class="form-control"
+                                    placeholder="服務機關"></div>
+                            <div class="col-md-2"><input type="text" name="fh2title" class="form-control"
+                                    placeholder="職稱"></div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">自</span>
+                                    <select name="fh2by" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh2bm" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh2bd" class="form-select" style="width: 30%;"></select>
+                                    <span class="input-group-text">至</span>
+                                    <select name="fh2ey" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh2em" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh2ed" class="form-select" style="width: 30%;"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-card">
+                        <div class="row g-2">
+                            <div class="col-md-1 fw-bold align-self-center">經歷 3</div>
+                            <div class="col-md-2"><input type="text" name="fh3name" class="form-control"
+                                    placeholder="服務機關"></div>
+                            <div class="col-md-2"><input type="text" name="fh3title" class="form-control"
+                                    placeholder="職稱"></div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">自</span>
+                                    <select name="fh3by" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh3bm" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh3bd" class="form-select" style="width: 30%;"></select>
+                                    <span class="input-group-text">至</span>
+                                    <select name="fh3ey" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh3em" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh3ed" class="form-select" style="width: 30%;"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-card">
+                        <div class="row g-2">
+                            <div class="col-md-1 fw-bold align-self-center">經歷 4</div>
+                            <div class="col-md-2"><input type="text" name="fh4name" class="form-control"
+                                    placeholder="服務機關"></div>
+                            <div class="col-md-2"><input type="text" name="fh4title" class="form-control"
+                                    placeholder="職稱"></div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">自</span>
+                                    <select name="fh4by" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh4bm" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh4bd" class="form-select" style="width: 30%;"></select>
+                                    <span class="input-group-text">至</span>
+                                    <select name="fh4ey" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh4em" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh4ed" class="form-select" style="width: 30%;"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-card">
+                        <div class="row g-2">
+                            <div class="col-md-1 fw-bold align-self-center">經歷 5</div>
+                            <div class="col-md-2"><input type="text" name="fh5name" class="form-control"
+                                    placeholder="服務機關"></div>
+                            <div class="col-md-2"><input type="text" name="fh5title" class="form-control"
+                                    placeholder="職稱"></div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">自</span>
+                                    <select name="fh5by" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh5bm" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh5bd" class="form-select" style="width: 30%;"></select>
+                                    <span class="input-group-text">至</span>
+                                    <select name="fh5ey" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh5em" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh5ed" class="form-select" style="width: 30%;"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-card">
+                        <div class="row g-2">
+                            <div class="col-md-1 fw-bold align-self-center">經歷 6</div>
+                            <div class="col-md-2"><input type="text" name="fh6name" class="form-control"
+                                    placeholder="服務機關"></div>
+                            <div class="col-md-2"><input type="text" name="fh6title" class="form-control"
+                                    placeholder="職稱"></div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">自</span>
+                                    <select name="fh6by" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh6bm" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh6bd" class="form-select" style="width: 30%;"></select>
+                                    <span class="input-group-text">至</span>
+                                    <select name="fh6ey" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh6em" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh6ed" class="form-select" style="width: 30%;"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-card">
+                        <div class="row g-2">
+                            <div class="col-md-1 fw-bold align-self-center">經歷 7</div>
+                            <div class="col-md-2"><input type="text" name="fh7name" class="form-control"
+                                    placeholder="服務機關"></div>
+                            <div class="col-md-2"><input type="text" name="fh7title" class="form-control"
+                                    placeholder="職稱"></div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">自</span>
+                                    <select name="fh7by" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh7bm" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh7bd" class="form-select" style="width: 30%;"></select>
+                                    <span class="input-group-text">至</span>
+                                    <select name="fh7ey" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh7em" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh7ed" class="form-select" style="width: 30%;"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-card">
+                        <div class="row g-2">
+                            <div class="col-md-1 fw-bold align-self-center">經歷 8</div>
+                            <div class="col-md-2"><input type="text" name="fh8name" class="form-control"
+                                    placeholder="服務機關"></div>
+                            <div class="col-md-2"><input type="text" name="fh8title" class="form-control"
+                                    placeholder="職稱"></div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">自</span>
+                                    <select name="fh8by" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh8bm" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh8bd" class="form-select" style="width: 30%;"></select>
+                                    <span class="input-group-text">至</span>
+                                    <select name="fh8ey" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh8em" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh8ed" class="form-select" style="width: 30%;"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-card">
+                        <div class="row g-2">
+                            <div class="col-md-1 fw-bold align-self-center">經歷 9</div>
+                            <div class="col-md-2"><input type="text" name="fh9name" class="form-control"
+                                    placeholder="服務機關"></div>
+                            <div class="col-md-2"><input type="text" name="fh9title" class="form-control"
+                                    placeholder="職稱"></div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">自</span>
+                                    <select name="fh9by" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh9bm" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh9bd" class="form-select" style="width: 30%;"></select>
+                                    <span class="input-group-text">至</span>
+                                    <select name="fh9ey" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh9em" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh9ed" class="form-select" style="width: 30%;"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="exp-card">
+                        <div class="row g-2">
+                            <div class="col-md-1 fw-bold align-self-center">經歷 10</div>
+                            <div class="col-md-2"><input type="text" name="fh10name" class="form-control"
+                                    placeholder="服務機關"></div>
+                            <div class="col-md-2"><input type="text" name="fh10title" class="form-control"
+                                    placeholder="職稱"></div>
+                            <div class="col-md-6">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">自</span>
+                                    <select name="fh10by" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh10bm" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh10bd" class="form-select" style="width: 30%;"></select>
+                                    <span class="input-group-text">至</span>
+                                    <select name="fh10ey" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh10em" class="form-select" style="width: 30%;"></select>
+                                    <select name="fh10ed" class="form-select" style="width: 30%;"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 儲存區 -->
+            <div class="card border-primary mb-5">
+                <div class="card-body text-center p-4">
+                    <button type="button" class="btn btn-primary btn-lg shadow-sm" onclick="saveForm()"><i
+                            class="bi bi-cloud-arrow-up me-2"></i>儲存資料</button>
+                    <p class="text-danger fw-bold mt-3 mb-0">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> 注意:
+                        當您按『儲存』，如您沒有更換過密碼，系統會自動將您的密碼設為『身份證字號』+『六位數字之民國出生年月日』
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

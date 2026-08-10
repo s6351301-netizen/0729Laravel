@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>即時匯率換算器</title>
+    <style>
+    /* 1. 全域初始化：讓背景與字體更好看 */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        box-sizing: border-box;
+    }
+
+    /* 2. 主容器（外卡片）：將輸入與輸出融合成一個精緻的卡片 */
+    .box {
+        width: 100%;
+        max-width: 360px; /* 限制最大寬度，手機版也完美適配 */
+        background-color: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* 柔和的陰影 */
+        overflow: hidden;
+        margin-bottom: 24px;
+        transition: transform 0.3s ease;
+    }
+
+    /* 滑鼠懸停在外殼時的微調特效 */
+    .box:hover {
+        transform: translateY(-2px);
+    }
+
+    /* 3. 輸入區塊排版優化 */
+    .input-container {
+        padding: 30px 24px;
+        display: flex;
+        flex-direction: column; /* 改為垂直單欄排列，更符合現代 UI 邏輯 */
+        gap: 16px; /* 讓每個元素之間保持完美的黃金間距 */
+    }
+
+    /* 4. 輸出區塊美化 */
+    .output-container {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); /* 換成清新、代表金錢的綠色漸層 */
+        color: #ffffff; /* 文字改為白色 */
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        height: 70px; /* 稍微加高，讓結果更顯眼 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 10px 20px rgba(56, 239, 125, 0.2);
+    }
+
+    /* 5. 輸入框與下拉選單的細節打磨 */
+    input, select {
+        width: 100%; /* 寬度佔滿容器（扣除內邊距） */
+        height: 46px; /* 加高輸入框，點擊體感更好 */
+        border: 1px solid #e2e8f0;
+        border-radius: 10px; /* 圓角微調，看起來更現代 */
+        text-align: center;
+        font-size: 1rem;
+        color: #334155;
+        background-color: #f8fafc;
+        box-sizing: border-box;
+        transition: all 0.2s ease-in-out;
+    }
+
+    /* 當滑鼠點擊輸入框時的亮藍色外框特效 (Focus 狀態) */
+    input:focus, select:focus {
+        outline: none;
+        border-color: #10b981; /* 配合綠色系主題 */
+        background-color: #ffffff;
+        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    /* 提示文字樣式 */
+    .label-text {
+        font-size: 0.85rem;
+        color: #64748b;
+        margin-bottom: -10px;
+        font-weight: 600;
+    }
+</style>
+</head>
+
+<body>
+    <div class="box input-container">
+        <div class="label-text">輸入台幣金額 (TWD)</div>
+        <input type="number" name="twdAmount" id="twdAmount" value="100" placeholder="請輸入台幣金額">
+        
+        <div class="label-text">選擇欲兌換的外幣</div>
+        <select name="targetCurrency" id="targetCurrency">
+            <option value="USD">美金 (USD)</option>
+            <option value="JPY">日圓 (JPY)</option>
+            <option value="EUR">歐元 (EUR)</option>
+            <option value="KRW">韓元 (KRW)</option>
+            <option value="AUD">澳幣 (AUD)</option>
+        </select>
+    </div>
+    
+    <div class="box output-container">
+        <span id="mySpan">正在取得最新匯率...</span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function () {
+            // 宣告一個全域變數，用來儲存從網路抓下來的匯率表
+            let exchangeRates = null;
+
+            // ----------------------------------------------------
+            // 1. 初始化：從 API 撈取即時匯率 (以台幣 TWD 為基準)
+            // ----------------------------------------------------
+            $.get('https://open.er-api.com/v6/latest/TWD')
+                .done(function(data) {
+                    if (data && data.result === "success") {
+                        // 成功拿到資料，把匯率表 (rates) 存起來
+                        exchangeRates = data.rates;
+                        // 抓到匯率後，馬上執行一次計算
+                        calculateCurrency();
+                    } else {
+                        $('#mySpan').text('匯率資料載入失敗 😢');
+                    }
+                })
+                .fail(function() {
+                    $('#mySpan').text('網路錯誤，無法載入匯率 🌐');
+                });
+
+            // ----------------------------------------------------
+            // 2. 監聽事件：當輸入金額或改變幣別時，即時觸發計算
+            // ----------------------------------------------------
+            $('#twdAmount, #targetCurrency').on('input change', function() {
+                calculateCurrency();
+            });
+
+            // ----------------------------------------------------
+            // 3. 核心核心計算邏輯函式
+            // ----------------------------------------------------
+            function calculateCurrency() {
+                // 如果 API 資料還沒回來，先不計算
+                if (!exchangeRates) return;
+
+                // 取得使用者輸入的台幣金額
+                let twd = Number($('#twdAmount').val());
+                // 取得使用者選擇的目的幣別 (例如: "USD", "JPY")
+                let currency = $('#targetCurrency').val();
+
+                // 驗證輸入，如果是負數或不是數字，就顯示 0
+                if (twd < 0 || isNaN(twd)) {
+                    $('#mySpan').text('請輸入有效的金額');
+                    return;
+                }
+
+                // 從匯率表中找出對應外幣的匯率 (1元台幣可以換多少外幣)
+                let rate = exchangeRates[currency];
+
+                if (rate) {
+                    // 計算結果 = 台幣金額 * 該外幣匯率
+                    let result = twd * rate;
+
+                    // 格式化輸出：
+                    // 日圓(JPY)、韓元(KRW) 通常不看小數點，四捨五入到整數
+                    // 美金(USD)、歐元(EUR) 保留小數點後兩位
+                    let formattedResult;
+                    if (currency === 'JPY' || currency === 'KRW') {
+                        formattedResult = Math.round(result).toLocaleString();
+                    } else {
+                        formattedResult = result.toFixed(2);
+                    }
+
+                    // 渲染到画面的 mySpan 標籤中
+                    $('#mySpan').text(`${twd.toLocaleString()} TWD = ${formattedResult} ${currency}`);
+                } else {
+                    $('#mySpan').text('找不到該幣別匯率');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

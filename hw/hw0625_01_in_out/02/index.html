@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>電影搜尋與評分系統 | Web Design Portfolio</title>
+    <!-- 引入 Bootstrap CSS 讓排版更美觀 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: '微軟正黑體', sans-serif;
+        }
+
+        .header {
+            padding: 40px 0;
+            background: linear-gradient(135deg, #1f1c2c, #928DAB);
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #ff4757;
+        }
+
+        .movie-card {
+            background-color: #1e1e1e;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 71, 87, 0.3);
+        }
+
+        .movie-img {
+            height: 300px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .movie-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ff4757;
+        }
+
+        .movie-desc {
+            font-size: 0.9rem;
+            color: #b3b3b3;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .rating-badge {
+            background-color: #f1c40f;
+            color: #000;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .search-box {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            color: white;
+        }
+
+        .search-box:focus {
+            background-color: #2a2a2a;
+            color: white;
+            border-color: #ff4757;
+            box-shadow: 0 0 0 0.25rem rgba(255, 71, 87, 0.25);
+        }
+
+        .btn-primary {
+            background-color: #ff4757;
+            border-color: #ff4757;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff2a3e;
+            border-color: #ff2a3e;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="container">
+            <h1 class="display-4 fw-bold">🎬 Movie Finder</h1>
+            <p class="lead">探索你最愛的電影世界</p>
+            <div class="mt-4">
+                <a href="index.html" class="btn btn-outline-light me-2">電影搜尋</a>
+                <a href="statistics.html" class="btn btn-outline-warning">查看評分統計</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        <!-- 搜尋列 -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+                <form id="searchForm" class="d-flex">
+                    <input type="text" id="keyword" class="form-control form-control-lg search-box me-2"
+                        placeholder="輸入電影名稱或關鍵字...">
+                    <button type="submit" class="btn btn-primary btn-lg">搜尋</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 結果統計與載入中提示 -->
+        <div class="row mb-3">
+            <div class="col-12 text-center">
+                <span id="loadingMsg" style="display: none;" class="text-warning">載入中...</span>
+                <span id="resultCount" class="text-info"></span>
+            </div>
+        </div>
+
+        <!-- 電影列表展示區 -->
+        <div class="row g-4" id="movieList">
+            <!-- 動態產生的電影卡片會放在這裡 -->
+        </div>
+    </div>
+
+    <!-- 引入 jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            // 1. 頁面載入完成後，自動先抓取所有電影資料
+            fetchMovies('');
+
+            // 2. 綁定表單送出事件 (搜尋功能)
+            $('#searchForm').submit(function (e) {
+                e.preventDefault(); // 阻擋表單預設的重整行為
+                let keyword = $('#keyword').val();
+                fetchMovies(keyword);
+            });
+
+            // 3. 綁定動態產生的評分按鈕事件 (Event Delegation)
+            // 因為按鈕是後來才產生的，所以要綁定在 #movieList 上
+            $('#movieList').on('click', '.rate-btn', function () {
+                let movieId = $(this).data('id');
+                let movieTitle = $(this).data('title');
+
+                // 簡單的 prompt 讓使用者輸入分數
+                let rating = prompt(`請為《${movieTitle}》打分 (1~10)：`, "10");
+
+                if (rating !== null && rating !== "") {
+                    submitRating(movieId, rating);
+                }
+            });
+
+            // --- 函式區塊 ---
+
+            // 負責向後端 API 要資料的函式
+            function fetchMovies(keyword) {
+                $('#loadingMsg').show();
+
+                // 準備要傳給後端的資料
+                let requestData = {
+                    action: 'get_movies',
+                    keyword: keyword
+                };
+
+                // 發送 AJAX GET 請求
+                $.ajax({
+                    type: "GET",
+                    url: "./api.php",
+                    data: requestData,
+                    dataType: "json",
+                    success: function (res) {
+                        $('#loadingMsg').hide();
+
+                        if (res.status === 'success') {
+                            $('#resultCount').text(`找到 ${res.count} 部相關電影`);
+                            // $('#resultCount').text("找到 " + res.count + " 部相關電影");
+                            renderMovies(res.data);
+                        } else {
+                            alert("讀取資料失敗！");
+                        }
+                    },
+                    error: function (err) {
+                        $('#loadingMsg').hide();
+                        console.error('AJAX Error:', err);
+                        $('#movieList').html('<div class="col-12 text-center text-danger">伺服器發生錯誤，請稍後再試。</div>');
+                    }
+                });
+            }
+
+            // 負責將 JSON 資料轉化為 HTML 畫面
+            function renderMovies(movies) {
+                const listContainer = $('#movieList');
+                listContainer.empty(); // 先清空目前的畫面
+
+                if (movies.length === 0) {
+                    listContainer.append('<div class="col-12 text-center mt-5"><h5>找不到符合的電影 😢</h5></div>');
+                    return;
+                }
+
+                // 迴圈遍歷每一筆電影資料，建立 HTML
+                $.each(movies, function (index, movie) {
+                    // 檢查本機是否已經評分過這部電影
+                    let hasRated = localStorage.getItem('rated_movie_' + movie.id);
+                    let btnDisabled = hasRated ? 'disabled' : '';
+                    let btnText = hasRated ? '你已評分' : '給這部電影評分';
+                    let btnClass = hasRated ? 'btn-secondary' : 'btn-outline-light';
+
+                    // 使用 ES6 Template Literal 組合 HTML 字串
+                    let cardHtml = `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card movie-card h-100 shadow-sm">
+                                <img src="${movie.image}" class="card-img-top movie-img" alt="${movie.title}">
+                                <div class="card-body d-flex flex-column">
+                                    <div class="rating-badge">⭐ ${movie.rating} / 10 <small class="text-dark fw-normal">(共 ${movie.rating_count} 人評分)</small></div>
+                                    <a href="${movie.link}" target="_blank" class="card-title movie-title">${movie.title} <small class="text-info"">(${movie.year})</small></a>
+                                    <p class="card-text movie-desc">${movie.description}</p>
+                                    
+                                    <!-- 佔位用 div，讓按鈕可以固定在底部 -->
+                                    <div class="mt-auto pt-3 border-top border-secondary">
+                                        <button class="btn w-100 rate-btn ${btnClass}" 
+                                                data-id="${movie.id}" 
+                                                data-title="${movie.title}"
+                                                ${btnDisabled}>
+                                            ${btnText}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    listContainer.append(cardHtml);
+                });
+            }
+
+            // 負責向後端發送評分資料的函式 (模擬 POST 請求)
+            function submitRating(id, rating) {
+                $.ajax({
+                    type: "POST",
+                    url: "./api.php",
+                    data: {
+                        action: 'rate_movie',
+                        id: id,
+                        rating: rating
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.status === 'success') {
+                            alert(res.message);
+                            // 將已評分的紀錄存入瀏覽器的 localStorage
+                            localStorage.setItem('rated_movie_' + id, 'true');
+
+                            // 評分成功後，重新抓取最新的電影資料來更新畫面
+                            fetchMovies($('#keyword').val());
+                        } else {
+                            alert("評分失敗：" + res.message);
+                        }
+                    },
+                    error: function (err) {
+                        console.error('Rating Error:', err);
+                        alert("網路連線錯誤！");
+                    }
+                });
+            }
+
+        });
+    </script>
+</body>
+
+</html>

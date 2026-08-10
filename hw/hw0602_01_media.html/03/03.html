@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣景點介紹</title>
+    <style>
+        /* 1. 基礎樣式與重設 (所有螢幕大小都通用) */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f4f7f6; /* 改成舒服的淺灰色背景，更能襯托風景照 */
+            font-family: sans-serif;
+            min-height: 100vh;
+        }
+
+        /* 2. 手機版樣式 (預設狀態：垂直排列) */
+        .top-box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;          
+            padding: 20px;
+        }
+
+        .box {
+            width: 100%;        /* 手機版讓它滿寬或固定寬 */
+            max-width: 350px;   /* 限制手機版最大寬度 */
+            height: 250px;
+            background-color: #fff;
+            border-radius: 12px; /* 稍微大一點的圓角 */
+            overflow: hidden;    /* 關鍵：這樣圖片的圓角才會切齊外框 */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* 加點陰影增加質感 */
+        }
+
+        /* 💡 核心修正：解決圖片擠壓的問題 */
+        .box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;   /* 關鍵：保持圖片比例並填滿容器，多餘的會被裁切不變形 */
+            display: block;      /* 移除圖片下方的微小空白 */
+        }
+
+        /* 3. 平板版樣式 (螢幕大於 768px) */
+        @media (min-width: 768px) {
+            .top-box {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 20px;
+                padding: 40px;
+            }
+            
+            .box {
+                max-width: none;  /* 取消手機版的限制 */
+                width: calc(50% - 10px); /* 平板上一排 2 個 */
+                height: 250px;
+            }
+        }
+
+        /* 4. 電腦版樣式 (螢幕大於 1024px) */
+        @media (min-width: 1024px) {
+            .top-box {
+                max-width: 1200px; 
+                margin: 0 auto; 
+                padding: 50px 20px;
+            }
+
+            .box {
+                width: calc(33.33% - 14px); /* 電腦上一排 3 個 */
+                height: 280px; /* 稍微拉高一點，展現風景照細節 */
+            }
+        }
+    </style>
+</head>
+<body>
+   
+    <div class="top-box">
+        <div class="box"><img src="./images/1.jpg" alt="台北101暮色"></div>
+        <div class="box"><img src="./images/2.jpg" alt="九份老街夜景"></div>
+        <div class="box"><img src="./images/3.jpg" alt="太魯閣峽谷"></div>
+        <div class="box"><img src="./images/4.jpg" alt="阿里山日出鐵道"></div>
+        <div class="box"><img src="./images/5.jpg" alt="日月潭湖光山色"></div>
+        <div class="box"><img src="./images/6.jpg" alt="墾丁蔚藍海岸"></div>
+    </div>
+
+</body>
+</html>

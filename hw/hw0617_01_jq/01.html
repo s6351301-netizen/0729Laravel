@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>計算機</title>
+    <style>
+        body { background-color: #f5f7f8; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }
+        .calculator { width: 280px; background: #fff; border-radius: 28px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .screen { background: #fcf6f8; border-radius: 18px; padding: 20px; font-size: 2.2rem; text-align: right; color: #5a6578; margin-bottom: 20px; min-height: 44px; }
+        .buttons-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        button { height: 58px; border-radius: 50px; border: none; font-size: 1.3rem; font-weight: bold; cursor: pointer; transition: 0.1s; }
+        button:active { transform: scale(0.95); }
+        .btn-num { background: #fdfdfd; color: #6c7a89; border: 1px solid #f0f3f6; }
+        .btn-func { background: #e6f0fa; color: #4a7bb0; }
+        .btn-opt { background: #ffe8ec; color: #d65a7f; }
+        .btn-equal { background: #ffb7c5; color: #fff; }
+        .btn-zero { grid-column: span 2; padding-left: 22px; display: flex; justify-content: flex-start; align-items: center; }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <div class="screen" id="mySpan">0</div>
+        <div class="buttons-grid">
+            <button class="btn-func" id="btnAC">AC</button>
+            <button class="btn-func" id="btnC">C</button>
+            <button class="btn-opt" value="%">%</button>
+            <button class="btn-opt" value="/">÷</button>
+
+            <button class="btn-num" value="7">7</button>
+            <button class="btn-num" value="8">8</button>
+            <button class="btn-num" value="9">9</button>
+            <button class="btn-opt" value="*">×</button>
+
+            <button class="btn-num" value="4">4</button>
+            <button class="btn-num" value="5">5</button>
+            <button class="btn-num" value="6">6</button>
+            <button class="btn-opt" value="-">－</button>
+
+            <button class="btn-num" value="1">1</button>
+            <button class="btn-num" value="2">2</button>
+            <button class="btn-num" value="3">3</button>
+            <button class="btn-opt" value="+">＋</button>
+
+            <button class="btn-num btn-zero" value="0">0</button>
+            <button class="btn-num" value=".">.</button>
+            <button class="btn-equal" id="myBtn">=</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // =======================================================
+            // 1. 全域變數初始化（計算機狀態記憶體）
+            // =======================================================
+            let currentStr = "0"; // 儲存當前畫面上正在輸入或顯示的數字字串
+            let prevStr = "";    // 儲存前一個輸入的數字，用於雙元運算
+            let opt = "";        // 儲存當前選取的運算符號（如 +, -, *, /）
+            let isEnd = false;   // 標記目前是否為剛結算完狀態，用以判斷下次輸入是否覆蓋畫面
+
+            const mySpan = $('#mySpan'); // 快取螢幕 DOM 節點以提升效能
+
+            // =======================================================
+            // 2. 數字與小數點按鈕點擊事件
+            // =======================================================
+            $('.btn-num').click(function () {
+                let val = $(this).val(); // 獲取當前點擊按鈕的 value 屬性值
+
+                // 處理剛開機、數值為 0 或剛按完等號結算的情況
+                if (currentStr === "0" || isEnd) {
+                    // 若初次輸入即為小數點，自動格式化為 "0."，其餘則直接覆蓋初始的 "0"
+                    currentStr = (val === ".") ? "0." : val;
+                    isEnd = false; // 重設結算狀態，開啟新一輪輸入
+                } else {
+                    // 防呆機制：若當前字串已包含小數點，則拒絕重複輸入小數點
+                    if (val === "." && currentStr.includes(".")) return;
+                    currentStr += val; // 將新輸入的數字或小數點拼接到字串末端
+                }
+                mySpan.text(currentStr); // 將更新後的字串渲染至螢幕
+            });
+
+            // =======================================================
+            // 3. 運算子按鈕點擊事件（+, -, *, /, %）
+            // =======================================================
+            $('.btn-opt').click(function () {
+                // 連續計算處理：若背景已有暫存數字且運算子存在，在切換新運算子時先執行前一次計算
+                if (prevStr && opt && !isEnd) calculate();
+                
+                opt = $(this).val();   // 暫存本次點擊的運算子代碼
+                prevStr = currentStr; // 將當前輸入的數值移至背景暫存
+                currentStr = "0";     // 重設前台字串，準備接收下一個數字
+                isEnd = false;        // 重設結算狀態
+            });
+
+            // =======================================================
+            // 4. 四則運算核心邏輯
+            // =======================================================
+            function calculate() {
+                // 將暫存的字串數值轉換為 Number 型態進行數學運算
+                let n1 = Number(prevStr);
+                let n2 = Number(currentStr);
+                let res = 0;
+
+                // 依據暫存的運算子符號，進行對應的分流計算
+                switch (opt) {
+                    case "+": res = n1 + n2; break;
+                    case "-": res = n1 - n2; break;
+                    case "*": res = n1 * n2; break;
+                    case "/": res = (n2 === 0) ? "錯誤" : n1 / n2; break; // 防呆：除數為 0 時輸出錯誤訊息
+                    case "%": res = n1 % n2; break; 
+                }
+
+                // 計算運算結果格式化：
+                // 1. 若結果為有效數字，限制小數點後最多 6 位，並透過 parseFloat 去除尾端多餘的 0
+                // 2. 將最終結果轉回 String 型態，以維持計算機字串對接的一致性
+                currentStr = String(typeof res === 'number' ? parseFloat(res.toFixed(6)) : res);
+                prevStr = ""; // 清空暫存數字
+                opt = "";     // 清空暫存運算子
+            }
+
+            // =======================================================
+            // 5. 等號按鈕點擊事件
+            // =======================================================
+            $('#myBtn').click(function () {
+                // 防呆機制：若缺少背景數字或運算子，則不執行任何計算
+                if (!prevStr || !opt) return; 
+                
+                calculate();             // 執行運算核心
+                isEnd = true;            // 標記本次計算已結束
+                mySpan.text(currentStr); // 將最終計算結果輸出至螢幕
+            });
+
+            // =======================================================
+            // 6. 清除與功能按鈕點擊事件
+            // =======================================================
+            // AC 按鈕（All Clear）：重設所有狀態變數，使計算機回到初始化狀態
+            $('#btnAC').click(function () { 
+                currentStr = "0"; 
+                prevStr = ""; 
+                opt = ""; 
+                isEnd = false; 
+                mySpan.text("0"); 
+            });
+            
+            // C 按鈕（Clear / Backspace）：移除當前輸入字串的最後一個字元
+            $('#btnC').click(function () { 
+                if (isEnd) return; // 若已是最終結算結果，則不允許執行退格刪除
+                
+                // 移除字串最後一位，若字串因此被切空則預設補回 "0"
+                currentStr = currentStr.slice(0, -1) || "0"; 
+                mySpan.text(currentStr); // 更新螢幕顯示
+            });
+        });
+    </script>
+</body>
+</html>

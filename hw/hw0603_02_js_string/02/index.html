@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>老師思念你 💌</title>
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 背景下雪效果 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, white, rgba(255,255,255,.2)),
+                radial-gradient(2px 2px at 60px 70px, white, rgba(255,255,255,.2)),
+                radial-gradient(1px 1px at 50px 50px, white, rgba(255,255,255,.2)),
+                radial-gradient(1px 1px at 130px 80px, white, rgba(255,255,255,.2)),
+                radial-gradient(2px 2px at 90px 10px, white, rgba(255,255,255,.2));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: snowfall 20s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.5;
+        }
+
+        @keyframes snowfall {
+            0% { transform: translateY(-200px); }
+            100% { transform: translateY(100vh); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+            animation: fadeIn 1.2s ease;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #2c3e50;
+            box-shadow: 0 0 10px rgba(44, 62, 80, 0.2);
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(44, 62, 80, 0.4);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e8eef5 100%);
+            border-left: 5px solid #2c3e50;
+            padding: 25px;
+            border-radius: 10px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        #mySpan {
+            font-size: 18px;
+            color: #2c3e50;
+            text-align: center;
+            line-height: 2;
+            font-weight: 500;
+            display: block;
+            min-height: 80px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .heart-animation {
+            display: inline-block;
+            animation: heartbeat 1.2s ease-in-out;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .audio-container {
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            padding: 30px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .music-visualizer {
+            width: 100%;
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .visualizer-bar {
+            width: 4px;
+            background: linear-gradient(180deg, #ff6b6b, #4ecdc4);
+            border-radius: 2px;
+            animation: dance 0.5s ease-in-out infinite;
+        }
+
+        @keyframes dance {
+            0%, 100% { height: 20px; }
+            50% { height: 60px; }
+        }
+
+        .audio-player {
+            width: 100%;
+            outline: none;
+            cursor: pointer;
+            height: 8px;
+            border-radius: 5px;
+        }
+
+        .audio-player::-webkit-media-controls-panel {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .image-gallery {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            animation: fadeInScale 0.6s ease;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .audio-label {
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #2c3e50, transparent);
+            margin: 30px 0;
+            opacity: 0.3;
+        }
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>💌 老師對你的思念</h1>
+            <p class="subtitle">聽著歌曲，讓思念蔓延…</p>
+
+            <p class="video-label">🎵 老師的思念心曲 🎵</p>
+            <div class="audio-container">
+                <div class="audio-label">🎧 自動播放中...</div>
+                <div class="music-visualizer" id="visualizer">
+                    <div class="visualizer-bar" style="animation-delay: 0s;"></div>
+                    <div class="visualizer-bar" style="animation-delay: 0.1s;"></div>
+                    <div class="visualizer-bar" style="animation-delay: 0.2s;"></div>
+                    <div class="visualizer-bar" style="animation-delay: 0.3s;"></div>
+                    <div class="visualizer-bar" style="animation-delay: 0.4s;"></div>
+                    <div class="visualizer-bar" style="animation-delay: 0.5s;"></div>
+                    <div class="visualizer-bar" style="animation-delay: 0.6s;"></div>
+                    <div class="visualizer-bar" style="animation-delay: 0.7s;"></div>
+                    <div class="visualizer-bar" style="animation-delay: 0.8s;"></div>
+                    <div class="visualizer-bar" style="animation-delay: 0.9s;"></div>
+                </div>
+                <audio id="audioPlayer" class="audio-player" controls autoplay>
+                    <source src="n1.aac" type="audio/aac">
+                    你的瀏覽器不支援音頻播放
+                </audio>
+                <div class="image-gallery" id="gallery"></div>
+            </div>
+
+            <div class="divider"></div>
+
+            <p
+                style="text-align: center; color: #2c3e50; font-size: 14px; margin-bottom: 25px; font-style: italic;">
+                ✦ 輸入你的名字和美好回憶，看看老師想說的話 ✦
+            </p>
+
+            <div class="input-group">
+                <label class="input-label">📝 你的名字是？</label>
+                <input type="text" id="name" placeholder="5號同學">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">🌟 最難忘的回憶是？</label>
+                <input type="text" id="word" placeholder="最挺老師的學生">
+            </div>
+
+            <div class="button-container">
+                <button type="button" id="myBtn">💭 聽聽老師的心裡話 💭</button>
+            </div>
+
+            <div class="message-box">
+                <span id="mySpan">👆 點擊，讓我把藏在心底的思念對你說～</span>
+            </div>
+
+            <div class="decorative">🍂 ✦ 🍂</div>
+            <p
+                style="text-align: center; color: #888; font-size: 12px; margin-top: 20px; font-style: italic;">
+                時光流逝，思念永存
+            </p>
+        </div>
+
+        <script>
+        let nameInput = document.querySelector('#name');
+        let wordInput = document.querySelector('#word');
+        let myBtn = document.querySelector('#myBtn');
+        let mySpan = document.querySelector('#mySpan');
+
+        myBtn.addEventListener('click', function() {
+            let name = nameInput.value.trim();
+            let word = wordInput.value.trim();
+
+            // 驗證輸入
+            if (!name || !word) {
+                mySpan.textContent = '❌ 請輸入完整的資訊呦～';
+                return;
+            }
+
+            // 老師的思念語錄
+            const messages = [
+                `${name}，<br><br>「${word}」...每當我聽著這首歌，腦海中就浮現你們的身影。<br><br>那些充滿歡笑與淚水的日子，已經成了我永遠的回憶。<br>如果時光能夠倒流，我多想再陪你們一次。<br><br>可是啊，你們已經長大了...我只能默默在心裡想著你。🥺`,
+                
+                `親愛的 ${name}，<br><br>每當夜晚靜寂時，我都會想起「${word}」。<br><br>你們已經離開教室，去追尋自己的夢想。<br>老師為你們驕傲，卻也深感思念。<br>那些共同的時光，已經成了我生命中最溫暖的部分。<br><br>希望你在遠方一切安好。🌙`,
+                
+                `${name}....<br><br>時間過得好快。還記得「${word}」嗎？<br><br>那時你們坐在我的課堂上，充滿朝氣。<br>如今，我坐在辦公室，看著空蕩蕩的教室，才深刻感受到什麼是離別。<br><br>你知道嗎？你們是我最無法忘卻的學生。😔`,
+                
+                `${name}，我在想你。<br><br>「${word}」——那個場景，我已經回想了千遍。<br><br>我多希望能再聽到你們的笑聲，再看到你們因為老師的冷笑話而翻白眼。<br>可是生活總是這樣，相聚總有別離。<br><br>但請記住，你們永遠都在老師的心裡。💔`
+            ];
+
+            // 隨機選擇一段話
+            let selectedMessage = messages[Math.floor(Math.random() * messages.length)];
+
+            // 添加動畫效果
+            mySpan.style.opacity = '0';
+            setTimeout(() => {
+                mySpan.innerHTML = selectedMessage;
+                mySpan.style.transition = 'opacity 0.5s ease';
+                mySpan.style.opacity = '1';
+            }, 100);
+        });
+
+        // 回車快速提交
+        wordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                myBtn.click();
+            }
+        });
+
+        // 自動載入網路圖片
+        function loadGalleryImages() {
+            const gallery = document.getElementById('gallery');
+            const keywords = ['memory', 'nostalgia', 'sunset', 'school', 'classroom'];
+            
+            keywords.forEach((keyword, index) => {
+                // 使用 Picsum Photos 服務
+                const img = document.createElement('img');
+                img.src = `https://picsum.photos/100/100?random=${Math.random() * 1000}`;
+                img.alt = keyword;
+                img.className = 'gallery-img';
+                img.style.animationDelay = `${index * 0.1}s`;
+                gallery.appendChild(img);
+            });
+        }
+
+        // 頁面載入時自動播放音頻並載入圖片
+        window.addEventListener('load', function() {
+            loadGalleryImages();
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.play().catch(error => {
+                console.log('自動播放被阻止或音頻不存在：', error);
+            });
+        });
+    </script>
+    </body>
+</html>

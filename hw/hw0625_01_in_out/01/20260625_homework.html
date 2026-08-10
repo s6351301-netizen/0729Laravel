@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今天吃什麼？</title>
+    <style>
+        body {
+            background-color: #fff5eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 100px;
+            font-family: sans-serif;
+        }
+
+        .card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            color: #fff5eb;
+            background-color: #ff6b6b;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #output {
+            margin-top: 25px;
+            color: #ff6b6b;
+            font-size: 28px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>選擇困難救星 🤔</h2>
+        <p>今天不知道要吃什麼嗎？</p>
+
+        <button id="getFoodBtn">幫我選一個！</button>
+
+        <h1 id="output">？</h1>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#getFoodBtn').click(function () {
+
+                $.ajax({
+                    type: "get",
+                    url: "./20260625_homework.php",
+                    dataType: "json",
+                    success: function (res) {
+
+                        $('#output').text(res.food);
+                    },
+                    error: function () {
+                        console.log('連線廚房失敗！');
+                    }
+                });
+
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>小學數學 5 題挑戰與計算機（完美一頁版）</title>
+     <style>
+          /* 基礎樣式重設 */
+          * {
+               box-sizing: border-box;
+               margin: 0;
+               padding: 0;
+               font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+          }
+
+          body {
+               background-color: #f8fafc;
+               min-height: 100vh;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               padding: 15px;
+          }
+
+          /* 主包裝：確保雙欄並排不破版 */
+          .main-wrapper {
+               display: flex;
+               width: 880px;
+               max-width: 100%;
+               gap: 20px;
+               align-items: stretch; /* 讓左右兩邊卡片等高 */
+          }
+
+          /* 共通卡片樣式 */
+          .card {
+               background-color: #ffffff;
+               border-radius: 16px;
+               box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+               padding: 20px;
+               display: flex;
+               flex-direction: column;
+          }
+
+          /* ==================== 左邊：題目區 ==================== */
+          .quiz-container {
+               flex: 1.2; /* 設定比例 */
+               min-width: 420px; /* 防止題目區被擠壓變形 */
+               border: 3px solid #3b82f6;
+          }
+
+          .quiz-title {
+               font-size: 1.3rem;
+               color: #1e3a8a;
+               margin-bottom: 10px;
+               text-align: center;
+               font-weight: bold;
+          }
+
+          /* 寶寶章收集本樣式 */
+          .stamp-book {
+               background-color: #fffbeb;
+               border: 2px dashed #f59e0b;
+               border-radius: 10px;
+               padding: 8px 10px;
+               margin-bottom: 10px;
+               text-align: center;
+          }
+
+          .stamp-book-title {
+               font-size: 0.85rem;
+               color: #b45309;
+               font-weight: bold;
+               margin-bottom: 3px;
+          }
+
+          .stamp-container {
+               display: flex;
+               gap: 6px;
+               justify-content: center;
+               flex-wrap: wrap;
+               min-height: 32px;
+               align-items: center;
+          }
+
+          .baby-stamp {
+               font-size: 1.6rem;
+               animation: pop 0.3s ease-out forwards;
+               display: inline-block;
+          }
+
+          @keyframes pop {
+               0% { transform: scale(0); }
+               70% { transform: scale(1.2); }
+               100% { transform: scale(1); }
+          }
+
+          .score-board {
+               text-align: center;
+               font-size: 0.95rem;
+               color: #2563eb;
+               font-weight: bold;
+               margin-bottom: 12px;
+               background-color: #eff6ff;
+               padding: 8px;
+               border-radius: 8px;
+          }
+
+          /* 5 題垂直整齊排列 */
+          .quiz-list {
+               display: flex;
+               flex-direction: column;
+               gap: 8px;
+          }
+
+          .quiz-item {
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               font-size: 1.1rem;
+               font-weight: 600;
+               padding: 8px 12px;
+               background-color: #f8fafc;
+               border-radius: 8px;
+               border: 1px solid #e2e8f0;
+          }
+
+          .quiz-text {
+               color: #334155;
+          }
+
+          .quiz-item input {
+               width: 75px;
+               height: 30px;
+               text-align: center;
+               font-size: 1.05rem;
+               border: 1px solid #cbd5e1;
+               border-radius: 6px;
+               outline: none;
+          }
+
+          .quiz-item input:focus {
+               border-color: #3b82f6;
+          }
+
+          .quiz-item .status {
+               width: 25px;
+               text-align: center;
+               font-size: 1.1rem;
+               margin-left: 5px;
+          }
+
+          .quiz-actions {
+               margin-top: auto; /* 自動推到卡片最底部 */
+               padding-top: 15px;
+               display: flex;
+               gap: 10px;
+          }
+
+          .btn {
+               flex: 1;
+               height: 40px;
+               font-size: 0.95rem;
+               font-weight: bold;
+               color: white;
+               border: none;
+               border-radius: 20px;
+               cursor: pointer;
+               transition: background-color 0.2s;
+          }
+
+          .btn-check { background-color: #3b82f6; }
+          .btn-check:hover { background-color: #1d4ed8; }
+          .btn-reset { background-color: #64748b; }
+          .btn-reset:hover { background-color: #475569; }
+
+          /* ==================== 右邊：計算機 ==================== */
+          .calc-container {
+               flex: 1;
+               min-width: 320px; /* 防止計算機縮小 */
+               border: 3px solid #ec4899;
+               background-color: #fff1f2;
+          }
+
+          .calc-screen {
+               width: 100%;
+               height: 48px;
+               background-color: #ffffff;
+               border: 2px solid #fbcfe8;
+               border-radius: 10px;
+               font-size: 1.3rem;
+               font-weight: bold;
+               color: #9d174d;
+               padding: 0 12px;
+               margin-bottom: 12px;
+               display: flex;
+               align-items: center;
+               justify-content: flex-end;
+               word-break: break-all;
+          }
+
+          .calc-grid {
+               display: grid;
+               grid-template-columns: repeat(4, 1fr);
+               gap: 8px;
+          }
+
+          .calc-btn {
+               height: 46px;
+               font-size: 1.15rem;
+               font-weight: bold;
+               background-color: #ffffff;
+               border: 1px solid #fbcfe8;
+               border-radius: 10px;
+               cursor: pointer;
+               color: #334155;
+               transition: all 0.1s;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+          }
+
+          .calc-btn:hover { background-color: #fce7f3; }
+          .calc-btn:active { transform: scale(0.95); }
+
+          .calc-btn.operator {
+               background-color: #fbcfe8;
+               color: #9d174d;
+          }
+          .calc-btn.operator:hover { background-color: #f9a8d4; }
+
+          .calc-btn.clear {
+               background-color: #fca5a5;
+               color: #991b1b;
+               grid-column: span 2;
+          }
+          .calc-btn.clear:hover { background-color: #f87171; }
+
+          .calc-btn.equal {
+               background-color: #ec4899;
+               color: white;
+               grid-column: span 2;
+          }
+          .calc-btn.equal:hover { background-color: #db2777; }
+     </style>
+</head>
+
+<body>
+
+     <div class="main-wrapper">
+
+          <div class="card quiz-container">
+               <div class="quiz-title">✏️ 數學 5 題小挑戰</div>
+
+               <div class="stamp-book">
+                    <div class="stamp-book-title">🏆 寶寶章收集本（全對就能得到一個喔！）</div>
+                    <div class="stamp-container" id="stampContainer">
+                         <span style="color: #94a3b8; font-size: 0.8rem;" id="noStampText">目前還沒有圖章，加油！</span>
+                    </div>
+               </div>
+
+               <div class="score-board" id="scoreBoard">請作答後點擊下方「檢查答案」</div>
+
+               <div class="quiz-list" id="quizList"></div>
+
+               <div class="quiz-actions">
+                    <button type="button" class="btn btn-check" id="checkQuizBtn">檢查所有答案</button>
+                    <button type="button" class="btn btn-reset" id="resetQuizBtn">換一組新題目</button>
+               </div>
+          </div>
+
+          <div class="card calc-container">
+               <div class="calc-screen" id="calcScreen">0</div>
+               <div class="calc-grid">
+                    <button type="button" class="calc-btn clear" data-action="clear">C (清除)</button>
+                    <button type="button" class="calc-btn operator" data-val="/">÷</button>
+                    <button type="button" class="calc-btn operator" data-val="*">×</button>
+
+                    <button type="button" class="calc-btn" data-val="7">7</button>
+                    <button type="button" class="calc-btn" data-val="8">8</button>
+                    <button type="button" class="calc-btn" data-val="9">9</button>
+                    <button type="button" class="calc-btn operator" data-val="-">-</button>
+
+                    <button type="button" class="calc-btn" data-val="4">4</button>
+                    <button type="button" class="calc-btn" data-val="5">5</button>
+                    <button type="button" class="calc-btn" data-val="6">6</button>
+                    <button type="button" class="calc-btn operator" data-val="+">+</button>
+
+                    <button type="button" class="calc-btn" data-val="1">1</button>
+                    <button type="button" class="calc-btn" data-val="2">2</button>
+                    <button type="button" class="calc-btn" data-val="3">3</button>
+                    <button type="button" class="calc-btn equal" data-action="calculate">=</button>
+
+                    <button type="button" class="calc-btn" style="grid-column: span 2;" data-val="0">0</button>
+                    <button type="button" class="calc-btn" data-val=".">.</button>
+               </div>
+          </div>
+
+     </div>
+
+     <script>
+          document.addEventListener('DOMContentLoaded', function () {
+               const quizListEl = document.getElementById('quizList');
+               const checkQuizBtn = document.getElementById('checkQuizBtn');
+               const resetQuizBtn = document.getElementById('resetQuizBtn');
+               const scoreBoardEl = document.getElementById('scoreBoard');
+               const stampContainer = document.getElementById('stampContainer');
+               const noStampText = document.getElementById('noStampText');
+
+               const calcScreen = document.getElementById('calcScreen');
+               const calcButtons = document.querySelectorAll('.calc-btn');
+
+               let currentQuestions = [];
+               let calcExpression = "";
+               let totalStamps = 0;       
+               let hasAwardedThisRound = false; 
+
+               // 🚀 修改為只生成 5 題
+               function generateQuestions() {
+                    quizListEl.innerHTML = "";
+                    currentQuestions = [];
+                    hasAwardedThisRound = false; 
+                    scoreBoardEl.textContent = "請作答後點擊下方「檢查答案」";
+                    scoreBoardEl.style.color = "#2563eb";
+                    scoreBoardEl.style.backgroundColor = "#eff6ff";
+
+                    const opts = ['+', '-', '*'];
+
+                    for (let i = 0; i < 5; i++) {
+                         let opt = opts[Math.floor(Math.random() * opts.length)];
+                         let num1, num2, ans;
+
+                         if (opt === '*') {
+                              num1 = Math.floor(Math.random() * 9) + 1;
+                              num2 = Math.floor(Math.random() * 9) + 1;
+                              ans = num1 * num2;
+                         } else {
+                              num1 = Math.floor(Math.random() * 85) + 10;
+                              num2 = Math.floor(Math.random() * 85) + 10;
+                              if (opt === '-' && num1 < num2) {
+                                   let tmp = num1; num1 = num2; num2 = tmp;
+                              }
+                              ans = opt === '+' ? num1 + num2 : num1 - num2;
+                         }
+
+                         currentQuestions.push({ ans: ans });
+                         let displayOpt = opt === '*' ? '×' : opt;
+
+                         let item = document.createElement('div');
+                         item.className = 'quiz-item';
+                         item.innerHTML = `
+                             <span class="quiz-text">第 ${i + 1} 題： &nbsp; ${num1} ${displayOpt} ${num2} = </span>
+                             <input type="number" class="quiz-input" id="input-${i}" autocomplete="off">
+                             <span class="status" id="status-${i}"></span>
+                         `;
+                         quizListEl.appendChild(item);
+                    }
+               }
+
+               checkQuizBtn.addEventListener('click', function () {
+                    let correctCount = 0;
+
+                    currentQuestions.forEach((q, index) => {
+                         const inputEl = document.getElementById(`input-${index}`);
+                         const statusEl = document.getElementById(`status-${index}`);
+                         let userAns = inputEl.value;
+
+                         if (userAns !== "" && Number(userAns) === q.ans) {
+                              statusEl.textContent = "●";
+                              statusEl.style.color = "#22c55e";
+                              correctCount++;
+                         } else {
+                              statusEl.textContent = "▲";
+                              statusEl.style.color = "#ef4444";
+                         }
+                    });
+
+                    // 🚀 每題改為 20 分
+                    let totalScore = correctCount * 20;
+                    scoreBoardEl.textContent = `檢查完畢！你答對了 ${correctCount} 題，總得分：${totalScore} 分！`;
+
+                    if (totalScore === 100) {
+                         scoreBoardEl.style.color = "#15803d";
+                         scoreBoardEl.style.backgroundColor = "#dcfce7";
+                         scoreBoardEl.textContent += " 🎉 滿分！獲得一個寶寶章！";
+
+                         if (!hasAwardedThisRound) {
+                              if (noStampText) noStampText.style.display = "none";
+
+                              let stampSpan = document.createElement('span');
+                              stampSpan.className = 'baby-stamp';
+                              stampSpan.textContent = '👶';
+                              stampContainer.appendChild(stampSpan);
+
+                              totalStamps++;
+                              hasAwardedThisRound = true; 
+                         }
+                    } else {
+                         scoreBoardEl.style.color = "#b91c1c";
+                         scoreBoardEl.style.backgroundColor = "#fee2e2";
+                    }
+               });
+
+               resetQuizBtn.addEventListener('click', generateQuestions);
+
+               // 計算機邏輯
+               calcButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                         const val = this.getAttribute('data-val');
+                         const action = this.getAttribute('data-action');
+
+                         if (action === 'clear') {
+                              calcExpression = "";
+                              calcScreen.textContent = "0";
+                         }
+                         else if (action === 'calculate') {
+                              if (calcExpression !== "") {
+                                   try {
+                                        let result = new Function(`return ${calcExpression}`)();
+                                        result = Math.round(result * 100000) / 100000;
+                                        calcScreen.textContent = result;
+                                        calcExpression = result.toString();
+                                   } catch (error) {
+                                        calcScreen.textContent = "錯誤";
+                                        calcExpression = "";
+                                   }
+                              }
+                         }
+                         else if (val) {
+                              if (calcScreen.textContent === "0" && !isNaN(val)) {
+                                   calcExpression = val;
+                              } else {
+                                   calcExpression += val;
+                              }
+                              let displayExp = calcExpression.replace(/\*/g, '×').replace(/\//g, '÷');
+                              calcScreen.textContent = displayExp;
+                         }
+                    });
+               });
+
+               generateQuestions();
+          });
+     </script>
+
+</body>
+
+</html>

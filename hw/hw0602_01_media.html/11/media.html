@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>響應式設計</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 60px 20px;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+        }
+
+        h1 {
+            color: white;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        p {
+            margin: auto;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .box>p {
+            top: 0px;
+            left: 0px;
+            width: 400px;
+            height: 400px;
+            margin: 10px;
+            padding: 30px;
+            text-align: justify;
+            background-image: url(./images/steisgateai.jpg);
+            background-size: 300% 200%;
+        }
+        
+        /* 統一按鈕風格 */
+        .back-link {
+            display: inline-block;
+            padding: 12px 25px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .back-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: #f0f0f0;
+        }
+
+        div.box{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: auto;
+            margin: auto;
+            padding: 0px;
+            background-color: khaki;
+        }
+
+        @media screen and (min-width: 768px){
+            div.box {
+                background-color: pink;
+            }
+        }
+
+        @media screen and (min-width: 1024px){
+            div.box {
+                flex-wrap: nowrap;
+                background-color: green;
+            }
+        }
+
+        .box1 {
+            background-position: 0% 0%;
+        }
+
+        .box2 {
+            background-position: 50% 0%;
+        }
+
+        .box3 {
+            background-position: 100% 0%;
+        }
+
+        .box4 {
+            background-position: 0% 100%;
+        }
+
+        .box5 {
+            background-position: 50% 100%;
+        }
+
+        .box6 {
+            background-position: 100% 100%;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <a href="./index.html" class="back-link">← 返回前頁</a>
+        
+        <br>
+
+        <div class="box">
+            <p class="box1"></p>
+            <p class="box2"></p>
+            <p class="box3"></p>
+            <p class="box4"></p>
+            <p class="box5"></p>
+            <p class="box6"></p>
+        </div>
+    </div>
+    
+</body>
+</html>

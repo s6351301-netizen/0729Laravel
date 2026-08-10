@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>BMI 計算機</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+        .box { border: 1px solid #ccc; padding: 20px; border-radius: 10px; width: 300px; }
+        input { width: 90%; margin-bottom: 10px; padding: 5px; }
+        #result { margin-top: 20px; font-weight: bold; color: blue; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h3>BMI 健康計算機</h3>
+    身高 (cm): <input type="number" id="height" placeholder="例如: 170">
+    體重 (kg): <input type="number" id="weight" placeholder="例如: 65">
+    <button id="calcBtn">計算</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    $('#calcBtn').click(function(){
+        let data = {
+            h: $('#height').val(),
+            w: $('#weight').val()
+        };
+
+        // 發送 Ajax 請求
+        $.post("bmi_api.php", data, function(res){
+            // 將後端回傳的 JSON 顯示在畫面上
+            $('#result').html(`你的 BMI 是: ${res.bmi}<br>健康狀態: ${res.status}`);
+        }, "json");
+    });
+</script>
+</body>
+</html>

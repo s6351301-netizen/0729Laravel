@@ -1,0 +1,218 @@
+<!DOCTYPE html> <!-- 宣告使用 HTML5 規格 -->
+
+<html lang="en"> <!-- HTML文件開始，語系設定英文 -->
+
+<head> <!-- 網頁設定區開始 -->
+
+    <meta charset="UTF-8"> <!-- 設定UTF-8編碼，避免中文亂碼 -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 響應式網頁設定 -->
+
+    <title>Document</title> <!-- 瀏覽器分頁標題 -->
+
+    <style> /* CSS樣式開始 */
+
+        .box { /* box樣式開始 */
+
+            width: 300px; /* 寬度300px */
+
+            height: 300px; /* 高度300px */
+
+            background-color: lightblue; /* 背景顏色淺藍色 */
+
+            margin: auto; /* 左右自動置中 */
+
+            margin-top: 20px; /* 上方留20px空間 */
+
+            border-radius: 20px; /* 圓角20px */
+
+        } /* box樣式結束 */
+
+        .input-container { /* 輸入區容器 */
+
+            background-color: lightblue; /* 背景淺藍 */
+
+            display: flex; /* 啟用Flex排版 */
+
+            flex-wrap: wrap; /* 超出自動換行 */
+
+            justify-content: center; /* 水平置中 */
+
+            align-items: center; /* 垂直置中 */
+
+        } /* input-container結束 */
+
+        .output-container { /* 輸出區容器 */
+
+            background-color: lightpink; /* 背景粉紅色 */
+
+            text-align: center; /* 文字置中 */
+
+            display: flex; /* 啟用Flex排版 */
+
+            justify-content: center; /* 水平置中 */
+
+            align-items: center; /* 垂直置中 */
+
+            height: 50px; /* 高度50px */
+
+        } /* output-container結束 */
+
+        input { /* 所有input元件 */
+
+            width: 80%; /* 寬度80% */
+
+            height: 30px; /* 高度30px */
+
+            border-radius: 20px; /* 圓角20px */
+
+            text-align: center; /* 文字置中 */
+
+        } /* input樣式結束 */
+
+        select, /* 下拉選單 */
+
+        option { /* 選項 */
+
+            text-align: center; /* 文字置中 */
+
+            width: 80%; /* 寬度80% */
+
+            height: 30px; /* 高度30px */
+
+            border-radius: 20px; /* 圓角20px */
+
+        } /* select與option結束 */
+
+        button { /* 按鈕樣式 */
+
+            width: 50%; /* 按鈕寬度50% */
+
+            height: 30px; /* 按鈕高度30px */
+
+            border-radius: 20px; /* 圓角20px */
+
+        } /* button樣式結束 */
+
+    </style> <!-- CSS區結束 -->
+
+</head> <!-- head區結束 -->
+
+<body> <!-- body開始 -->
+
+    <div class="box input-container"> <!-- 輸入區容器 -->
+
+        <input type="text" name="num1" id="num1" value="200" placeholder="num1?"> <!-- 第一個數字輸入框 -->
+
+        <input type="text" name="num2" id="num2" value="100" placeholder="num2?"> <!-- 第二個數字輸入框 -->
+
+        <!-- <input type="text" name="opt" id="opt" value="+" placeholder="opt?"> --> <!-- 舊版輸入運算子方式 -->
+
+        <select name="opt" id="opt"> <!-- 運算子下拉選單 -->
+
+            <option value="+">+</option> <!-- 加法 -->
+
+            <option value="-">-</option> <!-- 減法 -->
+
+            <option value="*">*</option> <!-- 乘法 -->
+
+            <option value="/">/</option> <!-- 除法 -->
+
+        </select> <!-- select結束 -->
+
+        <button type="button" id="myBtn">submit</button> <!-- 計算按鈕 -->
+
+    </div> <!-- 輸入區結束 -->
+
+    <div class="box output-container"> <!-- 結果顯示區 -->
+
+        <span id="mySpan">1 + 1 = 2</span> <!-- 預設顯示內容 -->
+
+    </div> <!-- 結果區結束 -->
+
+    <!-- jquery -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" <!-- 載入jQuery函式庫 -->
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" <!-- CDN驗證碼 -->
+        crossorigin="anonymous" <!-- 允許跨來源 -->
+        referrerpolicy="no-referrer"></script> <!-- 不傳送來源網址 -->
+
+    <script> <!-- JavaScript開始 -->
+
+        // jquery 寫code
+
+        $(document).ready(function () { // 等待DOM載入完成
+
+            const myBtn = $('#myBtn'); // 取得按鈕物件
+
+            const num1 = $('#num1'); // 取得第一個輸入框
+
+            const num2 = $('#num2'); // 取得第二個輸入框
+
+            const opt = $('#opt'); // 取得運算子選單
+
+            const mySpan = $('#mySpan'); // 取得結果顯示區
+
+            console.log('myBtn', myBtn); // 顯示按鈕物件
+
+            console.log('num1', num1); // 顯示num1物件
+
+            console.log('num2', num2); // 顯示num2物件
+
+            console.log('opt', opt); // 顯示opt物件
+
+            console.log('mySpan', mySpan); // 顯示mySpan物件
+
+            myBtn.click(function (e) { // 按下按鈕執行
+
+                let getNum1 = Number(num1.val()); // 取得num1並轉數字
+
+                let getNum2 = Number(num2.val()); // 取得num2並轉數字
+
+                let getOpt = opt.val(); // 取得運算子
+
+                let result = 0; // 預設結果為0
+
+                switch (getOpt) { // 判斷運算子
+
+                    case "+": // 加法
+
+                        result = getNum1 + getNum2; // 執行加法
+
+                        break; // 結束case
+
+                    case "-": // 減法
+
+                        result = getNum1 - getNum2; // 執行減法
+
+                        break; // 結束case
+
+                    case "*": // 乘法
+
+                        result = getNum1 * getNum2; // 執行乘法
+
+                        break; // 結束case
+
+                    case "/": // 除法
+
+                        result = getNum1 / getNum2; // 執行除法
+
+                        break; // 結束case
+
+                } // switch結束
+
+                console.log('result', result); // 顯示結果
+
+                let tmpText = `${getNum1} ${getOpt} ${getNum2} = ${result}`; // 組合結果字串
+
+                mySpan.text(tmpText); // 更新畫面結果
+
+            }); // click事件結束
+
+        }); // ready事件結束
+
+    </script> <!-- JavaScript結束 -->
+
+</body> <!-- body結束 -->
+
+</html> <!-- HTML文件結束 -->

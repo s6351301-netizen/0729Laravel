@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>名言組合器</title>
+    <style>
+        /* 整個頁面的容器樣式 */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        /* 主容器樣式 */
+        .div {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        /* 每個輸入框區塊的樣式 */
+        p {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 輸入框樣式 */
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        /* 輸入框獲得焦點時的樣式 */
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        /* 按鈕樣式 */
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* 按鈕懸停時的樣式 */
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* 顯示結果的 span 樣式 */
+        #mySpan {
+            display: block;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            font-size: 18px;
+            color: #2e7d32;
+            font-weight: bold;
+            min-height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="div">
+        <!-- 輸入名字的區塊 -->
+        <p>
+            <input type="text" id="name" placeholder="請輸入名字">
+        </p>
+        <!-- 輸入內容的區塊 -->
+        <p>
+            <input type="text" id="input2" placeholder="請輸入內容">
+        </p>
+        <!-- 提交按鈕 -->
+        <p>
+            <button type="button" id="btn">送出</button>
+        </p>
+        <!-- 顯示組合結果的區域 -->
+        <span id="mySpan">我是XXX，我的名言是XXXXX</span>
+    </div>
+
+    <script>
+        // 1. 綁定 DOM 元素到變數，方便在 JavaScript 中操作
+        let nameInput = document.getElementById('name'); // 名字輸入框
+        let contentInput = document.getElementById('input2'); // 內容輸入框
+        let btn = document.getElementById('btn'); // 送出按鈕
+        let resultSpan = document.getElementById('mySpan'); // 顯示結果的 span
+
+        // 2. 定義更新結果的函式
+        // 此函式會讀取輸入框的值，組合成句子，並顯示在 span 中
+        function updateResult() {
+            // 取得輸入框的值
+            let name = nameInput.value.trim(); // 取得名字，並移除首尾空白
+            let content = contentInput.value.trim(); // 取得內容，並移除首尾空白
+
+            // 檢查是否都有輸入
+            if (name === '' || content === '') {
+                // 若有輸入框為空，顯示預設文字
+                resultSpan.textContent = '我是XXX，我的名言是XXXXX';
+            } else {
+                // 組合成完整句子並顯示
+                resultSpan.textContent = `我是${name}，我的名言是${content}`;
+            }
+        }
+
+        // 3. 為送出按鈕新增點擊事件監聽器
+        // 只有點擊按鈕時，才會更新結果
+        btn.addEventListener('click', function() {
+            console.log('按鈕被點擊'); // 在 console 印出提示訊息
+            updateResult(); // 呼叫更新結果函式
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap 後臺管理編輯範例</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body class="bg-light">
+    <div class="container py-5">
+        <a href="./index.html" class="btn btn-outline-secondary mb-4">← 返回前頁</a>
+
+        <div class="text-center mb-4">
+            <p class="text-uppercase text-primary fw-bold mb-2">編輯學生</p>
+            <h1 class="display-6 fw-bold">更新資料內容</h1>
+            <p class="lead text-muted">請修改學生名稱後完成更新。</p>
+        </div>
+
+        <div class="card shadow-sm border-0 p-4 mx-auto" style="max-width: 720px;">
+            <form action="./update.html">
+                <input type="hidden" name="id" value="1">
+                <div class="mb-3">
+                    <label class="form-label">學生姓名</label>
+                    <input type="text" class="form-control" name="name" placeholder="input name">
+                </div>
+                <div class="d-flex gap-2">
+                    <input type="submit" class="btn btn-primary" name="confirm" value="確認">
+                    <a href="./index.html" class="btn btn-outline-secondary">取消</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

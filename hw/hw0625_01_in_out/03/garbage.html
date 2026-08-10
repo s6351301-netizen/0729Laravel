@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>廢文產生器</title>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #f5f5f5;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: inline-block;
+            width: 80px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        button {
+            margin-top: 16px;
+            padding: 10px 30px;
+            background: #4a90e2;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #357abd;
+        }
+
+        #result-area {
+            display: none;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        #stats {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        #article p {
+            line-height: 2;
+            text-indent: 2em;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        #copy-btn {
+            background: #888;
+            margin-top: 10px;
+            padding: 8px 20px;
+            font-size: 14px;
+        }
+
+        #copy-btn:hover {
+            background: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🗑️ 廢文產生器</h1>
+
+    <form action="./garbage_data.php" method="get" id="myForm">
+        <p>
+            <label for="topic">主題</label>
+            <input type="text" name="topic" id="topic" placeholder="例如：貓咪是最棒的">
+        </p>
+        <p>
+            <label for="count">字數</label>
+            <input type="number" name="count" id="count" value="300" min="100" max="1000">
+        </p>
+        <p>
+            <label for="paras">段落數</label>
+            <input type="number" name="paras" id="paras" value="3" min="1" max="10">
+        </p>
+        <p>
+            <label></label>
+            <button type="submit">產生廢文</button>
+        </p>
+    </form>
+
+    <div id="result-area">
+        <div id="stats"></div>
+        <div id="article"></div>
+        <button id="copy-btn">📋 複製全文</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            const myForm = $('#myForm');
+            const resultArea = $('#result-area');
+            const stats = $('#stats');
+            const article = $('#article');
+
+
+            myForm.submit(function (e) {
+                e.preventDefault();
+                console.log('ok');
+                console.log('this', this);
+                console.log('$(this)', $(this));
+
+                let data = $(this).serialize();
+                console.log('data', data);
+
+                let url = './garbage_data.php';
+                $.ajax({
+                    type: "get",
+                    url: url,
+                    data: data,
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.error) {
+                            alert(res.error);  // 或顯示在畫面上
+                            return;
+                        }
+                        console.log('res', res);
+                        stats.text(
+                            `主題：${res.topic}　｜　段落數：${res.paras}　｜　實際字數：${res.actual_chars} 字`
+                        );
+                        let html = res.paragraphs.map(p => `<p>${p}</p>`).join('');
+                        article.html(html);
+                        resultArea.show();
+                    }
+                });
+            });
+            $('#copy-btn').click(function () {
+                let text = $('#article p').map(function () {
+                    return $(this).text();
+                }).get().join('\n\n');
+
+                navigator.clipboard.writeText(text).then(function () {
+                    alert('已複製到剪貼簿！');
+                });
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

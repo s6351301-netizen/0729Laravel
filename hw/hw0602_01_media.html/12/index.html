@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 外層排列：彈性換行，間距 */
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        /* 單一方格：預設佔 1/3 寬度，保持正方形 */
+        .item {
+            flex: 0 1 calc(33.333% - 24px);
+            box-sizing: border-box;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+        }
+
+        /* 圖片：填滿方格並裁切，保持比例 */
+        .item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 小螢幕：每個方格撐滿整列（單欄），方格自然變大以適應畫面） */
+        @media (max-width: 600px) {
+            .item {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <div class="item"><img src="./images/01.jpg" alt="1"></div>
+        <div class="item"><img src="./images/02.jpg" alt="2"></div>
+        <div class="item"><img src="./images/03.jpg" alt="3"></div>
+        <div class="item"><img src="./images/04.jpg" alt="4"></div>
+        <div class="item"><img src="./images/05.jpg" alt="5"></div>
+        <div class="item"><img src="./images/06.jpg" alt="6"></div>
+    </div>
+</body>
+</html>

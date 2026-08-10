@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日系喫茶店 - 智慧計算工作坊</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* ==========================================
+           全域基本重設 & 輕復古喫茶店背景
+           ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f4f0ea; /* 溫潤燕麥奶色 */
+            background-image: 
+                radial-gradient(#e6ded4 1px, transparent 1px), 
+                radial-gradient(#e6ded4 1px, #f4f0ea 1px);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: "PingFang TC", "Helvetica Neue", "Microsoft JhengHei", sans-serif;
+            padding: 30px 20px;
+            color: #4a3e3d;
+        }
+
+        h1.main-title {
+            color: #2b4c3f; /* 沉穩抹茶綠 */
+            margin-bottom: 35px;
+            font-size: 26px;
+            letter-spacing: 2px;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+        }
+
+        h1.main-title::after {
+            content: "";
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: #c08457; /* 焦糖色 */
+            margin: 8px auto 0;
+            border-radius: 2px;
+        }
+
+        /* 主工作區佈局 */
+        .workspace {
+            display: flex;
+            gap: 35px;
+            max-width: 1000px;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* 喫茶店風格卡片基礎樣式 */
+        .cafe-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(74, 62, 61, 0.06), 0 2px 6px rgba(74, 62, 61, 0.04);
+            padding: 30px;
+            flex: 1;
+            min-width: 340px;
+            max-width: 450px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .cafe-card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* 卡片裝飾：右上角復古標籤感 */
+        .cafe-card::after {
+            content: "Café Menu";
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #c6b9ad;
+        }
+
+        /* 卡片頂部標頭 */
+        .panel-header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e6ded4;
+        }
+
+        .panel-header h2 {
+            color: #2b4c3f;
+            font-size: 19px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .panel-header p {
+            font-size: 12px;
+            color: #8a7a75;
+        }
+
+        /* 輸入框與下拉選單樣式 */
+        .input-field {
+            width: 100%;
+            height: 45px;
+            border: 1px solid #dcd3c9;
+            border-radius: 8px;
+            padding: 0 15px;
+            font-size: 15px;
+            outline: none;
+            background: #faf8f5;
+            text-align: center;
+            color: #4a3e3d;
+            margin-bottom: 14px;
+            transition: all 0.25s ease;
+        }
+
+        .input-field:focus {
+            border-color: #2b4c3f;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(43, 76, 63, 0.08);
+        }
+
+        select.input-field {
+            text-align-last: center;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* 復古琥珀色按鈕 */
+        .action-btn {
+            width: 100%;
+            height: 45px;
+            background: #c08457;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 12px rgba(192, 132, 87, 0.15);
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: #ad7348;
+            box-shadow: 0 6px 16px rgba(192, 132, 87, 0.25);
+        }
+        
+        .action-btn:active {
+            transform: scale(0.99);
+        }
+
+        /* 輸出區塊：深綠色優雅黑板感 */
+        .output-container-cafe {
+            margin-top: 20px;
+            background: #2b4c3f;
+            color: #f4f0ea;
+            font-size: 1.15rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            height: 60px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+        }
+
+        /* --- 右面板：實體操作計算機界面 --- */
+        .calc-screen {
+            width: 100%;
+            height: 70px;
+            background: #faf8f5;
+            border: 1px solid #dcd3c9;
+            border-radius: 8px;
+            padding: 10px 20px;
+            text-align: right;
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .calc-screen .current {
+            font-size: 28px;
+            font-weight: 500;
+            color: #2b4c3f;
+            line-height: 50px;
+        }
+
+        /* 計算機按鍵網格 */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        /* 打字機圓潤鍵帽外觀 */
+        .calc-btn {
+            height: 48px;
+            border: 1px solid #e6ded4;
+            border-radius: 50%; /* 圓形復古按鈕 */
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            background: #ffffff;
+            color: #4a3e3d;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.03);
+            transition: all 0.15s ease;
+        }
+
+        .calc-btn:hover {
+            background: #faf8f5;
+            border-color: #c08457;
+            color: #c08457;
+        }
+
+        .calc-btn:active {
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+
+        /* 特殊按鍵顏色分類 */
+        .calc-btn.op {
+            background: #fdfaf4;
+            color: #c08457;
+            border-color: #f3e9dc;
+        }
+
+        .calc-btn.clear {
+            background: #fdf2f2;
+            color: #c56b6b;
+            border-color: #f7dddd;
+        }
+
+        .calc-btn.equal {
+            background: #2b4c3f;
+            color: #ffffff;
+            border-color: #2b4c3f;
+            border-radius: 24px; /* 讓等於鍵稍呈橢圓好按 */
+        }
+
+        .calc-btn.equal:hover {
+            background: #20392f;
+            color: #ffffff;
+        }
+
+        /* 手機版自動適應 */
+        @media (max-width: 768px) {
+            .workspace {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cafe-card {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 class="main-title">喫茶レトロ - 智慧計算工作坊</h1>
+
+    <div class="workspace">
+
+        <div class="cafe-card">
+            <div class="panel-header">
+                <h2>☕ 綜合特調智慧表單</h2>
+                <p>更動欄位即時自動計算 · 輕量化智能體感</p>
+            </div>
+
+            <div>
+                <input type="text" class="input-field" id="num1" value="200" placeholder="輸入數字 (num1)">
+                <input type="text" class="input-field" id="num2" value="100" placeholder="輸入數字 (num2)">
+
+                <select class="input-field" id="opt">
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value="*">×</option>
+                    <option value="/">÷</option>
+                </select>
+
+                <button type="button" class="action-btn" id="myBtn">手動點擊刷新</button>
+            </div>
+
+            <div class="output-container-cafe">
+                <span id="mySpan">200 + 100 = 300</span>
+            </div>
+        </div>
+
+        <div class="cafe-card">
+            <div class="panel-header">
+                <h2>📟 復古打字機鍵盤</h2>
+                <p>標準的 3、6、9、AC 經典面板佈局</p>
+            </div>
+
+            <div class="calc-screen">
+                <div class="current" id="calcCurrent">0</div>
+            </div>
+
+            <div class="calc-grid">
+                <button class="calc-btn op" data-val="(">(</button>
+                <button class="calc-btn op" data-val=")">)</button>
+                <button class="calc-btn op" data-val="%">%</button>
+                <button class="calc-btn clear" id="calcClear">AC</button>
+
+                <button class="calc-btn num" data-val="7">7</button>
+                <button class="calc-btn num" data-val="8">8</button>
+                <button class="calc-btn num" data-val="9">9</button>
+                <button class="calc-btn op" data-val="/">÷</button>
+
+                <button class="calc-btn num" data-val="4">4</button>
+                <button class="calc-btn num" data-val="5">5</button>
+                <button class="calc-btn num" data-val="6">6</button>
+                <button class="calc-btn op" data-val="*">×</button>
+
+                <button class="calc-btn num" data-val="1">1</button>
+                <button class="calc-btn num" data-val="2">2</button>
+                <button class="calc-btn num" data-val="3">3</button>
+                <button class="calc-btn op" data-val="-">-</button>
+
+                <button class="calc-btn num" data-val="0">0</button>
+                <button class="calc-btn num" data-val=".">.</button>
+                <button class="calc-btn equal" id="calcEqual">=</button>
+                <button class="calc-btn op" data-val="+">+</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            // ==========================================
+            // 左側表單核心邏輯：即時自動監聽運算（jQuery 語法）
+            // ==========================================
+            const $num1 = $('#num1');
+            const $num2 = $('#num2');
+            const $opt = $('#opt');
+            const $mySpan = $('#mySpan');
+            const $myBtn = $('#myBtn');
+
+            function doCalculation() {
+                let getNum1 = Number($num1.val());
+                let getNum2 = Number($num2.val());
+                let getOpt = $opt.val();
+                let result = 0;
+
+                if ($num1.val() === "" || $num2.val() === "") {
+                    $mySpan.text("請填寫完數字");
+                    return;
+                }
+
+                switch (getOpt) {
+                    case "+": result = getNum1 + getNum2; break;
+                    case "-": result = getNum1 - getNum2; break;
+                    case "*": result = getNum1 * getNum2; break;
+                    case "/": 
+                        result = getNum2 === 0 ? "無法除以 0" : getNum1 / getNum2; 
+                        break;
+                }
+
+                // 轉換顯示符號以符合人類閱讀習慣 (* -> ×, / -> ÷)
+                let displayOpt = getOpt;
+                if (getOpt === "*") displayOpt = "×";
+                if (getOpt === "/") displayOpt = "÷";
+
+                let tmpText = typeof result === "number" ? `${getNum1} ${displayOpt} ${getNum2} = ${result}` : result;
+                $mySpan.text(tmpText);
+            }
+
+            // 使用 jQuery 綁定即時監聽事件
+            $('#num1, #num2, #opt').on('input change', function() {
+                doCalculation();
+            });
+
+            // 手動刷新按鈕（jQuery 語法）
+            $myBtn.click(function () {
+                doCalculation();
+            });
+
+
+            // ==========================================
+            // 右側實體面板計算機邏輯（已全面重構為 jQuery 語法）
+            // ==========================================
+            let currentInput = "0";
+            const $calcCurrent = $('#calcCurrent');
+
+            function updateScreen() {
+                $calcCurrent.text(currentInput);
+            }
+
+            // 數字與運算子按鍵點擊（使用 jQuery 獲取 data-val 屬性）
+            $('.calc-btn.num, .calc-btn.op').click(function () {
+                let val = $(this).attr('data-val'); // 改用 jQuery .attr() 獲取屬性值
+
+                if (currentInput === "0" && !isNaN(val)) {
+                    currentInput = val; 
+                } else {
+                    currentInput += val; 
+                }
+                updateScreen();
+            });
+
+            // 清除鍵 AC（使用 jQuery 綁定點擊）
+            $('#calcClear').click(function () {
+                currentInput = "0";
+                updateScreen();
+            });
+
+            // 等於鍵 = （使用 jQuery 綁定點擊與安全解析）
+            $('#calcEqual').click(function () {
+                try {
+                    let evalResult = eval(currentInput);
+                    // 防止浮點數無限小數點爆框，取到小數點後第 6 位
+                    currentInput = Number(evalResult.toFixed(6)).toString();
+                } catch (e) {
+                    currentInput = "Error"; 
+                }
+                updateScreen();
+            });
+        });
+    </script>
+
+</body>
+
+</html>

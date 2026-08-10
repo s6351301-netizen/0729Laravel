@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>匿名話題首頁牆</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f1f5f9; }
+    .bg-light-purple { background-color: #ebdcfc !important; }
+    .main-card { border: none; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .comment-card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); cursor: pointer; transition: all 0.2s ease; }
+    .comment-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(111, 66, 193, 0.12); }
+    .avatar { width: 35px; height: 35px; font-size: 0.9rem; color: white; }
+    
+    /* 歡迎小標籤樣式 */
+    #userBadge {
+      font-size: 0.9rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      background-color: rgba(255,255,255,0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="modal fade" id="welcomeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content main-card p-3 text-center">
+        <div class="modal-body">
+          <h3 class="fw-bold mb-3">🤫 歡迎來到匿名吐槽牆</h3>
+          <p class="text-muted small mb-4">在進入前，請告訴我們你今天想用什麼身份走跳？</p>
+          
+          <form id="welcomeForm">
+            <div class="mb-3">
+              <input type="text" id="userNicknameInput" class="form-control form-control-lg text-center" placeholder="輸入你的專屬綽號...">
+            </div>
+            
+            <div class="d-flex flex-column gap-2 mt-4">
+              <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold">帶上綽號出發</button>
+              <button type="button" id="anonymousBtn" class="btn btn-outline-secondary rounded-pill">不填寫，以匿名模式進入</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar navbar-expand bg-light-purple navbar-light px-3 mb-4">
+    <span class="navbar-brand fw-bold me-auto">🤫 匿名話題牆</span>
+    <div class="d-flex align-items-center gap-2">
+      <div id="userBadge" class="fw-bold text-dark">偵測身份中...</div>
+      <button type="button" id="logoutBtn" class="btn btn-sm btn-outline-danger rounded-pill fw-bold px-3">🚪 離開</button>
+    </div>
+  </nav>
+
+  <div class="container" id="mainContent">
+    <div class="row g-4">
+      
+      <div class="col-md-5">
+        <div class="card main-card p-4 position-sticky" style="top: 20px;">
+          <h4 class="fw-bold mb-3">發起新話題 (求吐槽)</h4>
+          <form id="commentForm">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">你的發布身份</label>
+              <input type="text" class="form-control bg-light text-muted" id="activeUserDisplay" readonly>
+            </div>
+            <div class="mb-3">
+              <label for="contentInput" class="form-label fw-semibold">想被吐槽的內容</label>
+              <textarea class="form-control" id="contentInput" rows="4" placeholder="今天發生了什麼欠吐槽的事？" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 rounded-pill fw-bold">發布並求吐槽</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-md-7">
+        <h4 class="fw-bold mb-3">🔥 最新熱門話題牆</h4>
+        <div id="commentWall" class="d-flex flex-column gap-3"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container d-none" id="logoutMessageZone">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6">
+        <div class="card main-card p-5 text-center bg-white">
+          <h2 class="fw-bold mb-3 text-success">👋 已成功離開看板</h2>
+          <p class="text-secondary mb-4">你的身份已清除，感謝你今天的參與！</p>
+          <div>
+            <button class="btn btn-primary rounded-pill px-4 fw-bold" onclick="window.location.reload()">重新登入進入牆面</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    let defaultComments = [
+      { id: 101, name: "匿名", time: "10 分鐘前", content: "教授今天上課講的笑話好冷喔...🥶", roasts: [{content:"冷到結冰"}] },
+      { id: 102, name: "科技肥宅", time: "30 分鐘前", content: "今天跟 AI 聊天聊了 5 個小時，突然覺得它比我現實的朋友還懂我。", roasts: [] }
+    ];
+    
+    let comments = JSON.parse(localStorage.getItem('roast_wall_data')) || defaultComments;
+    if(!localStorage.getItem('roast_wall_data')) {
+      localStorage.setItem('roast_wall_data', JSON.stringify(comments));
+    }
+
+    let currentUserName = "匿名";
+
+    const welcomeModalEl = document.getElementById('welcomeModal');
+    const bsWelcomeModal = new bootstrap.Modal(welcomeModalEl);
+    const commentWall = document.getElementById('commentWall');
+
+    // 網頁一打開，立刻強制跳出詢問框
+    window.addEventListener('DOMContentLoaded', () => {
+      bsWelcomeModal.show();
+    });
+
+    // 使用者輸入了綽號並送出
+    document.getElementById('welcomeForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const inputName = document.getElementById('userNicknameInput').value.trim();
+      currentUserName = inputName === "" ? "匿名" : inputName;
+      enterSystem();
+    });
+
+    // 使用者直接點擊「不填寫，以匿名模式進入」
+    document.getElementById('anonymousBtn').addEventListener('click', () => {
+      currentUserName = "匿名";
+      enterSystem();
+    });
+
+    function enterSystem() {
+      bsWelcomeModal.hide();
+      document.getElementById('userBadge').textContent = `👤 身份：${currentUserName}`;
+      document.getElementById('activeUserDisplay').value = currentUserName;
+      renderWall();
+    }
+
+    // 繪製話題牆面
+    function renderWall() {
+      commentWall.innerHTML = "";
+      comments.forEach(c => {
+        const bgClass = c.name === "匿名" ? "bg-secondary" : "bg-primary";
+        commentWall.innerHTML += `
+          <div class="card comment-card p-3 bg-white" onclick="goToRoastPage(${c.id})">
+            <div class="d-flex align-items-center mb-2">
+              <div class="rounded-circle ${bgClass} text-white d-flex align-items-center justify-content-center fw-bold me-2 avatar">
+                ${c.name.charAt(0)}
+              </div>
+              <div class="flex-grow-1">
+                <span class="fw-bold text-dark d-block small">${c.name}</span>
+                <small class="text-muted" style="font-size:0.75rem;">${c.time}</small>
+              </div>
+              <span class="badge bg-danger rounded-pill">🔥 吐槽 ${c.roasts.length}</span>
+            </div>
+            <p class="mb-0 text-secondary fw-semibold" style="white-space: pre-line;">${c.content}</p>
+          </div>
+        `;
+      });
+    }
+
+    // 發布新話題
+    document.getElementById('commentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const content = document.getElementById('contentInput').value.trim();
+
+      comments.unshift({
+        id: Date.now(),
+        name: currentUserName,
+        time: "剛剛",
+        content: content,
+        roasts: []
+      });
+
+      localStorage.setItem('roast_wall_data', JSON.stringify(comments));
+      renderWall();
+      document.getElementById('contentInput').value = "";
+    });
+
+    // 【修改後的離開邏輯：與登入視窗完全分開】
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      // 1. 隱藏整張大看板與發布區 (mainContent)
+      document.getElementById('mainContent').classList.add('d-none');
+      
+      // 2. 隱藏導覽列上的身份標籤與離開按鈕
+      document.getElementById('userBadge').classList.add('d-none');
+      document.getElementById('logoutBtn').classList.add('d-none');
+      
+      // 3. 把完全分開的「離開成功畫面」秀出來！(絕對不會再跳出登入彈出視窗)
+      document.getElementById('logoutMessageZone').classList.remove('d-none');
+      
+      // 4. 清空變數確保安全
+      currentUserName = "已登出";
+    });
+
+    function goToRoastPage(id) {
+      window.location.href = `roast.html?id=${id}`;
+    }
+  </script>
+</body>
+</html>

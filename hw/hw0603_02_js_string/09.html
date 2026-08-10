@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日系文青小港灣的座右銘</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        /* 淡蘋果綠色 + 白色清爽小圓點文青風背景 */
+        body {
+            background-color: #f0f7f4;
+            background-image:
+                radial-gradient(#ffffff 15%, transparent 15%),
+                radial-gradient(#ffffff 15%, transparent 15%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            /* 讓標題與卡片垂直排列 */
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            font-family: "Microsoft JhengHei", sans-serif;
+            padding: 20px;
+        }
+
+        /* 網頁大標題 */
+        .main-title {
+            font-size: 32px;
+            /* 放大 1.6 倍的視覺感 */
+            color: #4a6b5d;
+            /* 森林系文青深綠 */
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 0px #ffffff, 2px 2px 0px #dbebe3;
+        }
+
+        /* 原本 300px 放大 1.6 倍 = 480px */
+        .box {
+            width: 480px;
+            height: auto;
+            min-height: 540px;
+            /* 增加新欄位，調整高度保持舒適空間 */
+            /* 卡片改為粉嫩療癒的淡蘋果綠歐蕾色 */
+            background-color: #f7fbf9;
+            margin: 0 auto;
+            /* 圓角放大至 48px，保持極致可愛 */
+            border-radius: 48px;
+            text-align: center;
+            /* 內襯距放大 1.6 倍 = 32px */
+            padding: 32px;
+            /* 文青草莓紅雙邊框與舒適浪漫的淡綠色微陰影 */
+            border: 6px double #c2ded1;
+            box-shadow: 0 20px 40px rgba(194, 222, 209, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 裝飾元素：左上角可愛小星星、小房子與小花 */
+        .box::before {
+            content: "✨🏡🌼";
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 26px;
+            filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.05));
+        }
+
+        /* 裝飾元素：右下角可愛小星星、小草莓與小花 */
+        .box::after {
+            content: "✨🍓🌼";
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 26px;
+            filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.05));
+        }
+
+        p {
+            margin: 18px 0;
+        }
+
+        /* 輸入框與按鈕尺寸全面放大 1.6 倍 */
+        input,
+        button {
+            padding: 12px 18px;
+            font-size: 19px;
+            border-radius: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input {
+            width: 85%;
+            border: 2px dashed #9bc4b4;
+            /* 文青綠手作虛線 */
+            background-color: #ffffff;
+            color: #4a5c54;
+            text-align: center;
+        }
+
+        input:focus {
+            border-style: solid;
+            border-color: #6fa38e;
+            background-color: #ffffff;
+            box-shadow: 0 0 12px rgba(111, 163, 142, 0.4);
+        }
+
+        /* 浪漫草莓紅佐森林綠按鈕 */
+        button {
+            background: linear-gradient(135deg, #ff8fa3 0%, #ff758f 100%);
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(255, 117, 143, 0.35);
+            width: 65%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #ff758f 0%, #ff4d6d 100%);
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* 顯示框：淡淡的蘋果綠底襯搭配森林暖木色文字 */
+        #mySpan {
+            display: block;
+            margin-top: 25px;
+            font-size: 21px;
+            font-weight: bold;
+            color: #4e3d30;
+            /* 沉穩優雅的暖木深褐色 */
+            line-height: 1.6;
+            background-color: #e8f4ee;
+            /* 舒服的淺蘋果綠底色 */
+            padding: 16px;
+            border-radius: 24px;
+            border: 2px dashed #b2ded0;
+            word-break: break-all;
+            /* 防止長文字衝出邊框 */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-title">🏡 日系文青小港灣的座右銘 🍓</div>
+
+    <div class="box">
+        <p>
+            <input type="text" id="name" placeholder="🍓 請輸入姓名...." value="Jane">
+        </p>
+        <p>
+            <input type="text" id="text" placeholder="🏡 請輸入座右銘...." value="越努力就能越幸運">
+        </p>
+        <p>
+            <input type="text" id="wish" placeholder="✨ 小星星許願池(備註)...." value="你將會發現奇蹟無所不在">
+        </p>
+        <p>
+            <button type="button" id="myBtn">✨ 收集今日好心情 ✨</button>
+        </p>
+
+        <span id="mySpan">我是Jane , 座右銘越努力就能越幸運 (小星星許願池：你將會發現奇蹟無所不在)</span>
+    </div>
+
+    <script>
+        // 1. 取得 HTML 元素的控制權 (bind)
+        let myName = document.querySelector('#name');
+        let myText = document.querySelector('#text');
+        let myWish = document.querySelector('#wish'); // 綁定全新可愛名字的備註欄位
+        let myBtn = document.querySelector('#myBtn');
+        let mySpan = document.querySelector('#mySpan');
+
+        // 2. 動作監聽 (action)
+        myBtn.addEventListener('click', function () {
+
+            // 3. 抓取各個 input 的目前填寫數值
+            let getName = myName.value.trim();
+            let getText = myText.value.trim();
+            let getWish = myWish.value.trim(); // 抓取新備註欄位的值
+
+            // 防呆機制
+            if (getName === "" || getText === "") {
+                alert("🌼 溫馨提示：請把姓名與座右銘填寫完整唷！ ✨");
+                return;
+            }
+
+            // 4. 組成要輸出的文字 (Template Literals 語法)
+            let tmpText = `我是${getName} , 座右銘${getText}`;
+
+            // 如果許願池(備註欄)有填寫文字，就把它一起組合進去輸出
+            if (getWish !== "") {
+                tmpText += ` (小星星許願池：${getWish})`;
+            }
+
+            // 5. 顯示在 span 標籤中
+            mySpan.innerText = tmpText;
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<style>
+    .box {
+        width: 300px;
+        height: 300px;
+        background-color: antiquewhite;
+        margin: auto;
+        margin-top: 20px;
+        border-radius: 20px;
+    }
+
+    .input-container {
+        background-color: aqua;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .output-container{
+        background-color: rgb(219, 205, 247);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+    }
+
+    input {
+        width: 80%;
+        height: 30px;
+        border-radius: 20px;
+        text-align: center;
+    }
+
+    button:hover{
+        box-shadow: 0 5px 20px black;
+    }
+    button {
+        width: 50%;
+        height: 30px;
+        border-radius: 20px;
+    }
+</style>
+
+<body>
+    <div class="box input-container">
+        <input type="text" name="num1" id="num1" value="100" placeholder="num1?">
+        <input type="text" name="num2" id="num2" value="200" placeholder="num2?">
+        <button type="button"  name="opt" value="+">+</button>
+        <button type="button"  name="opt" value="-">-</button>
+        <button type="button"  name="opt" value="*">*</button>
+        <button type="button"  name="opt" value="/">/</button>
+       
+        <button type="button" id="mybtn">submit</button>
+    </div>
+    
+    <div class="box output-container">
+        <span id="myspan">1 + 1 = 2</span>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    // 確保當網頁所有的 HTML 元素都載入完成後，才執行裡面的 JavaScript
+    $(document).ready(function(){
+    // 使用 jQuery 選取器抓取畫面上對應的 HTML 元素，並存成常數
+    const mybtn =$('#mybtn'); // 送出按鈕
+    const num1 =$('#num1');   // 第一個輸入框
+    const num2 =$('#num2');   // 第二個輸入框
+    const opt =$('#opt');     // 原本畫面上 select 的 ID（目前畫面上已無此 ID）
+    const myspan =$('#myspan');// 用來呈現結果的文字標籤
+
+    let get= ""; // 宣告全域變數 get (目前尚未使用到此變數)
+    
+    // 【運算符號按鈕監聽】當點擊任何一個 name 屬性為 "opt" 的按鈕時觸發
+    $('button[name="opt"]').click(function(){
+        // $(this) 代表當前被點擊的那個按鈕，.val() 負責取出它的 value (如 +, -, *, /)
+        // 抓到後直接存進全域變數 getopt 當中，供後續 submit 計算時使用
+        getopt = $(this).val();
+    })
+   
+    // 在瀏覽器控制台 (Console) 印出抓取到的 jQuery 物件，方便除錯
+    console.log('mybtn',mybtn);
+    console.log('num1',num1);
+    console.log('num2',num2);
+    console.log('opt',opt);
+    console.log('myspan',myspan);
+
+    // 【Submit 按鈕監聽】當點擊計算送出按鈕時觸發
+    mybtn.click(function(e) {
+        // 使用 Number() 函式將輸入框拿到的字串型態數值，強制轉換成「數字型態」
+        let getnum1 =Number(num1.val());
+        let getnum2 =Number(num2.val());
+        
+        //  let getopt =opt.val();
+        // console.log('getnum1',getnum1);
+        // console.log('typeof getnum1',typeof (getnum1));
+        // console.log('getnum',getnum2);
+        // console.log('typeof getnum2',typeof (getnum2));
+        // console.log('getopt',getopt);   
+
+        // 宣告一個變數用來存放計算結果，初始值設為 0
+        let result=0;
+
+        // 使用 switch 語法比對 getopt（剛剛按鈕存下來的符號）符合哪一個條件
+        switch(getopt){
+            case "+": // 如果符號是 "+"
+                result = getnum1 + getnum2; // 執行加法
+            break; // 跳出 switch 區塊
+            case "-": // 如果符號是 "-"
+                result = getnum1 - getnum2; // 執行減法
+            break; 
+            case "*": // 如果符號是 "*"
+                result = getnum1 * getnum2; // 執行乘法
+            break;
+            case "/": // 如果符號是 "/"
+                result = getnum1 / getnum2; // 執行除法
+            break;
+            default: // 如果上述條件都不吻合（例如使用者還沒點選任何符號就按了 submit）
+                alert('請輸入+ - * /') // 跳出警告視窗提示使用者
+                return false;        // 中斷後續程式碼的執行
+            }       
+            
+        // if(getopt == "+"){
+        //     result = getnum1 + getnum2;
+        // }else if(getopt == "-") {
+        //     result = getnum1 - getnum2;
+        // }else if(getopt == "*") {
+        //     result = getnum1 * getnum2;
+    
+        // }else if(getopt == "/") {
+        //     result = getnum1 / getnum2;
+        // }else {alert('請輸入+ - * /');
+
+        // location.reload();
+        // setTimeout(()=>{
+        //     location.reload();
+        // },3000);
+        // return false;
+        //}
+        
+        // 在瀏覽器控制台印出最終計算出的結果數值
+        console.log('result',result);
+
+        // 使用樣版字串 (Template Literals ``) 組合出最後要顯示的算式字串
+        let tmpText = `${getnum1} ${getopt} ${getnum2} = ${result}`
+        
+        // 將組合好的字串，透過 .text() 渲染到網頁的 myspan 標籤中呈現出來
+        myspan.text(tmpText);
+    });
+
+});
+</script>

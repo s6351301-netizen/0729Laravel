@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>工程計算機</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #07101a;
+            --panel: rgba(12, 25, 40, 0.92);
+            --panel-soft: rgba(20, 40, 60, 0.9);
+            --border: rgba(81, 160, 255, 0.24);
+            --accent: #6bc7ff;
+            --accent-strong: #2ed4ff;
+            --text: #d9e6f3;
+            --text-muted: #7f9bb1;
+            --danger: #ff6e6e;
+            --success: #98ff9f;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: radial-gradient(circle at top left, rgba(56, 144, 255, 0.14), transparent 25%),
+                radial-gradient(circle at bottom right, rgba(126, 82, 255, 0.18), transparent 20%),
+                linear-gradient(180deg, #050c13 0%, #08131f 100%);
+            color: var(--text);
+            display: grid;
+            place-items: center;
+            padding: 24px;
+        }
+
+        .calculator {
+            width: min(520px, 100%);
+            background: linear-gradient(180deg, rgba(10, 18, 30, 0.98), rgba(8, 14, 24, 0.98));
+            border: 1px solid rgba(120, 192, 255, 0.14);
+            border-radius: 26px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 22px 28px 16px;
+            align-items: center;
+        }
+
+        .topbar h1 {
+            margin: 0;
+            font-size: 1.3rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text);
+        }
+
+        .topbar .subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .screen-panel {
+            margin: 0 28px 18px;
+            padding: 22px 20px;
+            border-radius: 22px;
+            background: rgba(13, 26, 43, 0.9);
+            border: 1px solid rgba(109, 196, 255, 0.14);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+        }
+
+        .screen-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .screen-label {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        .screen-expression,
+        .screen-result {
+            width: 100%;
+            font-family: 'Segoe UI Variable', sans-serif;
+            letter-spacing: 0.02em;
+        }
+
+        .screen-expression {
+            min-height: 36px;
+            color: var(--accent);
+            font-size: 1rem;
+            overflow-wrap: anywhere;
+        }
+
+        .screen-result {
+            margin-top: 8px;
+            min-height: 48px;
+            font-size: 2rem;
+            text-align: right;
+            color: var(--text);
+        }
+
+        .mode-bar {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .mode-pill {
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            background: rgba(58, 110, 159, 0.18);
+            color: var(--text-muted);
+            border: 1px solid rgba(120, 192, 255, 0.12);
+        }
+
+        .keys {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 12px;
+            padding: 0 22px 24px 22px;
+        }
+
+        .key {
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            background: rgba(12, 23, 39, 0.88);
+            color: var(--text);
+            min-height: 56px;
+            display: grid;
+            place-items: center;
+            font-size: 1rem;
+            transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .key:hover {
+            transform: translateY(-1px);
+            background: rgba(33, 68, 118, 0.92);
+            box-shadow: 0 8px 18px rgba(20, 96, 170, 0.16);
+        }
+
+        .key:active {
+            transform: translateY(0);
+            background: rgba(18, 52, 86, 0.98);
+        }
+
+        .key.accent {
+            color: white;
+            background: linear-gradient(180deg, rgba(41, 149, 255, 0.95), rgba(33, 117, 228, 0.95));
+        }
+
+        .key.accent:hover {
+            background: linear-gradient(180deg, rgba(62, 183, 255, 1), rgba(39, 144, 246, 1));
+        }
+
+        .key.wide {
+            grid-column: span 2;
+        }
+
+        .key.secondary {
+            background: rgba(45, 69, 99, 0.95);
+            color: var(--accent);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 12px 22px 18px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 520px) {
+            .calculator {
+                border-radius: 20px;
+            }
+
+            .topbar,
+            .screen-panel,
+            .keys {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .key {
+                min-height: 52px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="calculator">
+        <div class="topbar">
+            <div>
+                <h1>工程計算機</h1>
+                <div class="subtitle">工程運算</div>
+            </div>
+            <div class="mode-bar">
+                <span class="mode-pill" id="angleMode">RAD</span>
+                <span class="mode-pill" id="memoryState">M: 0</span>
+            </div>
+        </div>
+
+        <div class="screen-panel">
+            <div class="screen-row">
+                <div class="screen-label">表達式</div>
+                <div class="screen-label">結果</div>
+            </div>
+            <div id="expr" class="screen-expression">0</div>
+            <div id="result" class="screen-result">0</div>
+        </div>
+
+        <div class="keys">
+            <div class="key secondary" data-action="mc">MC</div>
+            <div class="key secondary" data-action="mr">MR</div>
+            <div class="key secondary" data-action="mplus">M+</div>
+            <div class="key secondary" data-action="mminus">M-</div>
+            <div class="key secondary" data-action="clear">C</div>
+
+            <div class="key secondary" data-action="sin">sin</div>
+            <div class="key secondary" data-action="cos">cos</div>
+            <div class="key secondary" data-action="tan">tan</div>
+            <div class="key secondary" data-action="log">log</div>
+            <div class="key secondary" data-action="ln">ln</div>
+
+            <div class="key secondary" data-action="sqrt">√</div>
+            <div class="key secondary" data-action="pow">^</div>
+            <div class="key secondary" data-action="pi">π</div>
+            <div class="key secondary" data-action="exp">exp</div>
+            <div class="key secondary" data-action="raddeg">RAD/DEG</div>
+
+            <div class="key" data-value="7">7</div>
+            <div class="key" data-value="8">8</div>
+            <div class="key" data-value="9">9</div>
+            <div class="key accent" data-value="/">÷</div>
+            <div class="key accent" data-value="*">×</div>
+
+            <div class="key" data-value="4">4</div>
+            <div class="key" data-value="5">5</div>
+            <div class="key" data-value="6">6</div>
+            <div class="key accent" data-value="-">−</div>
+            <div class="key accent" data-value="+">+</div>
+
+            <div class="key" data-value="1">1</div>
+            <div class="key" data-value="2">2</div>
+            <div class="key" data-value="3">3</div>
+            <div class="key" data-action="paren">(</div>
+            <div class="key" data-action="paren">)</div>
+
+            <div class="key wide" data-value="0">0</div>
+            <div class="key" data-value=".">.</div>
+            <div class="key accent" data-action="back">⌫</div>
+            <div class="key accent" data-action="equals">=</div>
+        </div>
+
+        <div class="footer">點擊按鍵以編輯計算式，支援三角、對數、次方與記憶功能。</div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(function () {
+            let expression = '';
+            let memory = 0;
+            let useDeg = false;
+
+            const $expr = $('#expr');
+            const $result = $('#result');
+            const $angleMode = $('#angleMode');
+            const $memoryState = $('#memoryState');
+
+            function renderExpression() {
+                $expr.text(expression || '0');
+            }
+
+            function renderResult(value) {
+                $result.text(value);
+            }
+
+            function updateMemoryLabel() {
+                $memoryState.text(`M: ${memory}`);
+            }
+
+            function sanitize(value) {
+                return String(value).replace(/×/g, '*').replace(/÷/g, '/').replace(/π/g, 'pi').replace(/\^/g, '**');
+            }
+
+            function evaluateExpression() {
+                if (!expression) return 0;
+                const safe = sanitize(expression);
+                const env = {
+                    sin: (x) => useDeg ? Math.sin(x * Math.PI / 180) : Math.sin(x),
+                    cos: (x) => useDeg ? Math.cos(x * Math.PI / 180) : Math.cos(x),
+                    tan: (x) => useDeg ? Math.tan(x * Math.PI / 180) : Math.tan(x),
+                    log: (x) => Math.log10(x),
+                    ln: (x) => Math.log(x),
+                    sqrt: (x) => Math.sqrt(x),
+                    exp: (x) => Math.exp(x),
+                    pow: (x, y) => Math.pow(x, y),
+                    pi: Math.PI,
+                    e: Math.E
+                };
+
+                try {
+                    const fn = new Function(...Object.keys(env), `return ${safe}`);
+                    const value = fn(...Object.values(env));
+                    return Number.isFinite(value) ? value : 'Error';
+                } catch (err) {
+                    return 'Error';
+                }
+            }
+
+            function appendInput(token) {
+                if (expression === '0' && token.match(/[0-9.]/)) {
+                    expression = token;
+                } else {
+                    expression += token;
+                }
+                renderExpression();
+            }
+
+            $('.key').on('click', function () {
+                const action = $(this).data('action');
+                const value = $(this).data('value');
+
+                if (action) {
+                    switch (action) {
+                        case 'clear':
+                            expression = '';
+                            renderExpression();
+                            renderResult('0');
+                            break;
+                        case 'back':
+                            expression = expression.slice(0, -1);
+                            renderExpression();
+                            break;
+                        case 'equals':
+                            const answer = evaluateExpression();
+                            renderResult(answer);
+                            break;
+                        case 'raddeg':
+                            useDeg = !useDeg;
+                            $angleMode.text(useDeg ? 'DEG' : 'RAD');
+                            break;
+                        case 'mc':
+                            memory = 0;
+                            updateMemoryLabel();
+                            break;
+                        case 'mr':
+                            expression += String(memory);
+                            renderExpression();
+                            break;
+                        case 'mplus':
+                            memory += Number(evaluateExpression()) || 0;
+                            updateMemoryLabel();
+                            break;
+                        case 'mminus':
+                            memory -= Number(evaluateExpression()) || 0;
+                            updateMemoryLabel();
+                            break;
+                        case 'pow':
+                            expression += '^';
+                            renderExpression();
+                            break;
+                        case 'sqrt':
+                            expression += 'sqrt(';
+                            renderExpression();
+                            break;
+                        case 'sin':
+                        case 'cos':
+                        case 'tan':
+                        case 'log':
+                        case 'ln':
+                        case 'exp':
+                            expression += `${action}(`;
+                            renderExpression();
+                            break;
+                        case 'pi':
+                            expression += 'π';
+                            renderExpression();
+                            break;
+                        case 'paren':
+                            const text = $(this).text();
+                            expression += text;
+                            renderExpression();
+                            break;
+                        default:
+                            break;
+                    }
+                } else if (value !== undefined) {
+                    appendInput(value);
+                }
+            });
+
+            renderExpression();
+            renderResult('0');
+            updateMemoryLabel();
+        });
+    </script>
+</body>
+</html>

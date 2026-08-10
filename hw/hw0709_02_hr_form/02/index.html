@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教師甄試系統</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <base href="." target="_top">
+    
+    <style>
+        :root {
+            --academic-blue: #0A3D62; /* 學院深藍 */
+            --tech-accent: #0984E3;   /* 科技亮藍 */
+            --bg-color: #F5F7FA;      /* 淺灰背景 */
+        }
+        
+        body {
+            font-family: 'Roboto', 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: #2D3436;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(9, 132, 227, 0.03) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(10, 61, 98, 0.03) 0%, transparent 20%);
+        }
+
+        .system-header {
+            color: var(--academic-blue);
+            font-weight: 700;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .system-header::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--tech-accent), transparent);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: none;
+            border-top: 5px solid var(--academic-blue);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .login-card:hover {
+            box-shadow: 0 20px 40px rgba(10, 61, 98, 0.12);
+        }
+
+        .form-control {
+            border: 1px solid #DFE6E9;
+            background-color: #F8FAFC;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--tech-accent);
+            box-shadow: 0 0 0 3px rgba(9, 132, 227, 0.15);
+            background-color: #FFFFFF;
+        }
+
+        .input-group-text {
+            background-color: #F8FAFC;
+            border: 1px solid #DFE6E9;
+            color: var(--academic-blue);
+        }
+
+        .btn-primary {
+            background-color: var(--academic-blue);
+            border-color: var(--academic-blue);
+            padding: 0.6rem 2rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--tech-accent);
+            border-color: var(--tech-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(9, 132, 227, 0.3);
+        }
+        
+        .btn-outline-secondary {
+            border-radius: 8px;
+            padding: 0.6rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .instruction-box {
+            background-color: rgba(9, 132, 227, 0.05);
+            border-left: 4px solid var(--tech-accent);
+            border-radius: 4px;
+        }
+
+        .links-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .doc-link {
+            color: var(--academic-blue);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .doc-link:hover {
+            background-color: rgba(9, 132, 227, 0.1);
+            color: var(--tech-accent);
+        }
+
+        .footer {
+            background-color: #FFFFFF;
+            border-top: 1px solid #E2E8F0;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+    </style>
+
+    <script language="javascript">
+        // 保留原有的列印設定變數
+        var hkey_path = "HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\PageSetup\\";
+        var hkey_key_header = hkey_path + "header";
+        var hkey_key_footer = hkey_path + "footer";
+        var hkey_key_margin_bottom = hkey_path + "margin_bottom";
+        var hkey_key_margin_left = hkey_path + "margin_left";
+        var hkey_key_margin_right = hkey_path + "margin_right";
+        var hkey_key_margin_top = hkey_path + "margin_top";
+        var hkey_key_margin_fit = hkey_path + "Shrink_To_Fit";
+        var topMargin = 9;
+        var leftMargin = 10;
+        var rightMargin = 10;
+        var bottomMargin = 9;
+
+        function w() {
+            try {
+                outerHeight = screen.height;
+                outerWidth = screen.width;
+                moveTo(0, 0);
+                if(typeof PrtSetting === 'function') {
+                    PrtSetting();
+                }
+            } catch(e) {
+                console.log("Window resize or print setting not supported.");
+            }
+        }
+
+        function checkID() {
+            var form = document.MyForm;
+            var id = form.SSN.value.trim();
+            var tab = "ABCDEFGHJKLMNPQRSTUVXYWZIO";
+            var A1 = new Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3);
+            var A2 = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5);
+            var Mx = new Array(9, 8, 7, 6, 5, 4, 3, 2, 1, 1);
+
+            if (id.length != 10) {
+                alert("身份證字號長度不對!");
+                return false;
+            }
+            var i = tab.indexOf(id.charAt(0));
+            if (i == -1) {
+                alert("第一個英文字母請打大寫!");
+                return false;
+            }
+            var sum = A1[i] + A2[i] * 9;
+
+            for (var j = 1; j < 10; j++) {
+                var v = parseInt(id.charAt(j));
+                if (isNaN(v)) {
+                    alert("後面九位只能是0~9中的數字!");
+                    return false;
+                }
+                sum = sum + v * Mx[j];
+            }
+            if (sum % 10 != 0) {
+                alert("身份證號碼錯誤!");
+            } else {
+                // 讀取 login.xml 驗證帳號
+                var baseUrl = window.location.protocol === 'file:' ? 'http://localhost:8080/' : '';
+                fetch(baseUrl + 'login.xml')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("無法載入 login.xml");
+                        }
+                        return response.text();
+                    })
+                    .then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
+                    .then(data => {
+                        var users = data.getElementsByTagName("user");
+                        var found = false;
+                        var passwordMatch = false;
+
+                        for (var k = 0; k < users.length; k++) {
+                            var xmlSsn = users[k].getElementsByTagName("ssn")[0].textContent;
+                            if (xmlSsn === id) {
+                                found = true;
+                                var xmlPwd = users[k].getElementsByTagName("password")[0].textContent;
+                                var inputPwd = form.PWD.value.trim();
+                                if (xmlPwd === inputPwd) {
+                                    passwordMatch = true;
+                                }
+                                break;
+                            }
+                        }
+
+                        if (!found) {
+                            // 身分證字號沒有在login.xml找到就不需檢查密碼
+                            alert("新使用者：第一次登入成功！");
+                            sessionStorage.setItem('ssn', id);
+                            window.location.href = "hr.html";
+                        } else {
+                            if (passwordMatch) {
+                                alert("登入成功！");
+                                sessionStorage.setItem('ssn', id);
+                                window.location.href = "hr.html";
+                            } else {
+                                alert("密碼錯誤！請重新輸入。");
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching login.xml:", error);
+                        alert("讀取 login.xml 時發生錯誤，請確認是否運行於網頁伺服器環境 (CORS 限制)。");
+                    });
+            }
+        }
+    </script>
+</head>
+<body onload="w()" class="d-flex flex-column min-vh-100">
+
+    <!-- Main Content -->
+    <main class="flex-grow-1 container py-5">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                
+                <!-- Title / Logo Area -->
+                <div class="text-center mb-4">
+                    <img src="./教師甄試系統_files/title.gif" alt="教師甄試系統" class="img-fluid mb-3" style="max-height: 80px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <h2 class="system-header" style="display:none;">教師甄試登入系統</h2>
+                </div>
+
+                <!-- Login Card -->
+                <div class="login-card p-4 p-md-5 mb-4">
+                    <form name="MyForm" action="http://earth.slhs.tp.edu.tw/nt/check.asp" method="post">
+                        
+                        <!-- Inputs -->
+                        <div class="mb-4">
+                            <label for="SSN" class="form-label fw-bold text-muted small">身份證字號</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
+                                <input type="text" class="form-control" id="SSN" name="SSN" placeholder="請輸入身份證字號">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="PWD" class="form-label fw-bold text-muted small">密碼</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
+                                <input type="password" class="form-control" id="PWD" name="PWD" placeholder="請輸入密碼">
+                            </div>
+                        </div>
+
+                        <!-- Instructions -->
+                        <div class="instruction-box p-3 mb-4 text-secondary small">
+                            <ul class="mb-0 ps-3" style="line-height: 1.8;">
+                                <li><span class="text-success fw-bold">身份證字號第一個英文字母請打大寫</span></li>
+                                <li><span class="text-primary fw-bold">密碼為身份證字號(含英文字母)+六位之民國出生日期</span></li>
+                                <li><span class="text-danger fw-bold">第一次登入不需打密碼</span></li>
+                            </ul>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center mb-3">
+                            <button type="button" class="btn btn-primary shadow-sm flex-sm-grow-1" onclick="checkID()">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>確定登入
+                            </button>
+                            <button type="reset" class="btn btn-outline-secondary flex-sm-grow-1">
+                                <i class="bi bi-arrow-counterclockwise me-2"></i>重置
+                            </button>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                <i class="bi bi-info-circle-fill text-warning me-1"></i>
+                                如您忘記輸入出生日期，系統預設生日為<span class="text-danger fw-bold">40年12月30日</span>
+                            </small>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Document Links -->
+                <div class="links-card p-4 mb-4">
+                    <h6 class="text-center text-muted fw-bold mb-3 pb-2 border-bottom">
+                        <i class="bi bi-file-earmark-text me-2"></i>相關文件下載 <span class="badge bg-secondary ms-1">第二次</span>
+                    </h6>
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <a target="_blank" href="http://earth.slhs.tp.edu.tw/nt/%E7%B0%A1%E7%AB%A0-2.pdf" class="doc-link">
+                            <i class="bi bi-file-pdf text-danger"></i>簡章
+                        </a>
+                        <a target="_blank" href="http://earth.slhs.tp.edu.tw/nt/%E9%99%84%E4%BB%B6%E4%B8%89-2.odt" class="doc-link">
+                            <i class="bi bi-file-word text-primary"></i>附件三
+                        </a>
+                        <a target="_blank" href="http://earth.slhs.tp.edu.tw/nt/%E9%99%84%E4%BB%B6%E5%9B%9B-2.odt" class="doc-link">
+                            <i class="bi bi-file-word text-primary"></i>附件四
+                        </a>
+                        <a target="_blank" href="http://earth.slhs.tp.edu.tw/nt/%E9%99%84%E4%BB%B6%E4%BA%94-2.odt" class="doc-link">
+                            <i class="bi bi-file-word text-primary"></i>附件五
+                        </a>
+                    </div>
+                    <div class="text-center mt-3 pt-3 border-top">
+                        <a target="_blank" href="http://earth.slhs.tp.edu.tw/nt/%E8%BA%AB%E5%BF%83%E9%9A%9C%E7%A4%99%E6%87%89%E8%80%83%E4%BA%BA%E6%9C%8D%E5%8B%99%E7%94%B3%E8%AB%8B%E8%A1%A8.odt" class="btn btn-sm btn-light text-primary border rounded-pill px-4 shadow-sm">
+                            <i class="bi bi-person-wheelchair me-2"></i>身心障礙應考服務申請表
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer py-4 mt-auto">
+        <div class="container text-center">
+            <p class="mb-2">
+                <i class="bi bi-envelope-fill me-2 text-secondary"></i>
+                報名系統如有使用上問題，請E-Mail至 
+                <a href="mailto:sysadm@slhs.tp.edu.tw" class="text-decoration-none fw-bold" style="color: var(--academic-blue);">sysadm@slhs.tp.edu.tw</a>，並請留下聯絡方式
+            </p>
+            <p class="mb-3">
+                <i class="bi bi-telephone-fill me-2 text-secondary"></i>
+                其它報名問題請電 (02)2831-3114 轉 851或855 人事室
+            </p>
+            <div class="text-muted opacity-50 small">
+                IP: 220.128.133.123,0,0
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

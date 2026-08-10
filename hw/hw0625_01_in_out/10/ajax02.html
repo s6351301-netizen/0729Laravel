@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    .box1{
+     width:50%;
+     background-color: aqua;
+     margin: auto;
+     text-align: center;
+    }
+    .ans-style {
+    display: block;
+    margin-top: 10px;
+    color: blue;
+    font-weight: bold;
+}
+
+</style>
+<body>
+    <div class="box1">
+        <form action="./data02.php" method="get" id="myfrom">
+           <p>
+               <label for="money">金額:</label>
+               <input type="text" name="money" id="money">
+           </p> 
+
+           <p>
+                <label>來源幣別:</label>
+                <span>新台幣</span>
+                <input type="hidden" name="from" value="twd">
+            </p>
+            <p>
+               <label for="to">轉換至:</label>
+                    <select name="to" id="to">
+                        <option value="usd">美元</option>
+                        <option value="jpy">日幣</option>
+                        <option value="eur">歐元</option>
+                        <option value="krw">韓元</option>
+                    </select>
+           </p>
+           <p>
+                <input type="submit" value="轉換">
+           </p>
+
+           <div class="box output">
+
+            <span id="myspan">計算結果</span>
+            <span id="myAnswer" class="ans-style"></span>
+    
+        </div>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function(){
+
+        const myfrom =$('#myfrom');
+
+        myfrom.submit(function(e){
+            e.preventDefault();
+            console.log('myfrom  submit ok');
+            console.log('this',this);
+            console.log('$(this)',$(this));
+            let money = $(this).serialize();
+            console.log('money',money);
+            let url = "./data02.php";
+
+                $.ajax({
+                    type : "get",
+                    url : url,
+                    data : money,
+                    dataType : "json",
+                    success: function(res){
+                        console.log('res',res);
+                        console.log('res typeof' ,typeof (res));
+
+                         let tmpText =
+                         //  ${res.from},${res.opt},${res.to} =${res.result};
+                        `
+                         ${res.money} ${res.from.toUpperCase()} 可以換算為 ${res.result} ${res.to.toUpperCase()}
+                        `
+                        // console.log('tmpText', tmpText);
+                        // myfrom.tmpText(tmpText);
+                        $('#myAnswer').html(tmpText);
+                    }
+                  
+
+                })
+
+        })
+    })
+</script>

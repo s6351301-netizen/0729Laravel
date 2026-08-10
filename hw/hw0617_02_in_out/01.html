@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>食事與熱量日記</title>
+    <style>
+        :root {
+            --bg-color: #f7f5f0;       
+            --card-bg: #ffffff;        
+            --text-main: #2c2a29;      
+            --text-muted: #706e6b;    
+            --accent: #b87c7c;        
+            --border: #e6e4e0;         
+            --selected-bg: #f2eee6;   
+            --font-serif: "Noto Serif TC", "Georgia", serif; 
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            letter-spacing: 0.05em;
+        }
+
+        /* 部落格質感大容器 */
+        .blog-wrapper {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 950px;
+            border: 1px solid var(--border);
+            padding: 50px;
+            box-sizing: border-box;
+            position: relative;
+            display: grid;
+            grid-template-columns: 50px 1fr 1fr;
+            gap: 40px;
+        }
+
+        .blog-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 1px solid #f0ede6;
+            pointer-events: none;
+        }
+
+        /* 欄位 1：直書標題 */
+        .vertical-title-area {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: var(--font-serif);
+            border-left: 1px solid var(--border);
+            padding-left: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .vertical-title-area h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+
+        .vertical-title-area .jp-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-left: 8px;
+            letter-spacing: 0.1em;
+        }
+
+        /* 綜合輸入與選擇區 */
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 1rem;
+            margin: 0 0 4px 0;
+            font-weight: 500;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 6px;
+        }
+
+        .form-group-inline {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        input, select {
+            width: 100%;
+            height: 36px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            padding: 0 10px;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            background-color: #faf9f6;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--text-main);
+            background-color: #fff;
+        }
+
+        /* 食物選擇清單 */
+        .food-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding-right: 5px;
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+        }
+
+        .food-menu::-webkit-scrollbar { width: 4px; }
+        .food-menu::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+        .food-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #fff;
+            user-select: none;
+            position: relative;
+        }
+
+        .food-item:hover {
+            border-color: var(--text-muted);
+        }
+
+        .food-item.selected {
+            background-color: var(--selected-bg);
+            border-color: var(--text-main);
+        }
+
+        .food-details {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .food-item input[type="checkbox"] {
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+            accent-color: var(--text-main);
+        }
+
+        /* 右側熱量與刪除按鈕容器 */
+        .food-right-side {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .food-cal {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: var(--font-serif);
+            transition: all 0.2s ease;
+        }
+
+        /* 🚪 日式極簡隱藏式刪除鈕 */
+        .btn-delete {
+            font-size: 1.1rem;
+            color: #b8b6b2;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            line-height: 1;
+            opacity: 0; /* 平時透明隱藏 */
+            pointer-events: none;
+        }
+
+        /* 當滑鼠滑入該列食物時，刪除鈕才會優雅浮現，保持畫面乾淨 */
+        .food-item:hover .btn-delete {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .btn-delete:hover {
+            color: var(--accent); /* 滑過時變成淡淡的暮粉紅 */
+        }
+
+        /* 自訂新增食物區 */
+        .add-food-area {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 8px;
+            align-items: flex-end;
+        }
+
+        .btn-add {
+            height: 36px;
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--text-main);
+            padding: 0 12px;
+            font-size: 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-add:hover {
+            background-color: var(--selected-bg);
+        }
+
+        /* 主要送出按鈕 */
+        .btn-submit {
+            width: 100%;
+            height: 40px;
+            border-radius: 4px;
+            border: 1px solid var(--text-main);
+            background-color: var(--text-main);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.1em;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: transparent;
+            color: var(--text-main);
+        }
+
+        /* 右側結果面板 */
+        .output-section {
+            border-left: 1px solid var(--border);
+            padding-left: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .placeholder-text {
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            text-align: justify;
+            margin-top: 20px;
+        }
+
+        .result-content {
+            display: none;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .diary-date {
+            font-family: var(--font-serif);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-box {
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .metric-title {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+        }
+
+        .balance-box {
+            background-color: #faf9f6;
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .balance-value {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 500;
+            margin-top: 6px;
+        }
+
+        .diary-note {
+            font-family: var(--font-serif);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #4e4c49;
+            border-left: 2px solid var(--border);
+            padding-left: 14px;
+            text-align: justify;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .blog-wrapper {
+                grid-template-columns: 1fr;
+                padding: 30px 20px;
+                gap: 30px;
+            }
+            .vertical-title-area {
+                writing-mode: horizontal-tb;
+                border-left: none;
+                border-bottom: 1px solid var(--border);
+                padding-left: 0;
+                padding-bottom: 15px;
+            }
+            .output-section {
+                border-left: none;
+                padding-left: 0;
+                border-top: 1px solid var(--border);
+                padding-top: 20px;
+            }
+            .btn-delete { opacity: 1; pointer-events: auto; } /* 手機版讓刪除鈕直接顯示，方便手指點選 */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="blog-wrapper">
+        <div class="vertical-title-area">
+            <h2>食事と代謝日記</h2>
+            <div class="jp-sub">｜ 選項刪除與總量留白</div>
+        </div>
+
+        <div class="input-section">
+            <div>
+                <div class="section-title">身體指標</div>
+                <div class="form-group-inline" style="margin-top: 10px;">
+                    <div class="input-group">
+                        <label>性別</label>
+                        <select id="gender">
+                            <option value="female">女性 ♀</option>
+                            <option value="male">男性 ♂</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>年齡</label>
+                        <input type="number" id="age" value="26">
+                    </div>
+                </div>
+                <div class="form-group-inline" style="margin-top: 12px;">
+                    <div class="input-group">
+                        <label>身長 (cm)</label>
+                        <input type="number" id="height" value="160">
+                    </div>
+                    <div class="input-group">
+                        <label>體重 (kg)</label>
+                        <input type="number" id="weight" value="52">
+                    </div>
+                </div>
+                <div class="input-group" style="margin-top: 12px;">
+                    <label>日常活動度</label>
+                    <select id="activity">
+                        <option value="1.2">久坐生活（基本不運動）</option>
+                        <option value="1.375">輕量活動（每週運動 1-3 天）</option>
+                        <option value="1.55">中度活動（每週運動 3-5 天）</option>
+                        <option value="1.725">頻繁運動（每週高強度運動 6-7 天）</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-title">今日食事記錄</div>
+                <p style="font-size:0.75rem; color:var(--text-muted); margin: 6px 0 12px 0;">點擊勾選食事，滑鼠移至項目右側可進行「刪除」：</p>
+                
+                <div class="food-menu" id="foodMenu">
+                    <div class="food-item" data-cal="380">
+                        <div class="food-details">
+                            <input type="checkbox">
+                            <span>鮭魚茶泡飯 🍙</span>
+                        </div>
+                        <div class="food-right-side">
+                            <div class="food-cal">380 kcal</div>
+                            <div class="btn-delete" title="刪除此項目">&times;</div>
+                        </div>
+                    </div>
+                    <div class="food-item" data-cal="750">
+                        <div class="food-details">
+                            <input type="checkbox">
+                            <span>豚骨拉麵 🍜</span>
+                        </div>
+                        <div class="food-right-side">
+                            <div class="food-cal">750 kcal</div>
+                            <div class="btn-delete" title="刪除此項目">&times;</div>
+                        </div>
+                    </div>
+                    <div class="food-item" data-cal="320">
+                        <div class="food-details">
+                            <input type="checkbox">
+                            <span>鹽烤鯖魚定食 🐟</span>
+                        </div>
+                        <div class="food-right-side">
+                            <div class="food-cal">320 kcal</div>
+                            <div class="btn-delete" title="刪除此項目">&times;</div>
+                        </div>
+                    </div>
+                    <div class="food-item" data-cal="450">
+                        <div class="food-details">
+                            <input type="checkbox">
+                            <span>綜合握壽司 (六貫) 🍣</span>
+                        </div>
+                        <div class="food-right-side">
+                            <div class="food-cal">450 kcal</div>
+                            <div class="btn-delete" title="刪除此項目">&times;</div>
+                        </div>
+                    </div>
+                    <div class="food-item" data-cal="550">
+                        <div class="food-details">
+                            <input type="checkbox">
+                            <span>日式炸豬排 🥩</span>
+                        </div>
+                        <div class="food-right-side">
+                            <div class="food-cal">550 kcal</div>
+                            <div class="btn-delete" title="刪除此項目">&times;</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add-food-area">
+                    <div class="input-group">
+                        <label>自訂食物名稱</label>
+                        <input type="text" id="newFoodName" placeholder="如：和風蛋包飯">
+                    </div>
+                    <div class="input-group">
+                        <label>熱量(kcal)</label>
+                        <input type="number" id="newFoodCal" placeholder="600">
+                    </div>
+                    <button type="button" class="btn-add" id="btnAddFood">追加</button>
+                </div>
+            </div>
+
+            <button type="button" class="btn-submit" id="myBtn">日記を生成する</button>
+        </div>
+
+        <div class="output-section">
+            <div class="placeholder-text" id="placeholder">
+                「在餐桌的方寸之間，記錄日子的起伏。」<br><br>
+                請於左側輸入您的指標、自由追加、刪除或勾選今日的料理。點擊下方按鈕後，此處將為您展開今日的食物日記。
+            </div>
+
+            <div class="result-content" id="resultContent">
+                <div class="diary-date" id="todayDate">2026年 6月 17日 ． 暮色記事</div>
+                
+                <div class="metrics-grid">
+                    <div class="metric-box">
+                        <div class="metric-title">今日總消耗 (TDEE)</div>
+                        <div class="metric-value" id="tdeeVal" style="color: var(--text-main);">0 kcal</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-title">食事總攝取</div>
+                        <div class="metric-value" id="foodVal" style="color: #a37272;">0 kcal</div>
+                    </div>
+                </div>
+
+                <div class="balance-box">
+                    <div class="metric-title" id="balanceTitle">剩餘可攝取空間</div>
+                    <div class="balance-value" id="balanceVal">0 kcal</div>
+                </div>
+
+                <div class="diary-note" id="diaryNote">
+                    本日的能量數據已記錄於此。
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            
+            // 1. 食物選單的點擊代理（點擊整列可勾選/取消）
+            $('#foodMenu').on('click', '.food-item', function (e) {
+                if ($(e.target).hasClass('btn-delete')) {
+                    return; 
+                }
+
+                if (!$(e.target).is('input[type="checkbox"]')) {
+                    let checkbox = $(this).find('input[type="checkbox"]');
+                    checkbox.prop('checked', !checkbox.prop('checked'));
+                }
+                $(this).toggleClass('selected', $(this).find('input[type="checkbox"]').prop('checked'));
+                
+                // 💡 體驗優化：當使用者點擊勾選時，如果右側面板已經開著，就即時更新數據
+                if ($('#resultContent').is(':visible')) {
+                    calculateEverything();
+                }
+            });
+
+            // 2. 刪除選項的點擊事件
+            $('#foodMenu').on('click', '.btn-delete', function (e) {
+                e.stopPropagation(); 
+                
+                $(this).closest('.food-item').fadeOut(300, function() {
+                    $(this).remove();
+                    if ($('#resultContent').is(':visible')) {
+                        calculateEverything();
+                    }
+                });
+            });
+
+            // 3. 追加自訂食物
+            $('#btnAddFood').click(function () {
+                let nameInput = $('#newFoodName');
+                let calInput = $('#newFoodCal');
+                let name = nameInput.val().trim();
+                let cal = Number(calInput.val());
+
+                if (name === "" || !cal || cal <= 0) {
+                    alert("請輸入正確的食物名稱與熱量！");
+                    return;
+                }
+
+                // 💡 Bug 修正：將原本錯誤的 data-cal 寫法修正
+                let newFoodHtml = `
+                    <div class="food-item selected" data-cal="${cal}">
+                        <div class="food-details">
+                            <input type="checkbox" checked>
+                            <span>${name}</span>
+                        </div>
+                        <div class="food-right-side">
+                            <div class="food-cal">${cal} kcal</div>
+                            <div class="btn-delete" title="刪除此項目">&times;</div>
+                        </div>
+                    </div>
+                `;
+
+                $('#foodMenu').prepend(newFoodHtml);
+                nameInput.val('');
+                calInput.val('');
+
+                // 追加新食物後，若日記已生成，也同步連動更新
+                if ($('#resultContent').is(':visible')) {
+                    calculateEverything();
+                }
+            });
+
+            // 4. 主要計算邏輯
+            function calculateEverything() {
+                let getGender = $('#gender').val();
+                let getAge = Number($('#age').val());
+                let getHeight = Number($('#height').val());
+                let getWeight = Number($('#weight').val());
+                let getActivity = Number($('#activity').val());
+
+                if (!getAge || !getHeight || !getWeight || getAge <= 0 || getHeight <= 0 || getWeight <= 0) {
+                    $('#placeholder').html('<span style="color: var(--accent);">⚠️ 數據不全。請修正您的身體指標數值。</span>').show();
+                    $('#resultContent').hide();
+                    return;
+                }
+
+                let bmr = (10 * getWeight) + (6.25 * getHeight) - (5 * getAge);
+                if (getGender === 'male') bmr += 5; else bmr -= 161;
+                let tdee = Math.round(bmr * getActivity);
+
+                let totalFoodCal = 0;
+                $('#foodMenu .food-item input[type="checkbox"]:checked').each(function() {
+                    totalFoodCal += Number($(this).closest('.food-item').data('cal'));
+                });
+
+                let balance = tdee - totalFoodCal;
+                let comment = "";
+
+                if (totalFoodCal === 0) {
+                    comment = "今天尚未記錄任何食事。清晨或黃昏，別忘了撥出一段時間與食物溫柔相處，為身體注入前行的燃料。";
+                    $('#balanceTitle').text('今日剩餘待補充');
+                } else if (balance > 150) {
+                    comment = `今日的食量相對節制，仍保留了 ${balance} 大卡的舒緩空間。這是對身體十分溫和的節奏，夜深時若感到微涼，不妨給自己泡一杯暖暖的麥茶。`;
+                    $('#balanceTitle').text('剩餘可攝取空間');
+                } else if (balance >= -150 && balance <= 150) {
+                    comment = "極為完美的一天。食事的豐盛程度與身體的消耗達成了一種飽滿的平衡。不急不徐，能量恰到好處，今晚應能踏實入眠。";
+                    $('#balanceTitle').text('能量平衡狀態');
+                } else {
+                    comment = `今日的食桌顯得格外熱鬧，悄悄超出了消耗量 ${Math.abs(balance)} 大卡。生活偶爾也需要這般富足的犒賞，晚點不妨踏上石子路散散步，享受一下晚風的吹拂吧。`;
+                    $('#balanceTitle').text('今日熱量超額');
+                }
+
+                let now = new Date();
+                $('#todayDate').text(`${now.getFullYear()}年 ${now.getMonth() + 1}月 ${now.getDate()}日 ． 暮色記事`);
+
+                $('#tdeeVal').text(`${tdee.toLocaleString()} kcal`);
+                $('#foodVal').text(`${totalFoodCal.toLocaleString()} kcal`);
+                $('#balanceVal').text(`${Math.abs(balance).toLocaleString()} kcal`);
+                $('#diaryNote').text(comment);
+
+                $('#placeholder').hide();
+                $('#resultContent').show();
+            }
+
+            // 點擊大按鈕生成日記
+            $('#myBtn').click(calculateEverything);
+        });
+    </script>
+</body>
+
+</html>

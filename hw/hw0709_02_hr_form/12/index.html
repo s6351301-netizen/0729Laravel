@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 全域背景：使用高質感的科技藍漸層 */
+        body { 
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-card { 
+            max-width: 600px; 
+            margin: auto; 
+            background: rgba(255, 255, 255, 0.95); /* 半透明玻璃感 */
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+        }
+
+        /* 淺藍色按鈕樣式 */
+        .btn-submit { 
+            padding: 12px; 
+            font-weight: bold; 
+            background-color: #5ea5f3; /* 淺藍色 */
+            border: none; 
+            transition: all 0.3s ease; /* 平滑過渡 */
+        }
+
+        .btn-submit:hover { 
+            background-color: #3b82f6; /* 滑鼠移入變深一點的藍 */
+            transform: translateY(-2px); /* 按鈕微升效果 */
+            box-shadow: 0 5px 15px rgba(94, 165, 243, 0.4);
+        }
+
+        .form-label { font-weight: 600; color: #444; }
+        h2 { color: #333; font-weight: 800; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="form-card">
+        <h2 class="text-center mb-4">專案需求諮詢</h2>
+        <form action="https://script.google.com/macros/s/AKfycbyn7PLhoa7DrV0lf9PorECoBDFuJyMcZyNbq9EN5aYgTWlc7AsqeDoUA-qzJ56FlnPh/exec" method="POST">
+            <div class="mb-3">
+                <label class="form-label">真實姓名</label>
+                <input type="text" name="name" class="form-control" placeholder="請輸入姓名" required>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">性別稱呼</label>
+                <div class="d-flex gap-4">
+                    <div class="form-check"><input class="form-check-input" type="radio" name="gender" value="男" id="m"><label class="form-check-label" for="m">先生</label></div>
+                    <div class="form-check"><input class="form-check-input" type="radio" name="gender" value="女" id="f"><label class="form-check-label" for="f">女士</label></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" placeholder="name@example.com" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">電話</label>
+                    <input type="tel" name="phone" class="form-control" placeholder="0912-345-678">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">網站類型</label>
+                <select name="website_type" class="form-select">
+                    <option value="portfolio">作品集網頁</option>
+                    <option value="sales">商品販售網頁</option>
+                    <option value="company">公司形象網站</option>
+                    <option value="other">其他</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">需求詳述</label>
+                <textarea name="message" class="form-control" rows="4" placeholder="請簡單描述您的專案需求..."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 btn-submit">送出諮詢資料</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

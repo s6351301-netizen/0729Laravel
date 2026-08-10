@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <title>尋找貓咪的家</title>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+     <style>
+          body {
+               background: #faf8f6;
+               font-family: system-ui, sans-serif;
+          }
+
+          h2 {
+               color: #4a4540;
+               font-weight: 700;
+               font-size: 24px;
+               margin-top: 30px;
+          }
+
+          p {
+               color: #8c837b;
+               font-size: 14px;
+          }
+
+          .navbar {
+               background: #fff !important;
+               border-bottom: 1px solid #eae5e0;
+               padding: 12px 16px;
+          }
+
+          .navbar-brand {
+               color: #c08a70 !important;
+               font-weight: bold;
+               font-size: 18px;
+               letter-spacing: 0.5px;
+          }
+
+          .nav-link {
+               color: #7d756d !important;
+               font-weight: 500;
+               margin-right: 15px;
+               font-size: 14px;
+          }
+
+          .nav-link:hover {
+               color: #c08a70 !important;
+          }
+
+          /* 後台管理連結專用微調，讓它稍微顯眼一點點 */
+          .nav-link.admin-link {
+               color: #c08a70 !important;
+               border: 1px dashed #c08a70;
+               border-radius: 4px;
+               padding: 2px 8px !important;
+               margin-top: 2px;
+          }
+
+          .nav-link.admin-link:hover {
+               background: #c08a70;
+               color: #fff !important;
+          }
+
+          .navbar .form-control {
+               border-radius: 6px;
+               border: 1px solid #eae5e0;
+               font-size: 14px;
+               padding-left: 12px;
+               background: #faf8f6;
+          }
+
+          .navbar .form-control:focus {
+               border-color: #c08a70;
+               box-shadow: none;
+               background: #fff;
+          }
+
+          .navbar .btn-primary {
+               display: inline-block;
+               background: #c08a70;
+               color: #fff !important;
+               border: none;
+               border-radius: 6px;
+               font-size: 14px;
+               font-weight: 500;
+               text-decoration: none;
+               transition: background 0.2s;
+               padding: 6px 16px;
+               margin-left: 8px;
+          }
+
+          .navbar .btn-danger {
+               display: inline-block;
+               background: #a84a4a;
+               color: #fff !important;
+               border: none;
+               border-radius: 6px;
+               font-size: 14px;
+               font-weight: 500;
+               padding: 6px 16px;
+               margin-left: 8px;
+               text-decoration: none;
+               transition: background 0.2s;
+          }
+
+          .navbar .btn-danger:hover {
+               background: #913d3d;
+          }
+
+          /* 輪播區樣式 */
+          .carousel-container {
+               border-radius: 16px;
+               overflow: hidden;
+               box-shadow: 0 8px 24px rgba(140, 131, 123, 0.08);
+               border: 1px solid #eae5e0;
+               background: linear-gradient(135deg, #fffcf9 0%, #f7f1eb 100%);
+               padding: 30px 10px;
+               position: relative;
+          }
+
+          .carousel-section-title {
+               text-align: center;
+               color: #c08a70;
+               font-size: 15px;
+               font-weight: 600;
+               letter-spacing: 2px;
+               margin-bottom: 5px;
+          }
+
+          .carousel-section-subtitle {
+               text-align: center;
+               color: #4a4540;
+               font-size: 20px;
+               font-weight: 700;
+               margin-bottom: 25px;
+          }
+
+          .carousel-cat-stage {
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               gap: 40px;
+               padding: 10px 40px;
+          }
+
+          .carousel-cat-card {
+               text-align: center;
+               width: 160px;
+               transition: transform 0.3s;
+          }
+
+          .carousel-cat-card:hover {
+               transform: scale(1.08);
+          }
+
+          .carousel-avatar-frame {
+               width: 130px;
+               height: 130px;
+               border-radius: 50%;
+               background: #fff;
+               border: 4px solid #fff;
+               box-shadow: 0 6px 16px rgba(192, 138, 112, 0.15);
+               display: inline-flex;
+               align-items: center;
+               justify-content: center;
+               overflow: hidden;
+               margin-bottom: 12px;
+          }
+
+          .carousel-avatar-frame img {
+               max-width: 100%;
+               max-height: 100%;
+               object-fit: contain;
+          }
+
+          .carousel-cat-name {
+               font-size: 15px;
+               font-weight: 700;
+               color: #4a4540;
+               margin-bottom: 4px;
+          }
+
+          .carousel-cat-tag {
+               display: inline-block;
+               font-size: 11px;
+               background: #c08a70;
+               color: #fff;
+               padding: 2px 10px;
+               border-radius: 20px;
+               font-weight: 500;
+          }
+
+          .carousel-control-prev-icon,
+          .carousel-control-next-icon {
+               background-color: #c08a70;
+               padding: 20px;
+               border-radius: 50%;
+               background-size: 50%;
+          }
+
+          .carousel-indicators [data-bs-target] {
+               background-color: #c08a70;
+               width: 10px;
+               height: 10px;
+               border-radius: 50%;
+               margin: 0 6px;
+          }
+
+          /* 下方貓咪卡片樣式 */
+          .cat-card {
+               background: #fff;
+               border: 1px solid #eae5e0;
+               border-radius: 12px;
+               overflow: hidden;
+               transition: transform 0.2s, box-shadow 0.2s;
+               height: 100%;
+          }
+
+          .cat-card:hover {
+               transform: translateY(-4px);
+               box-shadow: 0 6px 14px rgba(140, 131, 123, 0.08);
+          }
+
+          .cat-img-wrapper {
+               width: 100%;
+               height: 220px;
+               background: #faf8f6;
+               padding: 12px;
+               display: flex;
+               align-items: center;
+               justify-content: center;
+          }
+
+          .cat-card img {
+               max-width: 100%;
+               max-height: 100%;
+               object-fit: contain;
+          }
+
+          .cat-card .card-body {
+               padding: 18px;
+          }
+
+          .cat-card .card-title {
+               color: #4a4540;
+               font-weight: 700;
+               font-size: 16px;
+               margin-bottom: 8px;
+          }
+
+          .cat-card .card-text {
+               font-size: 13px;
+               color: #8c837b !important;
+               line-height: 1.5;
+          }
+
+          .cat-card .btn-outline-primary {
+               color: #c08a70;
+               border-color: #c08a70;
+               font-size: 13px;
+               font-weight: 500;
+               border-radius: 6px;
+               width: 100%;
+               padding: 6px;
+               margin-top: 10px;
+               background: transparent;
+               transition: all 0.2s;
+          }
+
+          .cat-card .btn-outline-primary:hover {
+               background: #c08a70;
+               color: #fff !important;
+          }
+     </style>
+</head>
+
+<body>
+
+     <!-- 導覽列 -->
+     <nav class="navbar navbar-expand-sm navbar-light bg-white">
+          <div class="container-fluid">
+               <a class="navbar-brand" href="./index.html">🐾 尋找貓咪的家</a>
+               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                    <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="mynavbar">
+                    <ul class="navbar-nav me-auto">
+                         <li class="nav-item">
+                              <a class="nav-link active" href="./index.html">待收養貓咪</a>
+                         </li>
+                         <li class="nav-item">
+                              <a class="nav-link" href="">志工夥伴</a>
+                         </li>
+                         <li class="nav-item">
+                              <a class="nav-link" href="javascript:void(0)">領養諮詢</a>
+                         </li>
+
+                         <!-- 【全新關鍵修正】加入後台管理連結，預設加上 d-none 隱藏（沒登入的完全看不到） -->
+                         <li class="nav-item" id="admin-nav-item">
+                              <a class="nav-link admin-link" href="./admin.html">⚙️ 後台管理</a>
+                         </li>
+                    </ul>
+
+                    <!-- 關鍵修正：加上 flex-wrap 讓手機版會自動換行，gap-2 讓元素之間有固定漂亮間距，mt-3 md-lg-0 讓手機版有上方間距 -->
+                    <form class="d-flex align-items-center flex-wrap gap-2 m-0 mt-3 mt-sm-0">
+                         <!-- 這裡保持你原本裡面的 input、button、span 等內容都不用變 -->
+                         <input class="form-control" type="text" placeholder="搜尋貓咪..."
+                              style="flex: 1; min-width: 150px;">
+                         <button class="btn btn-primary" type="button">搜尋</button>
+
+                         <a href="./front/login.html" id="guest-btn" class="btn btn-primary">登入</a>
+
+                         <span id="admin-welcome" class="d-none"
+                              style="color: #7d756d; font-size: 14px; white-space: nowrap; font-weight: 500;">
+                              🔑 管理員
+                         </span>
+                         <button type="button" id="logout-btn" class="btn btn-danger d-none">登出</button>
+                    </form>
+               </div>
+          </div>
+     </nav>
+
+     <div class="container mt-4">
+
+          <!-- 1. 精選貓咪大舞台輪播區 -->
+          <div class="carousel-container mb-5">
+               <div class="carousel-section-title">✨ SPOTLIGHT ✨</div>
+               <div class="carousel-section-subtitle">本週開放領養・明星貓咪們 🐾</div>
+
+               <div id="catStageCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+                    <div class="carousel-indicators mb-0" style="bottom: -15px;">
+                         <button type="button" data-bs-target="#catStageCarousel" data-bs-slide-to="0"
+                              class="active"></button>
+                         <button type="button" data-bs-target="#catStageCarousel" data-bs-slide-to="1"></button>
+                    </div>
+
+                    <div class="carousel-inner">
+                         <div class="carousel-item active">
+                              <div class="carousel-cat-stage">
+                                   <div class="carousel-cat-card">
+                                        <div class="carousel-avatar-frame">
+                                             <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150&h=150&fit=crop"
+                                                  alt="阿福">
+                                        </div>
+                                        <div class="carousel-cat-name">阿福 (Fuku)</div>
+                                        <span class="carousel-cat-tag">親人溫和</span>
+                                   </div>
+                                   <div class="carousel-cat-card">
+                                        <div class="carousel-avatar-frame">
+                                             <img src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=150&h=150&fit=crop"
+                                                  alt="咪咪">
+                                        </div>
+                                        <div class="carousel-cat-name">咪咪 (Mimi)</div>
+                                        <span class="carousel-cat-tag">優雅慢熟</span>
+                                   </div>
+                                   <div class="carousel-cat-card">
+                                        <div class="carousel-avatar-frame">
+                                             <img src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=150&h=150&fit=crop"
+                                                  alt="歐歐">
+                                        </div>
+                                        <div class="carousel-cat-name">歐歐 (Oreo)</div>
+                                        <span class="carousel-cat-tag">活潑好動</span>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <div class="carousel-item">
+                              <div class="carousel-cat-stage">
+                                   <div class="carousel-cat-card">
+                                        <div class="carousel-avatar-frame">
+                                             <img src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=150&h=150&fit=crop"
+                                                  alt="炭炭">
+                                        </div>
+                                        <div class="carousel-cat-name">炭炭 (Tantan)</div>
+                                        <span class="carousel-cat-tag">貼心聰明</span>
+                                   </div>
+                                   <div class="carousel-cat-card">
+                                        <div class="carousel-avatar-frame">
+                                             <img src="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=150&h=150&fit=crop"
+                                                  alt="拿鐵">
+                                        </div>
+                                        <div class="carousel-cat-name">拿鐵 (Latte)</div>
+                                        <span class="carousel-cat-tag">安靜沉穩</span>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+
+                    <button class="carousel-control-prev" type="button" data-bs-target="#catStageCarousel"
+                         data-bs-slide="prev">
+                         <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#catStageCarousel"
+                         data-bs-slide="next">
+                         <span class="carousel-control-next-icon"></span>
+                    </button>
+               </div>
+          </div>
+
+          <h2>待領養貓咪列表</h2>
+          <p>為流浪的貓咪尋找一個溫暖的避風港，歡迎登記或進行狀態管理：</p>
+
+          <!-- 2. 下方卡片排版 -->
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mt-2 mb-5">
+               <!-- 阿福 -->
+               <div class="col">
+                    <div class="card cat-card">
+                         <div class="cat-img-wrapper">
+                              <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150&h=150&fit=crop"
+                                   alt="阿福">
+                         </div>
+                         <div class="card-body">
+                              <h5 class="card-title">🐾 編號 1：阿福 (Fuku)</h5>
+                              <p class="card-text mb-3">個性非常溫和、親人，最喜歡黏在身邊呼嚕嚕討摸摸，是一個溫暖的大乖乖。</p>
+                              <a href="./front/detail.html?id=1" class="btn btn-outline-primary">了解更多資料 🐾</a>
+                         </div>
+                    </div>
+               </div>
+               <!-- 咪咪 -->
+               <div class="col">
+                    <div class="card cat-card">
+                         <div class="cat-img-wrapper">
+                              <img src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=150&h=150&fit=crop"
+                                   alt="咪咪">
+                         </div>
+                         <div class="card-body">
+                              <h5 class="card-title">🐾 編號 2：咪咪 (Mimi)</h5>
+                              <p class="card-text mb-3">優雅迷人的小公主，雖然剛開始有點慢熟，但熟悉後會露出非常撒嬌的一面。</p>
+                              <a href="./front/detail.html?id=2" class="btn btn-outline-primary">了解更多資料 🐾</a>
+                         </div>
+                    </div>
+               </div>
+               <!-- 歐歐 -->
+               <div class="col">
+                    <div class="card cat-card">
+                         <div class="cat-img-wrapper">
+                              <img src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=150&h=150&fit=crop"
+                                   alt="歐歐">
+                         </div>
+                         <div class="card-body">
+                              <h5 class="card-title">🐾 編號 3：歐歐 (Oreo)</h5>
+                              <p class="card-text mb-3">活潑好動的橘貓，擁有豐沛的體力，超級熱愛玩逗貓棒，天天充滿活力。</p>
+                              <a href="./front/detail.html?id=3" class="btn btn-outline-primary">了解更多資料 🐾</a>
+                         </div>
+                    </div>
+               </div>
+               <!-- 炭炭 -->
+               <div class="col">
+                    <div class="card cat-card">
+                         <div class="cat-img-wrapper">
+                              <img src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=150&h=150&fit=crop"
+                                   alt="炭炭">
+                         </div>
+                         <div class="card-body">
+                              <h5 class="card-title">🐾 編號 4：炭炭 (Tantan)</h5>
+                              <p class="card-text mb-3">有著一身帥氣柔順的毛髮，眼神充滿好奇心，是個聰明又貼心的小紳士。</p>
+                              <a href="./front/detail.html?id=4" class="btn btn-outline-primary">了解更多資料 🐾</a>
+                         </div>
+                    </div>
+               </div>
+               <!-- 拿鐵 -->
+               <div class="col">
+                    <div class="card cat-card">
+                         <div class="cat-img-wrapper">
+                              <img src="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=150&h=150&fit=crop"
+                                   alt="拿鐵">
+                         </div>
+                         <div class="card-body">
+                              <h5 class="card-title">🐾 編號 5：拿鐵 (Latte)</h5>
+                              <p class="card-text mb-3">花色像濃郁拿鐵一樣美麗，個性安靜沉穩，喜歡待在窗邊看小鳥曬太陽。</p>
+                              <a href="./front/detail.html?id=5" class="btn btn-outline-primary">了解更多資料 🐾</a>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+     <!-- 登入狀態控制 JavaScript -->
+     <script>
+          document.addEventListener("DOMContentLoaded", function () {
+               const isLoggedIn = localStorage.getItem("isLoggedIn");
+               const adminName = localStorage.getItem("adminName");
+
+               const guestBtn = document.getElementById("guest-btn");
+               const adminWelcome = document.getElementById("admin-welcome");
+               const logoutBtn = document.getElementById("logout-btn");
+
+               // 【關鍵修正】取得後台連結的元素
+               const adminNavItem = document.getElementById("admin-nav-item");
+
+               if (isLoggedIn === "true") {
+                    // 1. 已登入狀態：控制原本的登入/登出按鈕
+                    guestBtn.classList.add("d-none");
+                    if (adminName) {
+                         adminWelcome.innerHTML = `🔑 管理員 ${adminName}`;
+                    }
+                    adminWelcome.classList.remove("d-none");
+                    logoutBtn.classList.remove("d-none");
+
+                    // 【關鍵修正】2. 已登入，將後台管理選單顯示出來！
+                    if (adminNavItem) {
+                         adminNavItem.style.setProperty('display', 'block', 'important');
+                    }
+               } else {
+                    // 未登入狀態
+                    guestBtn.classList.remove("d-none");
+                    adminWelcome.classList.add("d-none");
+                    logoutBtn.classList.add("d-none");
+
+                    // 【關鍵修正】3. 沒登入時，強制隱藏後台選單（一般人完全看不到、點不到）
+                    if (adminNavItem) {
+                         adminNavItem.style.setProperty('display', 'none', 'important');
+                    }
+               }
+
+               if (logoutBtn) {
+                    logoutBtn.addEventListener("click", function () {
+                         localStorage.removeItem("isLoggedIn");
+                         localStorage.removeItem("adminName");
+                         alert("已成功登出管理系統！");
+                         window.location.reload();
+                    });
+               }
+          });
+     </script>
+
+</body>
+
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Ulivo Trattoria</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- 1. Header/Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm" style="background-color: #556B2F;">
+        <div class="container">
+            <a class="navbar-brand fs-3 fw-bold" href="#">L'Ulivo Trattoria</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#menu">特色菜單</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gallery">環境與餐點</a>
+                    </li>
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <!-- CTA Button -->
+                        <button class="btn text-white fw-bold px-4 rounded-pill shadow-sm"
+                            style="background-color: #E2725B;" data-bs-toggle="modal" data-bs-target="#bookingModal">
+                            預約訂位
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. Hero Section -->
+    <header id="home">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active" data-bs-interval="5000">
+                    <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1920&q=80"
+                        class="d-block w-100 object-fit-cover" style="height: 70vh;" alt="餐廳內部">
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 start-0 w-100"
+                        style="background: rgba(0,0,0,0.5);">
+                        <h1 class="display-3 fw-bold text-white mb-3">歡迎來到 L'Ulivo</h1>
+                        <p class="lead fs-4 text-white mb-4">體驗義大利的熱情與溫度。</p>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-item" data-bs-interval="5000">
+                    <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=1920&q=80"
+                        class="d-block w-100 object-fit-cover" style="height: 70vh;" alt="義大利麵">
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 start-0 w-100"
+                        style="background: rgba(0,0,0,0.5);">
+                        <h1 class="display-3 fw-bold text-white mb-3">道地義式風味</h1>
+                        <p class="lead fs-4 text-white mb-4">選用新鮮食材與傳統食譜精心製作。</p>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-item" data-bs-interval="5000">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1920&q=80"
+                        class="d-block w-100 object-fit-cover" style="height: 70vh;" alt="用餐桌">
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 start-0 w-100"
+                        style="background: rgba(0,0,0,0.5);">
+                        <h1 class="display-3 fw-bold text-white mb-3">預約您的座位</h1>
+                        <p class="lead fs-4 text-white mb-4">與我們一起展開難忘的美食之旅。</p>
+                        <button class="btn btn-lg text-white fw-bold px-5 rounded-pill shadow"
+                            style="background-color: #E2725B;" data-bs-toggle="modal"
+                            data-bs-target="#bookingModal">立即預約</button>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">上一張</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">下一張</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 3. Menu Highlights -->
+    <section id="menu" class="container py-5 my-4">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold" style="color: #556B2F;">特色菜單</h2>
+            <div class="mx-auto border-bottom border-2 w-25 pb-2" style="border-color: #E2725B !important;"></div>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <!-- Dish 1 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm rounded-4 pt-4 px-3 text-center transition-transform">
+                    <img src="https://images.unsplash.com/photo-1516100882582-96c3a05fe590?auto=format&fit=crop&w=400&q=80"
+                        class="card-img-top rounded-circle mx-auto object-fit-cover shadow-sm border border-3 border-white"
+                        style="width: 180px; height: 180px;" alt="蒜香橄欖油義大利麵">
+                    <div class="card-body mt-2">
+                        <h3 class="card-title h5 fw-bold text-dark">蒜香橄欖油義大利麵</h3>
+                        <p class="card-text text-muted small">經典義大利麵拌入烤大蒜、特級初榨橄欖油與微量辣椒片。</p>
+                        <p class="fs-5 fw-bold mb-0" style="color: #556B2F;">$14.00</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Dish 2 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm rounded-4 pt-4 px-3 text-center">
+                    <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=400&q=80"
+                        class="card-img-top rounded-circle mx-auto object-fit-cover shadow-sm border border-3 border-white"
+                        style="width: 180px; height: 180px;" alt="瑪格麗特披薩">
+                    <div class="card-body mt-2">
+                        <h3 class="card-title h5 fw-bold text-dark">瑪格麗特披薩</h3>
+                        <p class="card-text text-muted small">柴燒薄皮披薩，放上聖馬札諾番茄、新鮮莫札瑞拉起司與甜羅勒。</p>
+                        <p class="fs-5 fw-bold mb-0" style="color: #556B2F;">$18.00</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Dish 3 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm rounded-4 pt-4 px-3 text-center">
+                    <img src="https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=400&q=80"
+                        class="card-img-top rounded-circle mx-auto object-fit-cover shadow-sm border border-3 border-white"
+                        style="width: 180px; height: 180px;" alt="經典提拉米蘇">
+                    <div class="card-body mt-2">
+                        <h3 class="card-title h5 fw-bold text-dark">經典提拉米蘇</h3>
+                        <p class="card-text text-muted small">吸滿濃縮咖啡的手指餅乾，層層交疊濃郁的馬斯卡彭鮮奶油，並撒上可可粉。</p>
+                        <p class="fs-5 fw-bold mb-0" style="color: #556B2F;">$9.00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Gallery -->
+    <section id="gallery" class="py-5 bg-white">
+        <div class="container my-4">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold" style="color: #556B2F;">環境與餐點</h2>
+                <div class="mx-auto border-bottom border-2 w-25 pb-2" style="border-color: #E2725B !important;"></div>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg-4 col-md-6">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=600&q=80"
+                        class="img-fluid rounded-3 shadow-sm object-fit-cover w-100" style="height: 250px;" alt="餐廳內部">
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=600&q=80"
+                        class="img-fluid rounded-3 shadow-sm object-fit-cover w-100" style="height: 250px;" alt="用餐桌">
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80"
+                        class="img-fluid rounded-3 shadow-sm object-fit-cover w-100" style="height: 250px;" alt="葡萄酒展示">
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=600&q=80"
+                        class="img-fluid rounded-3 shadow-sm object-fit-cover w-100" style="height: 250px;" alt="食材準備">
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?auto=format&fit=crop&w=600&q=80"
+                        class="img-fluid rounded-3 shadow-sm object-fit-cover w-100" style="height: 250px;" alt="牛排料理">
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=600&q=80"
+                        class="img-fluid rounded-3 shadow-sm object-fit-cover w-100" style="height: 250px;"
+                        alt="製作義大利麵">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Contact / Booking -->
+    <section id="contact" class="container py-5 my-4">
+        <div class="row g-5 align-items-center">
+            <!-- FAQs Accordion -->
+            <div class="col-lg-6">
+                <h2 class="display-6 fw-bold mb-4" style="color: #556B2F;">常見問題</h2>
+                <div class="accordion shadow-sm rounded-4 overflow-hidden" id="faqAccordion">
+                    <div class="accordion-item border-0 border-bottom">
+                        <h2 class="accordion-header" id="faq1">
+                            <button class="accordion-button bg-light fw-bold text-dark" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                請問有提供素食選項嗎？
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                有的！我們提供多樣化的素食及純素菜色，並可依需求提供無麩質義大利麵。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 border-bottom">
+                        <h2 class="accordion-header" id="faq2">
+                            <button class="accordion-button collapsed bg-light fw-bold text-dark" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                附近有停車位嗎？
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                餐廳周圍有路邊停車格，且距離一個街區外也有公有停車場。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0">
+                        <h2 class="accordion-header" id="faq3">
+                            <button class="accordion-button collapsed bg-light fw-bold text-dark" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                可以包場舉辦私人活動嗎？
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                當然可以。我們有可容納多達40位賓客的私人用餐區。請與我們聯繫以了解活動方案。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5 bg-white">
+                    <h3 class="h4 fw-bold mb-4 text-center" style="color: #556B2F;">聯絡我們</h3>
+                    <form>
+                        <div class="mb-3">
+                            <label for="name" class="form-label text-muted small fw-bold">姓名</label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0" id="name"
+                                placeholder="王小明">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label text-muted small fw-bold">電子郵件</label>
+                            <input type="email" class="form-control form-control-lg bg-light border-0" id="email"
+                                placeholder="wang@example.com">
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="form-label text-muted small fw-bold">留言</label>
+                            <textarea class="form-control form-control-lg bg-light border-0" id="message" rows="3"
+                                placeholder="有什麼我們可以幫忙的嗎？"></textarea>
+                        </div>
+                        <div class="d-grid gap-3">
+                            <button type="submit" class="btn text-white fw-bold py-3 rounded-3"
+                                style="background-color: #556B2F;">送出訊息</button>
+                            <button type="button" class="btn text-white fw-bold py-3 rounded-3"
+                                style="background-color: #E2725B;" data-bs-toggle="modal"
+                                data-bs-target="#bookingModal">直接預約訂位</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. Footer -->
+    <!-- mt-auto ensures this footer pushes to the bottom in our flex layout -->
+    <footer class="text-white pt-5 pb-4 mt-auto" style="background-color: #2F3E1B;">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <h4 class="fw-bold mb-3">L'Ulivo Trattoria</h4>
+                    <p class="text-white-50 small">
+                        以新鮮食材、傳統食譜和溫馨迷人的氛圍，將道地的義大利風味帶到您的餐桌上。
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">快速連結</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-2">
+                        <li><a href="#home" class="text-white-50 text-decoration-none hover-white">首頁</a></li>
+                        <li><a href="#menu" class="text-white-50 text-decoration-none hover-white">特色菜單</a></li>
+                        <li><a href="#gallery" class="text-white-50 text-decoration-none hover-white">環境集錦</a></li>
+                        <li><a href="#contact" class="text-white-50 text-decoration-none hover-white">聯絡我們</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3">關注我們</h5>
+                    <div class="d-flex gap-3 mb-3">
+                        <!-- Placeholder Social Icons using simple text blocks -->
+                        <a href="#"
+                            class="bg-white bg-opacity-10 text-white rounded-circle d-flex justify-content-center align-items-center text-decoration-none"
+                            style="width: 40px; height: 40px;">FB</a>
+                        <a href="#"
+                            class="bg-white bg-opacity-10 text-white rounded-circle d-flex justify-content-center align-items-center text-decoration-none"
+                            style="width: 40px; height: 40px;">IG</a>
+                        <a href="#"
+                            class="bg-white bg-opacity-10 text-white rounded-circle d-flex justify-content-center align-items-center text-decoration-none"
+                            style="width: 40px; height: 40px;">TW</a>
+                    </div>
+                    <p class="text-white-50 small mb-0">123 Olive Street, Food City</p>
+                    <p class="text-white-50 small">info@lulivotrattoria.com</p>
+                </div>
+            </div>
+            <hr class="border-secondary opacity-25">
+            <div class="text-center text-white-50 small mt-4">
+                &copy; 2026 L'Ulivo Trattoria. 版權所有。
+            </div>
+        </div>
+    </footer>
+
+    <!-- Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                    <h4 class="modal-title fw-bold" id="bookingModalLabel" style="color: #556B2F;">預約訂位</h4>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-muted small mb-4">與我們一起享受美好的用餐體驗。請填寫下方資料。</p>
+                    <form>
+                        <div class="mb-3">
+                            <label for="bookName" class="form-label text-muted small fw-bold">姓名</label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0" id="bookName"
+                                placeholder="您的姓名">
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="bookDate" class="form-label text-muted small fw-bold">日期</label>
+                                <input type="date" class="form-control form-control-lg bg-light border-0" id="bookDate">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="bookTime" class="form-label text-muted small fw-bold">時間</label>
+                                <input type="time" class="form-control form-control-lg bg-light border-0" id="bookTime">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="bookGuests" class="form-label text-muted small fw-bold">用餐人數</label>
+                            <select class="form-select form-select-lg bg-light border-0" id="bookGuests">
+                                <option value="1">1 人</option>
+                                <option value="2" selected>2 人</option>
+                                <option value="3">3 人</option>
+                                <option value="4">4 人</option>
+                                <option value="5">5 人以上</option>
+                            </select>
+                        </div>
+                        <div class="d-grid mt-2">
+                            <button type="button" class="btn text-white fw-bold py-3 rounded-3"
+                                style="background-color: #E2725B;" data-bs-dismiss="modal">確認預約</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle (Includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

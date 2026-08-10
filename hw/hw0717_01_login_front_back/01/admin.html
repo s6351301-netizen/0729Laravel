@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <title>尋找貓咪的家</title>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+     <style>
+          body {
+               background: #faf8f6;
+               font-family: system-ui, sans-serif;
+          }
+
+          h2 {
+               color: #4a4540;
+               font-weight: 700;
+               font-size: 24px;
+               margin-top: 30px;
+          }
+
+          p {
+               color: #8c837b;
+               font-size: 14px;
+          }
+
+          .navbar {
+               background: #fff !important;
+               border-bottom: 1px solid #eae5e0;
+               padding: 12px 16px;
+          }
+
+          .navbar-brand {
+               color: #c08a70 !important;
+               font-weight: bold;
+               font-size: 18px;
+               letter-spacing: 0.5px;
+          }
+
+          .nav-link {
+               color: #7d756d !important;
+               font-weight: 500;
+               margin-right: 15px;
+               font-size: 14px;
+          }
+
+          .nav-link:hover {
+               color: #c08a70 !important;
+          }
+
+          .navbar .form-control {
+               border-radius: 6px;
+               border: 1px solid #eae5e0;
+               font-size: 14px;
+               padding-left: 12px;
+               background: #faf8f6;
+          }
+
+          .navbar .form-control:focus {
+               border-color: #c08a70;
+               box-shadow: none;
+               background: #fff;
+          }
+
+          .navbar .btn-primary,
+          .text-end a {
+               display: inline-block;
+               background: #c08a70;
+               color: #fff !important;
+               border: none;
+               border-radius: 6px;
+               font-size: 14px;
+               font-weight: 500;
+               text-decoration: none;
+               transition: background 0.2s;
+          }
+
+          .navbar .btn-primary {
+               padding: 6px 16px;
+               margin-left: 8px;
+          }
+
+          /* 登出按鈕專用樣式，使用柔和的紅色 */
+          .navbar .btn-danger {
+               display: inline-block;
+               background: #a84a4a;
+               color: #fff !important;
+               border: none;
+               border-radius: 6px;
+               font-size: 14px;
+               font-weight: 500;
+               padding: 6px 16px;
+               margin-left: 8px;
+               text-decoration: none;
+               transition: background 0.2s;
+          }
+
+          .navbar .btn-danger:hover {
+               background: #913d3d;
+          }
+
+          .text-end a {
+               padding: 8px 18px;
+          }
+
+          .navbar .btn-primary:hover,
+          .text-end a:hover {
+               background: #ab775e;
+          }
+
+          .table {
+               background: #fff;
+               border-collapse: separate;
+               border-radius: 8px;
+               overflow: hidden;
+               border: 1px solid #eae5e0;
+               margin-bottom: 40px;
+          }
+
+          .table thead th {
+               background: #faf8f6 !important;
+               color: #4a4540 !important;
+               font-weight: 600;
+               font-size: 14px;
+               border-bottom: 1px solid #eae5e0;
+               padding: 16px;
+          }
+
+          .table td {
+               padding: 14px 16px;
+               border-color: #eae5e0;
+               vertical-align: middle;
+               color: #5c554e;
+               font-size: 14px;
+          }
+
+          .table tbody tr {
+               transition: background 0.2s;
+          }
+
+          .table tbody tr:hover {
+               background: #fcfbfa !important;
+          }
+
+          .table td a {
+               text-decoration: none;
+               font-weight: 500;
+               padding: 4px 10px;
+               border-radius: 4px;
+               font-size: 13px;
+               display: inline-block;
+          }
+
+          .table td a[href*="edit"] {
+               color: #c08a70;
+               border: 1px solid #eae5e0;
+               background: #fff;
+               margin-right: 8px;
+          }
+
+          .table td a[href*="edit"]:hover {
+               background: #faf8f6;
+          }
+
+          .table td a[href*="del"] {
+               color: #a84a4a;
+               border: 1px solid #f2dede;
+               background: #fff9f9;
+          }
+
+          .table td a[href*="del"]:hover {
+               background: #f2dede;
+          }
+
+          .cat-avatar {
+               width: 40px;
+               height: 40px;
+               border-radius: 50%;
+               object-fit: cover;
+               display: inline-block;
+               vertical-align: middle;
+          }
+     </style>
+</head>
+
+<body>
+
+     <nav class="navbar navbar-expand-sm navbar-light bg-white">
+          <div class="container-fluid">
+               <a class="navbar-brand" href="./index.html">🐾 尋找貓咪的家</a>
+               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                    <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="mynavbar">
+                    <ul class="navbar-nav me-auto">
+                         <li class="nav-item">
+                              <a class="nav-link" href="./index.html">待收養貓咪</a>
+                         </li>
+                         <li class="nav-item">
+                              <a class="nav-link" href="">志工夥伴</a>
+                         </li>
+                         <li class="nav-item">
+                              <a class="nav-link" href="javascript:void(0)">領養諮詢</a>
+                         </li>
+                    </ul>
+
+                    <!-- 右側搜尋與登入按鈕區 -->
+                    <!-- 關鍵修正：加上 flex-wrap 讓手機版會自動換行，gap-2 讓元素之間有固定漂亮間距，mt-3 md-lg-0 讓手機版有上方間距 -->
+                    <form class="d-flex align-items-center flex-wrap gap-2 m-0 mt-3 mt-sm-0">
+                         <!-- 這裡保持你原本裡面的 input、button、span 等內容都不用變 -->
+                         <input class="form-control" type="text" placeholder="搜尋貓咪..."
+                              style="flex: 1; min-width: 150px;">
+                         <button class="btn btn-primary" type="button">搜尋</button>
+
+                         <a href="./front/login.html" id="guest-btn" class="btn btn-primary">登入</a>
+
+                         <span id="admin-welcome" class="d-none"
+                              style="color: #7d756d; font-size: 14px; white-space: nowrap; font-weight: 500;">
+                              🔑 管理員
+                         </span>
+                         <button type="button" id="logout-btn" class="btn btn-danger d-none">登出</button>
+                    </form>
+               </div>
+          </div>
+     </nav>
+
+     <div class="container mt-3">
+          <h2>待領養貓咪列表</h2>
+          <p>為流浪的貓咪尋找一個溫暖的避風港，歡迎登記或進行狀態管理：</p>
+          <div class="text-end">
+               <a href="./hw/create.html">＋ 登記新貓咪</a>
+          </div>
+          <table class="table table-striped mt-5">
+               <thead>
+                    <tr>
+                         <th class="text-center" width="10%">編號</th>
+                         <th class="text-center" width="15%">照片</th>
+                         <th width="20%">名字</th>
+                         <th>領養管理</th>
+                    </tr>
+               </thead>
+               <tbody>
+                    <tr>
+                         <td class="text-center">1</td>
+                         <td class="text-center">
+                              <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150&h=150&fit=crop"
+                                   class="cat-avatar">
+                         </td>
+                         <td>阿福 (Fuku)</td>
+                         <td>
+                              <a href="./hw/edit.html?id=1">修改資料</a>
+                              <a href="./hw/del.html?id=1">已被收養</a>
+                         </td>
+                    </tr>
+                    <tr>
+                         <td class="text-center">2</td>
+                         <td class="text-center">
+                              <img src="https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=150&h=150&fit=crop"
+                                   class="cat-avatar">
+                         </td>
+                         <td>咪咪 (Mimi)</td>
+                         <td>
+                              <a href="./hw/edit.html?id=2">修改資料</a>
+                              <a href="./hw/del.html?id=2">已被收養</a>
+                         </td>
+                    </tr>
+                    <tr>
+                         <td class="text-center">3</td>
+                         <td class="text-center">
+                              <img src="https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=150&h=150&fit=crop"
+                                   class="cat-avatar">
+                         </td>
+                         <td>歐歐 (Oreo)</td>
+                         <td>
+                              <a href="./hw/edit.html?id=3">修改資料</a>
+                              <a href="./hw/del.html?id=3">已被收養</a>
+                         </td>
+                    </tr>
+                    <tr>
+                         <td class="text-center">4</td>
+                         <td class="text-center">
+                              <img src="https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=150&h=150&fit=crop"
+                                   class="cat-avatar">
+                         </td>
+                         <td>炭炭 (Tantan)</td>
+                         <td>
+                              <a href="./hw/edit.html?id=4">修改資料</a>
+                              <a href="./hw/del.html?id=4">已被收養</a>
+                         </td>
+                    </tr>
+                    <tr>
+                         <td class="text-center">5</td>
+                         <td class="text-center">
+                              <img src="https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=150&h=150&fit=crop"
+                                   class="cat-avatar">
+                         </td>
+                         <td>拿鐵 (Latte)</td>
+                         <td>
+                              <a href="./hw/edit.html?id=5">修改資料</a>
+                              <a href="./hw/del.html?id=5">已被收養</a>
+                         </td>
+                    </tr>
+               </tbody>
+          </table>
+     </div>
+
+     <!-- 狀態控制與動態姓名讀取 JavaScript -->
+     <script>
+          document.addEventListener("DOMContentLoaded", function () {
+               // 1. 讀取瀏覽器在地儲存的狀態與登入者名稱
+               const isLoggedIn = localStorage.getItem("isLoggedIn");
+               const adminName = localStorage.getItem("adminName");
+
+               const guestBtn = document.getElementById("guest-btn");
+               const adminWelcome = document.getElementById("admin-welcome");
+               const logoutBtn = document.getElementById("logout-btn");
+
+               // 2. 判斷是否為登入狀態並變更樣式
+               if (isLoggedIn === "true") {
+                    // 隱藏登入按鈕
+                    guestBtn.classList.add("d-none");
+
+                    // 檢查有沒有存到名字，有的話就動態帶入
+                    if (adminName) {
+                         adminWelcome.innerHTML = `🔑 管理員 ${adminName}`;
+                    } else {
+                         adminWelcome.innerHTML = `🔑 管理員`;
+                    }
+
+                    // 顯示問候語與登出按鈕
+                    adminWelcome.classList.remove("d-none");
+                    logoutBtn.classList.remove("d-none");
+               } else {
+                    // 訪客狀態：顯示登入按鈕，隱藏管理員介面
+                    guestBtn.classList.remove("d-none");
+                    adminWelcome.classList.add("d-none");
+                    logoutBtn.classList.add("d-none");
+               }
+
+               // 3. 處理點擊登出
+               if (logoutBtn) {
+                    logoutBtn.addEventListener("click", function () {
+                         // 同步清除狀態與名字
+                         localStorage.removeItem("isLoggedIn");
+                         localStorage.removeItem("adminName");
+                         alert("已成功登出管理系統！");
+                         window.location.reload(); // 重新整理頁面回復原樣
+                    });
+               }
+          });
+     </script>
+
+</body>
+
+</html>

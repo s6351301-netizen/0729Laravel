@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空間融合：五星多軌跡動畫與多態互動相簿系統 (第一排透明)</title>
+    <style>
+        /* -------------------------------------------------------
+           1. 全網頁大背景：星海無限流動特效（初始化）
+           ------------------------------------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #03050a;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+                radial-gradient(circle at center, #111a36 0%, #03050a 70%);
+            background-size: 550px 550px, 350px 350px, 250px 250px, 100% 100%;
+            background-attachment: fixed;
+            
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden; /* 防止橫向捲軸 */
+            padding: 40px 20px;
+
+            animation: starStream 60s infinite linear;
+        }
+
+        @keyframes starStream {
+            0% { background-position: 0 0, 0 0, 0 0, center; }
+            100% { background-position: 550px 1100px, -350px 700px, 500px -500px, center; }
+        }
+
+        /* -------------------------------------------------------
+           2. 網頁版面主畫布（太空艙毛玻璃外框）
+           ------------------------------------------------------- */
+        .stage {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            min-height: 850px;
+            background: rgba(10, 15, 30, 0.3); 
+            backdrop-filter: blur(8px); 
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* 讓內容往下排，留出上方星空空間 */
+            gap: 20px;
+        }
+
+        /* 核心星系大群組：負責慢速漂移（設為背景層 z-index: 1） */
+        .galaxy-group {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            animation: groupSuperFloat 25s infinite ease-in-out;
+            transform-origin: center center;
+            pointer-events: none; /* 確保不擋住前方圖片的滑鼠懸停事件 */
+        }
+
+        @keyframes groupSuperFloat {
+            0% { transform: translate(0px, 0px) scale(1); }
+            25% { transform: translate(30px, -20px) scale(0.97); }
+            50% { transform: translate(0px, -40px) scale(0.95); }
+            75% { transform: translate(-30px, -20px) scale(0.97); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+
+        /* -------------------------------------------------------
+           3. 背景軌跡裝飾線
+           ------------------------------------------------------- */
+        .track-bg {
+            position: absolute;
+            top: 40%; /* 稍微往上調，錯開核心圖片區 */
+            left: 50%;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .track-circle {
+            width: 440px;
+            height: 440px;
+            border: 2px dashed rgba(255, 255, 255, 0.06);
+        }
+        .track-ellipse-horizontal {
+            width: 680px;
+            height: 280px;
+            border: 2px dotted rgba(255, 215, 0, 0.08);
+        }
+        .track-ellipse-vertical {
+            width: 300px;
+            height: 600px;
+            border: 2px dashed rgba(255, 0, 85, 0.06);
+        }
+
+        /* -------------------------------------------------------
+           4. 軌跡元件通用與個別設定 (Square, Triangle, etc.)
+           ------------------------------------------------------- */
+        .cosmic-carrier {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            top: -40px; /* 配合軌跡中心點偏移調整 */
+            left: -40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .morph-core {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 11px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            color: #ffffff;
+        }
+
+        /* 🟦 藍色正方形 */
+        .obj-square {
+            offset-path: path('M 550,195 A 220,220 0 1,1 549.9,195 Z');
+            animation: moveOrbit 12s infinite linear;
+        }
+        .obj-square .morph-core {
+            animation: animSquare 6s infinite ease-in-out;
+        }
+        @keyframes animSquare {
+            0%, 100% { background-color: #00d2ff; clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); transform: scale(1); filter: drop-shadow(0 0 15px #00d2ff); }
+            50% { background-color: #0088ff; transform: scale(0.85); filter: drop-shadow(0 0 25px #0088ff); }
+        }
+
+        /* 🟩 綠色三角形 */
+        .obj-triangle {
+            offset-path: path('M 550,195 A 220,220 0 1,1 549.9,195 Z');
+            animation: moveOrbit 9s infinite linear;
+        }
+        .obj-triangle .morph-core {
+            animation: animTriangle 4.5s infinite linear;
+        }
+        @keyframes animTriangle {
+            0%, 100% { background-color: #00ff87; clip-path: polygon(50% 0%, 100% 100%, 100% 100%, 0% 100%); transform: rotate(0deg) rotateY(0deg); filter: drop-shadow(0 0 15px #00ff87); }
+            50% { background-color: #00aa50; transform: rotate(180deg) rotateY(180deg); filter: drop-shadow(0 0 30px #00ff87); }
+        }
+
+        /* 🟥 紅色圓形 */
+        .obj-sphere {
+            offset-path: path('M 550,195 A 220,220 0 1,1 549.9,195 Z');
+            animation: moveOrbit 6s infinite linear;
+        }
+        .obj-sphere .morph-core {
+            animation: animSphere 3s infinite ease-in-out;
+        }
+        @keyframes animSphere {
+            0%, 100% { background-color: #ff0055; border-radius: 50%; transform: scale(0.9) rotateX(0deg); filter: drop-shadow(0 0 15px #ff0055); }
+            50% { background-color: #b3003b; transform: scale(1.1) rotateX(180deg); filter: drop-shadow(0 0 30px #ff0055); }
+        }
+
+        /* 🟪 紫色菱形 */
+        .obj-rhombus {
+            offset-path: path('M 550,265 A 340,140 0 1,1 549.9,265 Z');
+            animation: moveOrbit 14s infinite linear;
+        }
+        .obj-rhombus .morph-core {
+            animation: animRhombus 7s infinite ease-in-out;
+        }
+        @keyframes animRhombus {
+            0%, 100% { background-color: #a020f0; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 15px #a020f0); }
+            50% { background-color: #6a0dad; transform: scale(1.15) rotate(180deg); filter: drop-shadow(0 0 30px #a020f0); }
+        }
+
+        /* 🟨 黃金八邊形 */
+        .obj-octagon {
+            offset-path: path('M 550,100 A 150,300 0 1,1 549.9,100 Z');
+            animation: moveOrbit 10s infinite linear;
+        }
+        .obj-octagon .morph-core {
+            color: #000;
+            animation: animOctagon 5s infinite linear;
+        }
+        @keyframes animOctagon {
+            0%, 100% { background-color: #ffd700; clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%); transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 15px #ffd700) hue-rotate(0deg); }
+            50% { background-color: #ffaa00; transform: scale(1.2) rotate(360deg); filter: drop-shadow(0 0 35px #ffaa00) hue-rotate(180deg); }
+        }
+
+        @keyframes moveOrbit {
+            0% { offset-distance: 0%; }
+            100% { offset-distance: 100%; }
+        }
+
+        /* -------------------------------------------------------
+           5. 前景相簿互動網格系統（前景層 z-index: 5）
+           ------------------------------------------------------- */
+        .container {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .item {
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease; /* 增加透明度過渡 */
+        }
+
+        /* 增加相簿整體的懸停放大微幅特效 */
+        .item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,210,255,0.3);
+        }
+
+        .item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* --- Hover 圖片切換邏輯 --- */
+        .item .img-hover {
+            display: none;
+        }
+        .item:hover .img-default {
+            display: none;
+        }
+        .item:hover .img-hover {
+            display: block;
+        }
+
+        /* -------------------------------------------------------
+           6. 第一排透明度設置 (CSS 新增)
+           ------------------------------------------------------- */
+        .container-1 .item {
+            opacity: 0.1; /* 第一排圖片透明度設為 0.1 */
+        }
+
+        /* -------------------------------------------------------
+           7. UI 標題資訊、響應式斷點（RWD）
+           ------------------------------------------------------- */
+        .interface-label {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .interface-label h1 { 
+            font-size: 22px; 
+            font-weight: bold; 
+            margin-bottom: 8px; 
+            color: #fff;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+        .interface-label p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+        /* 電腦版大螢幕排版（寬度大於 1024px） */
+        @media screen and (min-width: 1024px) {
+            .container {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 20px;
+            }
+
+            .item {
+                width: 31%; /* 三欄式等寬平鋪 */
+                height: 280px; 
+            }
+            
+            .item img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* 滿版完美裁切 */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="stage">
+        
+        <div class="interface-label">
+            <h1>核心星域與多態互動相簿系統 (第一排透明)</h1>
+            <p>
+                • 後景動畫：5 幾何星體沿獨立幾何軌道運行，群組帶有 3D 漂移深度縮放。<br>
+                • 前景互動：滑鼠移至卡片升起並切換宇宙星圖。 **第一排卡片已設為最大透明度**。
+            </p>
+        </div>
+
+        <div class="track-bg track-circle"></div>
+        <div class="track-bg track-ellipse-horizontal"></div>
+        <div class="track-bg track-ellipse-vertical"></div>
+
+        <div class="galaxy-group">
+            <div class="cosmic-carrier obj-square"><div class="morph-core">Square</div></div>
+            <div class="cosmic-carrier obj-triangle"><div class="morph-core">Triangle</div></div>
+            <div class="cosmic-carrier obj-sphere"><div class="morph-core">Sphere</div></div>
+            <div class="cosmic-carrier obj-rhombus"><div class="morph-core">Rhombus</div></div>
+            <div class="cosmic-carrier obj-octagon"><div class="morph-core">Octagon</div></div>
+        </div>
+
+        <div class="container container-1">
+            <div class="item">
+                <img class="img-default" src="https://picsum.photos/400/400?random=4" alt="Image 4">
+                <img class="img-hover" src="https://picsum.photos/400/400?random=40" alt="Image 4 Hover">
+            </div>
+            <div class="item">
+                <img class="img-default" src="https://picsum.photos/400/400?random=5" alt="Image 5">
+                <img class="img-hover" src="https://picsum.photos/400/400?random=50" alt="Image 5 Hover">
+            </div>
+            <div class="item">
+                <img class="img-default" src="https://picsum.photos/400/400?random=6" alt="Image 6">
+                <img class="img-hover" src="https://picsum.photos/400/400?random=60" alt="Image 6 Hover">
+            </div>
+        </div>
+
+        <div class="container container-2">
+            <div class="item">
+                <img class="img-default" src="https://picsum.photos/400/400?random=7" alt="Image 7">
+                <img class="img-hover" src="https://picsum.photos/400/400?random=70" alt="Image 7 Hover">
+            </div>
+            <div class="item">
+                <img class="img-default" src="https://picsum.photos/400/400?random=8" alt="Image 8">
+                <img class="img-hover" src="https://picsum.photos/400/400?random=80" alt="Image 8 Hover">
+            </div>
+            <div class="item">
+                <img class="img-default" src="https://picsum.photos/400/400?random=9" alt="Image 9">
+                <img class="img-hover" src="https://picsum.photos/400/400?random=90" alt="Image 9 Hover">
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

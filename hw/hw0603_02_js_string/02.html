@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老師思念你 💌</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #999;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(-1px);
+        }
+
+        .message-box {
+            background: linear-gradient(135deg, #fff5f7 0%, #f0f7ff 100%);
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            border-radius: 10px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #mySpan {
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+            line-height: 1.8;
+            font-weight: 500;
+            display: block;
+            min-height: 80px;
+        }
+
+        .heart-animation {
+            display: inline-block;
+            animation: heartbeat 1.2s ease-in-out;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .decorative {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+            letter-spacing: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💌 老師對你的思念</h1>
+        <p class="subtitle">輸入你的名字和美好回憶，看看老師想說的話</p>
+
+        <div class="input-group">
+            <label class="input-label">📝 你的名字是？</label>
+            <input type="text" id="name" value ="5號同學" placeholder="5號同學">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">🌟 最難忘的回憶是？</label>
+            <input type="text" id="word" value ="最挺老師的學生" placeholder="最挺老師的學生">
+        </div>
+
+        <div class="button-container">
+            <button type="button" id="myBtn">✨ 查看老師的思念 ✨</button>
+        </div>
+
+        <div class="message-box">
+            <span id="mySpan">👆 點擊按鈕，看看老師想對你說的話～</span>
+        </div>
+
+        <div class="decorative">🌸 ✦ 🌸</div>
+    </div>
+
+    <script>
+        let nameInput = document.querySelector('#name');
+        let wordInput = document.querySelector('#word');
+        let myBtn = document.querySelector('#myBtn');
+        let mySpan = document.querySelector('#mySpan');
+
+        myBtn.addEventListener('click', function() {
+            let name = nameInput.value.trim();
+            let word = wordInput.value.trim();
+
+            // 驗證輸入
+            if (!name || !word) {
+                mySpan.textContent = '❌ 請輸入完整的資訊呦～';
+                return;
+            }
+
+            // 老師的思念語錄
+            const messages = [
+                `親愛的 ${name}，<br><br>你知道嗎？「${word}」，我永遠忘不了。<br><br>那些與你們共度的時光，是我教學生涯中最珍貴的寶藏。<br>你們的笑容、你們的進步，都深深烙在我的心裡。<br><br>雖然時光匆匆，但你們永遠是老師心中的驕傲。💕`,
+                
+                `${name}，我想你了～<br><br>還記得「${word}」嗎？<br><br>那一刻，我看到了你的成長，看到了你的努力。<br>你以為老師忘了？其實我們永遠記得你。<br><br>祝你在人生的道路上，綻放光彩！✨`,
+                
+                `親愛的 ${name}，<br><br>每當想起「${word}」，我的臉上都會帶著微笑。<br><br>你知道嗎？教書最大的快樂，就是看著學生們成長。<br>而你，永遠是我最驕傲的學生之一。<br><br>祝你夢想成真，開啟精彩人生！🌟`,
+                
+                `${name}，<br><br>「${word}」——那個時刻我永遠不會忘記。<br><br>老師想告訴你：你比你想像的更優秀！<br>那些你以為不起眼的努力，都被老師看在眼裡。<br><br>無論走到哪裡，都要記得——你是最棒的！💪`
+            ];
+
+            // 隨機選擇一段話
+            let selectedMessage = messages[Math.floor(Math.random() * messages.length)];
+
+            // 添加動畫效果
+            mySpan.style.opacity = '0';
+            setTimeout(() => {
+                mySpan.innerHTML = selectedMessage;
+                mySpan.style.transition = 'opacity 0.5s ease';
+                mySpan.style.opacity = '1';
+            }, 100);
+        });
+
+        // 回車快速提交
+        wordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                myBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>

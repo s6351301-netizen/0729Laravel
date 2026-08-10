@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>匯率換算器</title>
+</head>
+<body>
+    <form id="exchangeForm">
+        <p>
+            <label>金額：</label>
+            <input type="number" name="amount" id="amount" value="100">
+        </p>
+        <p>
+            <label>轉換幣別：</label>
+            <select name="currency" id="currency">
+                <option value="USD">美金 (USD)</option>
+                <option value="JPY">日圓 (JPY)</option>
+                <option value="EUR">歐元 (EUR)</option>
+            </select>
+        </p>
+        <p><input type="submit" value="開始換算"></p>
+    </form>
+
+    <!-- 結果顯示區 -->
+    <div id="output" style="margin-top:20px; font-weight:bold;"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#exchangeForm').submit(function (e) {
+                e.preventDefault(); // 阻止表單跳轉
+
+                let formData = $(this).serialize();
+                let url = './exchange_data.php';
+
+                $.ajax({
+                    type: "get",
+                    url: url,
+                    data: formData,
+                    dataType: "json",
+                    success: function (res) {
+                        console.log('回應:', res);
+                        // 將結果顯示在頁面上
+                        $('#output').html(`
+                            計算結果：${res.amount} ${res.currency} 
+                            等於 ${res.result} 新台幣 (匯率: ${res.rate})
+                        `);
+                    },
+                    error: function() {
+                        $('#output').text('發生錯誤，請稍後再試。');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

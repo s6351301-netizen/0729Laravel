@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<users>
+    <!-- 已存在的測試帳號，需檢查密碼 -->
+    <user>
+        <ssn>A123456789</ssn>
+        <password>1234</password>
+    </user>
+    <user>
+        <ssn>B123456789</ssn>
+        <password>1234</password>
+    </user>  
+</users>

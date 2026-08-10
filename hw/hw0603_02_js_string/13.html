@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Spotify 職人風格：全球雲端音樂播放器</title>
+     <style>
+          /* ==========================================================================
+             🎨 1. 視覺外觀設定 (CSS) —— Spotify 質感黑綠風格
+             ========================================================================== */
+          * {
+               box-sizing: border-box;
+               font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+          }
+
+          body {
+               background-color: #121212;
+               margin: 0;
+               padding: 0;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               min-height: 100vh;
+          }
+
+          /* 主播放器卡片 */
+          .box {
+               width: 390px;
+               background: linear-gradient(180deg, #181818 0%, #000000 100%);
+               border-radius: 16px;
+               text-align: center;
+               padding: 30px 24px;
+               box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+               border: 1px solid #282828;
+          }
+
+          .player-top {
+               background-color: #181818;
+               padding: 20px 15px;
+               border-radius: 12px;
+               margin-bottom: 20px;
+          }
+
+          .player-top p {
+               margin: 12px 0;
+               text-align: left;
+               font-size: 13px;
+               color: #b3b3b3;
+               font-weight: bold;
+               letter-spacing: 1px;
+          }
+
+          /* 💿 專輯封面區（加上相對定位，方便重疊播放鈕） */
+          .cover-container {
+               position: relative;
+               width: 140px;
+               height: 140px;
+               margin: 0 auto 15px auto;
+          }
+
+          .album-cover {
+               width: 140px;
+               height: 140px;
+               border-radius: 8px;
+               background-color: #282828;
+               object-fit: cover;
+               box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+               border: 1px solid #333;
+          }
+
+          /* 🟢 仿 Spotify 的圓形動態播放/暫停鈕 */
+          .play-overlay-btn {
+               position: absolute;
+               bottom: -5px;
+               right: -5px;
+               width: 45px;
+               height: 45px;
+               background-color: #1db954;
+               border-radius: 50%;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               font-size: 18px;
+               cursor: pointer;
+               box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+               transition: 0.2s;
+               border: none;
+               outline: none;
+          }
+
+          .play-overlay-btn:hover {
+               background-color: #1ed760;
+               transform: scale(1.1);
+          }
+
+          /* 輸入框 */
+          input[type="text"] {
+               width: 100%;
+               padding: 12px;
+               background-color: #2a2a2a;
+               border: 1px solid transparent;
+               border-radius: 8px;
+               outline: none;
+               color: #ffffff;
+               transition: 0.3s;
+               font-size: 14px;
+               text-align: center;
+               margin-top: 6px;
+          }
+
+          input[type="text"]:focus {
+               border-color: #1db954;
+               background-color: #333333;
+          }
+
+          /* 第二欄位：自動產生的歌手 */
+          #myName {
+               background-color: #232323;
+               color: #1db954;
+               font-weight: bold;
+          }
+
+          /* 搜尋按鈕 */
+          .btn-primary {
+               width: 100%;
+               padding: 14px;
+               background-color: #1db954;
+               color: black;
+               border: none;
+               border-radius: 25px;
+               font-size: 16px;
+               font-weight: bold;
+               cursor: pointer;
+               transition: 0.2s;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               gap: 8px;
+               margin-top: 15px;
+          }
+
+          .btn-primary:hover {
+               background-color: #1ed760;
+               transform: scale(1.03);
+          }
+
+          /* 下方歌詞區 */
+          .lyric-bottom {
+               display: block;
+               margin-top: 15px;
+               background-color: #242424;
+               border-radius: 12px;
+               padding: 20px 15px;
+               max-height: 200px;
+               overflow-y: auto;
+               font-size: 13.5px;
+               color: #e5e5e5;
+               line-height: 2.2;
+               white-space: pre-line;
+               text-align: center;
+               border: 1px solid #282828;
+          }
+
+          .lyric-bottom::-webkit-scrollbar {
+               width: 6px;
+          }
+          .lyric-bottom::-webkit-scrollbar-thumb {
+               background-color: #555;
+               border-radius: 3px;
+          }
+     </style>
+</head>
+
+<body>
+
+     <div class="box">
+          
+          <div class="player-top">
+               <div class="cover-container">
+                    <img id="myImg" class="album-cover" src="https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?w=200" alt="封面">
+                    
+                    <button type="button" id="playBtn" class="play-overlay-btn">▶️</button>
+                    
+                    <audio id="myAudio"></audio>
+               </div>
+
+               <p>
+                    🎵 請輸入歌曲名稱：
+                    <input type="text" id="myText" value="愛人錯過" placeholder="輸入歌名，按下方按鈕載入音樂...">
+               </p>
+               <p>
+                    🎤 歌手名稱：
+                    <input type="text" id="myName" value="" placeholder="等待搜尋..." readonly>
+               </p>
+               <p>
+                    <button type="button" id="myBtn" class="btn-primary">
+                         <span>🔍</span> 雲端聯網搜尋 (SEARCH)
+                    </button>
+               </p>
+          </div>
+
+          <div id="mySpan" class="lyric-bottom">
+               🟢 <b>真實音樂播放系統已就緒</b><br>
+               輸入歌名並點擊「雲端聯網搜尋」載入音樂。載入成功後，點擊封面右下角的 <b>🟢 綠色圓鈕</b> 就可以直接播放 30 秒真實副歌喔！
+          </div>
+
+     </div>
+
+     <script>
+          // 1. 綁定 HTML 畫面元件
+          let myName = document.querySelector('#myName'); 
+          let myText = document.querySelector('#myText'); 
+          let myBtn = document.querySelector('#myBtn');    
+          let mySpan = document.querySelector('#mySpan');  
+          let myImg = document.querySelector('#myImg');    
+          
+          let myAudio = document.querySelector('#myAudio'); // 綁定隱藏的音訊元件
+          let playBtn = document.querySelector('#playBtn'); // 綁定綠色圓形播放鈕
+
+          // 2. 監聽「搜尋按鈕」：上網撈資料與音樂網址
+          myBtn.addEventListener('click', function () {
+               let getSongName = myText.value.trim(); 
+               
+               if (getSongName === "") {
+                    alert("請先輸入歌曲名稱喔！");
+                    return;
+               }
+
+               // 搜尋時，先暫停原本可能正在放的音樂，並重置播放鈕外觀
+               myAudio.pause();
+               playBtn.innerText = "▶️";
+
+               myName.value = "音樂載入中...";
+               mySpan.innerText = "⏳ 正在從雲端音樂庫提取真實 30 秒音訊檔與歌手資訊...";
+
+               let apiUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(getSongName)}&media=music&country=TW&limit=1`;
+
+               fetch(apiUrl)
+                    .then(function (response) {
+                         if (response.ok) return response.json();
+                         throw new Error('網路回應失敗');
+                    })
+                    .then(function (data) {
+                         if (data.resultCount === 0) {
+                              myName.value = "查無此歌";
+                              mySpan.innerText = `❌ 找不到「${getSongName}」的音樂檔案。`;
+                              return;
+                         }
+
+                         let songInfo = data.results[0];
+                         let realArtist = songInfo.artistName;       
+                         let realAlbum = songInfo.collectionName;   
+                         let realCover = songInfo.artworkUrl100.replace("100x100bb", "400x400bb"); 
+                         
+                         // 🎯 【關鍵大突破】：抓取 Apple 伺服器提供的 30 秒 .m4a 音訊檔案網址
+                         let musicPreviewUrl = songInfo.previewUrl; 
+
+                         // 塞入資料與圖片
+                         myName.value = realArtist; 
+                         myImg.src = realCover;     
+
+                         // 🎯 將音樂網址強行灌入隱藏的 <audio> 標籤中！
+                         myAudio.src = musicPreviewUrl;
+
+                         // 提示文字更新，導引使用者去按綠色按鈕
+                         let generatedLyrics = `🎧 歌曲載入成功：《${getSongName}》\n🎤 領銜主唱：${realArtist}\n💿 收錄專輯：《${realAlbum}》\n───────────────────\n\n🟢 【音樂已就緒！】\n請點擊封面右下角的 🟢 綠色圓形按鈕開始播放！\n\n【動感即時歌詞】\n我輸入了這首《${getSongName}》\n期待著第二個欄位 抓出主唱\n是你嗎 ${realArtist} 的歌聲在迴盪...`;
+
+                         mySpan.innerText = generatedLyrics;
+                         mySpan.scrollTop = 0; 
+                    })
+                    .catch(function (error) {
+                         console.error(error);
+                         myName.value = "搜尋失敗";
+                         mySpan.innerText = "❌ 聯網失敗，請檢查網路。";
+                    });
+          });
+
+          // 3. 監聽「🟢 圓形播放按鈕」：控制音樂的播放與暫停
+          playBtn.addEventListener('click', function () {
+               // 防呆：如果使用者還沒搜尋歌曲，音訊標籤裡面沒有網址
+               if (!myAudio.src) {
+                    alert("請先輸入歌名並按下「雲端聯網搜尋」載入歌曲喔！");
+                    return;
+               }
+
+               // 💡 判斷當下狀態：如果音樂正在播 (paused === false)
+               if (!myAudio.paused) {
+                    myAudio.pause();       // 執行暫停
+                    playBtn.innerText = "▶️"; // 圖標換回播放
+                    mySpan.innerText = "⏸️ 音樂已暫停";
+               } else {
+                    // 如果音樂是暫停的，就執行播放
+                    myAudio.play();
+                    playBtn.innerText = "⏸️"; // 圖標換成暫停
+                    mySpan.innerText = "🎵 真實 30 秒副歌精彩試聽中...\n(基於版權保護，公開 API 僅提供高清副歌預覽喔！)";
+               }
+          });
+
+          // 4. 自動防呆：當 30 秒音樂播完時，自動把按鈕變回 ▶️
+          myAudio.addEventListener('ended', function() {
+               playBtn.innerText = "▶️";
+               mySpan.innerText = "✨ 試聽結束，可以搜尋下一首歌囉！";
+          });
+     </script>
+
+</body>
+
+</html>

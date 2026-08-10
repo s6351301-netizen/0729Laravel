@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <title>迷子でもいい、前へ進め。- MyGO!!!!! 應援站</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入字體 -->
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- 導覽列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 py-3 justify-content-between">
+        <a href="./index.html" class="text-decoration-none text-reset">
+            <div class="logo fw-bold text-white fs-4">MyGO!!!!!</div>
+        </a>
+        <ul>
+            <li><a href="./login.html#about">簡介</a></li>
+            <li><a href="./login.html#members">成員</a></li>
+            <li><a href="./login.html#classic">經典</a></li>
+            <li><a href="./admin.html">我也要一輩子</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主要內容區塊 -->
+    <main class="container my-auto py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5 text-center">
+                <!-- 質感卡片容器 -->
+                <div class="card shadow-sm border-0 p-5 rounded-4 bg-white">
+                    <!-- 成功打勾動畫圖示（綠色） -->
+                    <div class="mb-4 text-success">
+                        <i class="bi bi-check-circle-fill display-1"></i>
+                    </div>
+
+                    <h2 class="fw-bold mb-3">團員資訊更新完成！</h2>
+                    <p class="text-muted mb-4">既然說好了一輩子，資料就會好好幫你保存下來。</p>
+
+                    <!-- 倒數提示小字 -->
+                    <p class="text-secondary small mb-4">
+                        網頁將在 <span id="countdown" class="fw-bold text-primary">5</span> 秒後自動返回管理後台...
+                    </p>
+
+                    <!-- 按鈕回首頁（改為區塊寬度按鈕） -->
+                    <div class="d-grid gap-2">
+                        <a href="./admin.html" class="btn btn-primary btn-lg rounded-pill py-2.5">
+                            立刻返回管理後台
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="mt-auto py-3 bg-dark text-center text-white-50 fs-7">
+        <p class="mb-0">&copy; 2024 MyGO!!!!! Fan Site - 一輩子不離不棄</p>
+    </footer>
+
+    <!-- 自動倒數跳轉的 JavaScript 腳本 -->
+    <script>
+        let seconds = 5;
+        const countdownEl = document.getElementById('countdown');
+
+        const interval = setInterval(() => {
+            seconds--;
+            countdownEl.textContent = seconds;
+            if (seconds <= 0) {
+                clearInterval(interval);
+                window.location.href = './admin.html'; // 5秒到期自動跳轉
+            }
+        }, 1000);
+    </script>
+
+</body>
+
+</html>

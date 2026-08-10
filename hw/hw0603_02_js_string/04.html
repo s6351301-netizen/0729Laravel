@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宗族世系錄與祈願樹系統</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        /* 莊嚴紺青背景，搭配古典金色絲綢紋理效果 */
+        body {
+            background-color: #121824;
+            background-image: 
+                linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            margin: 0;
+            padding: 40px 20px;
+            font-family: "Noto Serif TC", "Noto Serif CJK TC", "Songti TC", serif;
+            color: #f1e6cd;
+        }
+
+        /* 主標題：彰顯宗族氣勢 */
+        .main-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .main-title h1 {
+            font-size: 28px;
+            color: #d4af37;
+            letter-spacing: 4px;
+            margin: 0 0 10px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .main-title p {
+            font-size: 14px;
+            color: #8c9cb3;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        /* 頂部：祖訓載錄核心卡片（古典方正） */
+        .box {
+            width: 520px;
+            background-color: #1a2132;
+            border-radius: 4px;
+            text-align: center;
+            padding: 40px 32px;
+            border: 4px double #d4af37;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .box::before, .box::after {
+            content: "🏮";
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.8;
+        }
+        .box::before { top: 15px; left: 20px; }
+        .box::after { bottom: 15px; right: 20px; }
+
+        p { margin: 20px 0; }
+
+        input, button {
+            padding: 12px 18px;
+            font-size: 16px;
+            border-radius: 4px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        /* 輸入框：沉穩典雅 */
+        input {
+            width: 85%;
+            border: 1px solid #8a7129;
+            background-color: #fbf9f3;
+            color: #1a1a1a;
+            text-align: center;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        input:focus {
+            border-color: #d4af37;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+            background-color: #ffffff;
+        }
+
+        /* 廟堂暗紅按鈕 */
+        button {
+            background: linear-gradient(135deg, #7c1a1a 0%, #4a0d0d 100%);
+            color: #f4efe2;
+            border: 1px solid #d4af37;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            width: 75%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 3px;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #962323 0%, #5e1212 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        /* 宣紙質感即時顯示框 */
+        #mySpan {
+            display: block;
+            margin-top: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2b221a;
+            line-height: 1.8;
+            background-color: #f5f0e1;
+            background-image: radial-gradient(rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 8px 8px;
+            padding: 20px;
+            border-radius: 2px;
+            border: 1px solid #b89b3c;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ======================================================= */
+        /* 下方獨立區塊：宗族祈願牆（許願樹） */
+        /* ======================================================= */
+        .tree-section {
+            width: 800px;
+            max-width: 100%;
+            background-color: #161d2c;
+            border: 1px solid #4a3b1a;
+            border-top: 4px solid #d4af37; /* 黃金頂條頂天立地 */
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border-radius: 4px;
+        }
+
+        .tree-title {
+            text-align: center;
+            font-size: 22px;
+            color: #d4af37;
+            letter-spacing: 4px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+        /* 裝飾線 */
+        .tree-title::after {
+            content: "";
+            display: block;
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 8px auto 0 auto;
+        }
+
+        /* 許願樹容器（掛載木牌的地方） */
+        .wish-tree-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            min-height: 200px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            border: 1px dashed rgba(212, 175, 55, 0.2);
+        }
+
+        /* 金色宗族祈願木牌（繪馬風格） */
+        .wish-tag {
+            background-color: #fcf6e8;
+            color: #221a11;
+            border-left: 5px solid #8c2525; /* 左側硃砂紅邊 */
+            border-top: 1px solid #d4af37;
+            border-right: 1px solid #d4af37;
+            border-bottom: 1px solid #d4af37;
+            padding: 15px;
+            width: 220px;
+            border-radius: 2px;
+            box-shadow: 3px 5px 12px rgba(0, 0, 0, 0.4);
+            position: relative;
+            animation: hangWish 0.6s ease-out forwards;
+            text-align: left;
+        }
+
+        /* 木牌上方的掛繩孔孔洞意象 */
+        .wish-tag::before {
+            content: "⦿";
+            position: absolute;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #8c2525;
+            font-size: 12px;
+        }
+
+        .wish-tag .member-name {
+            font-size: 14px;
+            color: #7a601a;
+            border-bottom: 1px dashed #d4af37;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .wish-tag .member-content {
+            font-size: 15px;
+            line-height: 1.5;
+            font-weight: 500;
+            word-wrap: break-word;
+        }
+
+        /* 莊嚴掛上木牌的誕生動畫 */
+        @keyframes hangWish {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px) rotate(-3deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-title">
+        <h1>江左世澤 袓德流芳</h1>
+        <p>— 派下員袓訓登錄與祈願壁 —</p>
+    </div>
+
+    <div class="box">
+        <p>
+            <input type="text" id="name" placeholder="請輸入裔孫（派下員）姓名..." value="王崇德">
+        </p>
+        <p>
+            <input type="text" id="text" placeholder="請輸入祈願內容或遵行袓訓..." value="敦親睦族，祈願合族平安，世代昌盛">
+        </p>
+        <p>
+            <button type="button" id="myBtn">敬誌 登錄並奉掛祈願牆</button>
+        </p>
+
+        <span id="mySpan">現任錄入：裔孫 王崇德 謹誌</span>
+    </div>
+
+    <div class="tree-section">
+        <div class="tree-title">宗族祈願牆（許願樹）</div>
+        <div class="wish-tree-container" id="wishTree">
+            <div class="wish-tag">
+                <div class="member-name">裔孫 林長青 敬誌</div>
+                <div class="member-content">祈願家族子孫各個學業有成，光宗耀祖。</div>
+            </div>
+            <div class="wish-tag">
+                <div class="member-name">裔孫 陳美蘭 敬誌</div>
+                <div class="member-content">惟願母族繁衍昌盛，長幼安康，歲歲平安。</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const nameInput = document.getElementById('name');
+        const textInput = document.getElementById('text');
+        const myBtn = document.getElementById('myBtn');
+        const mySpan = document.getElementById('mySpan');
+        const wishTree = document.getElementById('wishTree');
+
+        myBtn.addEventListener('click', function () {
+            let nameValue = nameInput.value.trim();
+            let textValue = textInput.value.trim();
+
+            if (nameValue === "" || textValue === "") {
+                alert("【系統提示】請務必將派下員姓名與祈願內容填寫完整，以昭誠心。");
+                return;
+            }
+
+            // 1. 更新上方宣紙展示框
+            mySpan.textContent = `最新錄入：裔孫 ${nameValue} 謹誌`;
+
+            // 2. 核心新功能：動態生成「祈願木牌（許願樹分枝）」並掛到牆上
+            // 創建木牌容器
+            const newTag = document.createElement('div');
+            newTag.className = 'wish-tag';
+
+            // 創建姓名區塊
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'member-name';
+            nameDiv.textContent = `裔孫 ${nameValue} 敬誌`;
+
+            // 創建內容區塊
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'member-content';
+            contentDiv.textContent = textValue;
+
+            // 組合木牌
+            newTag.appendChild(nameDiv);
+            newTag.appendChild(contentDiv);
+
+            // 將新木牌掛在祈願牆的最前面（最新交上去的掛在顯眼處）
+            wishTree.insertBefore(newTag, wishTree.firstChild);
+
+            // 清空輸入框內容，方便下一位宗親輸入
+            textInput.value = "";
+        });
+    </script>
+</body>
+
+</html>

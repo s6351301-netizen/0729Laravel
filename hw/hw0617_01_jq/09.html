@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>和風萌寵智能計算機</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        /* 全域基本重設 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 網格背景：日系和風粉嫩點點風 */
+        body {
+            min-height: 100vh;
+            background: #fdf6ec;
+            background-image: radial-gradient(#fbc4b4 12%, transparent 12%);
+            background-size: 30px 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Microsoft JhengHei", sans-serif;
+            padding: 20px;
+        }
+
+        /* 主工作區：左右並排，維持 90% 寬度黃金比例 */
+        .workspace {
+            display: flex;
+            gap: 30px;
+            max-width: 1000px;
+            width: 90%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* 和風精緻卡片基礎樣式 */
+        .cute-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 4px solid #fbb997;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(251, 150, 110, 0.15);
+            padding: 25px;
+            flex: 1;
+            min-width: 340px;
+            max-width: 460px;
+            position: relative;
+        }
+
+        /* 卡片裝飾：貓狗腳印 */
+        .cute-card::before {
+            content: "🐾";
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 50px;
+            color: rgba(251, 150, 110, 0.08);
+            pointer-events: none;
+        }
+
+        /* 卡片頂部標頭 */
+        .panel-header {
+            text-align: center;
+            margin-bottom: 20px;
+            background: #fff5f2;
+            padding: 12px;
+            border-radius: 15px;
+            border: 2px dashed #f4a7b9;
+        }
+
+        .panel-header h2 {
+            color: #c84d31;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .panel-header p {
+            font-size: 12px;
+            color: #8c7e77;
+        }
+
+        /* 輸入框通用樣式 */
+        .input-field {
+            width: 100%;
+            height: 42px;
+            border: 2px solid #ffd6ca;
+            border-radius: 15px;
+            padding: 0 15px;
+            font-size: 16px;
+            outline: none;
+            background: #fffdfc;
+            text-align: center;
+            color: #4a221b;
+            margin-bottom: 12px;
+            transition: 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: #fb966e;
+            background: #ffffff;
+        }
+
+        /* 下拉選單特別居中 */
+        select.input-field {
+            text-align-last: center;
+            font-weight: bold;
+        }
+
+        /* 提交按鈕 */
+        .action-btn {
+            width: 100%;
+            height: 45px;
+            background: linear-gradient(135deg, #fbc4b4, #fb966e);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(251, 150, 110, 0.2);
+            transition: 0.2s;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        /* 結果顯示燈箱 */
+        .output-container {
+            margin-top: 15px;
+            background: #fffaf7;
+            border: 2px solid #ffd6ca;
+            border-radius: 15px;
+            height: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #c84d31;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        /* --- 右面板：實體操作計算機界面 --- */
+        .calc-screen {
+            width: 100%;
+            height: 65px;
+            background: #faf6f0;
+            border: 3px solid #ffd6ca;
+            border-radius: 15px;
+            padding: 10px 15px;
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .calc-screen .current {
+            font-size: 26px;
+            font-weight: bold;
+            color: #4a221b;
+            line-height: 45px;
+        }
+
+        /* 計算機按鍵網格：完全對應標準 4x5 結構 */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        /* 按鈕基本外觀 */
+        .calc-btn {
+            height: 46px;
+            border: 2px solid #ffebe5;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #ffffff;
+            color: #5c3a31;
+            transition: all 0.1s;
+        }
+
+        .calc-btn:hover {
+            background: #fff5f2;
+            border-color: #fbc4b4;
+        }
+
+        /* 特殊按鍵顏色分類 */
+        .calc-btn.op {
+            background: #fffcf0;
+            color: #d05a3f;
+        }
+
+        .calc-btn.clear {
+            background: #fff0f0;
+            color: #d9534f;
+        }
+
+        .calc-btn.equal {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+
+        .calc-btn.equal:hover {
+            background: #155cb4;
+        }
+
+        /* 手機版自動適應 */
+        @media (max-width: 768px) {
+            .workspace {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .cute-card {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="workspace">
+
+        <div class="cute-card">
+            <div class="panel-header">
+                <h2>🐶 柴犬波波 表單工作坊</h2>
+                <p>標準的兩數自訂四則運算</p>
+            </div>
+
+            <div>
+                <input type="text" class="input-field" id="num1" value="200" placeholder="第一個數字 (num1?)">
+                <input type="text" class="input-field" id="num2" value="100" placeholder="第二個數字 (num2?)">
+
+                <select class="input-field" id="opt">
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value="*">*</option>
+                    <option value="/">/</option>
+                </select>
+
+                <button type="button" class="action-btn" id="myBtn">送出資料 (Submit)</button>
+            </div>
+
+            <div class="output-container">
+                <span id="mySpan">1 + 1 = 2</span>
+            </div>
+        </div>
+
+        <div class="cute-card">
+            <div class="panel-header">
+                <h2>🐱 三花貓貓 實體面板計算機</h2>
+                <p>與對照圖一模一樣的 3、6、9、AC 經典佈局</p>
+            </div>
+
+            <div class="calc-screen">
+                <div class="current" id="calcCurrent">0</div>
+            </div>
+
+            <div class="calc-grid">
+                <button class="calc-btn op" data-val="(">(</button>
+                <button class="calc-btn op" data-val=")">)</button>
+                <button class="calc-btn op" data-val="%">%</button>
+                <button class="calc-btn clear" id="calcClear">AC</button>
+
+                <button class="calc-btn num" data-val="7">7</button>
+                <button class="calc-btn num" data-val="8">8</button>
+                <button class="calc-btn num" data-val="9">9</button>
+                <button class="calc-btn op" data-val="/">÷</button>
+
+                <button class="calc-btn num" data-val="4">4</button>
+                <button class="calc-btn num" data-val="5">5</button>
+                <button class="calc-btn num" data-val="6">6</button>
+                <button class="calc-btn op" data-val="*">×</button>
+
+                <button class="calc-btn num" data-val="1">1</button>
+                <button class="calc-btn num" data-val="2">2</button>
+                <button class="calc-btn num" data-val="3">3</button>
+                <button class="calc-btn op" data-val="-">-</button>
+
+                <button class="calc-btn num" data-val="0">0</button>
+                <button class="calc-btn num" data-val=".">.</button>
+                <button class="calc-btn equal" id="calcEqual">=</button>
+                <button class="calc-btn op" data-val="+">+</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            // ==========================================
+            // 邏輯一：左邊柴犬表單運算（沿用您的程式邏輯）
+            // ==========================================
+            const myBtn = $('#myBtn');
+            const num1 = $('#num1');
+            const num2 = $('#num2');
+            const opt = $('#opt');
+            const mySpan = $('#mySpan');
+
+            myBtn.click(function (e) {
+                let getNum1 = Number(num1.val());
+                let getNum2 = Number(num2.val());
+                let getOpt = opt.val();
+                let result = 0;
+
+                switch (getOpt) {
+                    case "+": result = getNum1 + getNum2; break;
+                    case "-": result = getNum1 - getNum2; break;
+                    case "*": result = getNum1 * getNum2; break;
+                    case "/": result = getNum1 / getNum2; break;
+                }
+
+                let tmpText = `${getNum1} ${getOpt} ${getNum2} = ${result}`;
+                mySpan.text(tmpText);
+            });
+
+            // ==========================================
+            // 邏輯二：右邊貓貓標準面板實體計算機
+            // ==========================================
+            let currentInput = "0";
+
+            function updateScreen() {
+                $('#calcCurrent').text(currentInput);
+            }
+
+            // 數字與運算子按鍵點擊
+            $('.calc-btn.num, .calc-btn.op').click(function () {
+                let val = $(this).attr('data-val');
+
+                if (currentInput === "0" && !isNaN(val)) {
+                    currentInput = val; // 如果原本是0，直接覆蓋
+                } else {
+                    currentInput += val; // 字串串接
+                }
+                updateScreen();
+            });
+
+            // 清除鍵 AC
+            $('#calcClear').click(function () {
+                currentInput = "0";
+                updateScreen();
+            });
+
+            // 等於鍵 = （執行安全解析運算）
+            $('#calcEqual').click(function () {
+                try {
+                    // 利用 JavaScript 的 eval 計算字串算式，並防範浮點數誤差
+                    let evalResult = eval(currentInput);
+                    currentInput = Number(evalResult.toFixed(6)).toString();
+                } catch (e) {
+                    currentInput = "Error"; // 若算式不合法顯示錯誤
+                }
+                updateScreen();
+            });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <title>日和饗宴 - 日式小清新輕食</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #FAF6F0;
+            /* 日式和風米白 */
+            color: #4A4A4A;
+            font-family: "Helvetica Neue", Arial, "Heiti TC", "Microsoft JhengHei", sans-serif;
+        }
+
+        .navbar {
+            background-color: #8E9F85 !important;
+            /* 抹茶綠 */
+        }
+
+        /* 12張食物一排輪播容器 */
+        .food-track-container {
+            position: relative;
+            background: #FFF;
+            border: 1px solid #EAE3D2;
+            border-radius: 16px;
+            padding: 20px 50px;
+        }
+
+        .food-track {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            gap: 15px;
+        }
+
+        .food-track::-webkit-scrollbar {
+            display: none;
+            /* 隱藏滾動條 */
+        }
+
+        .track-card {
+            min-width: calc(100% / 12 - 14px);
+            /* 12張一排完美均分 */
+            flex-shrink: 0;
+            text-align: center;
+        }
+
+        @media (max-width: 1400px) {
+            .track-card {
+                min-width: calc(100% / 8 - 14px);
+            }
+
+            /* 大螢幕一排8張 */
+        }
+
+        @media (max-width: 1200px) {
+            .track-card {
+                min-width: calc(100% / 6 - 13px);
+            }
+
+            /* 中螢幕一排6張 */
+        }
+
+        @media (max-width: 768px) {
+            .track-card {
+                min-width: calc(100% / 3 - 10px);
+            }
+
+            /* 手機一排3張 */
+        }
+
+        .track-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid #EAE3D2;
+            transition: transform 0.2s;
+        }
+
+        .track-img:hover {
+            transform: scale(1.05);
+        }
+
+        /* 左右控制按鈕 < 與 > */
+        .track-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-color: #8E9F85;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .track-btn-prev {
+            left: 10px;
+        }
+
+        .track-btn-next {
+            right: 10px;
+        }
+
+        .track-btn:hover {
+            background-color: #728269;
+        }
+
+        /* 商品卡片與樣式 */
+        .product-card {
+            background: #FFF;
+            border: 1px solid #EAE3D2;
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .btn-japanese {
+            background-color: #D6A284;
+            /* 烘焙橘 */
+            color: white;
+            border: none;
+        }
+
+        .btn-japanese:hover {
+            background-color: #C08A6C;
+            color: white;
+        }
+
+        .qr-img {
+            width: 130px;
+            height: 130px;
+            border: 4px solid #FFF;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 導覽列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">🍃 日和饗宴</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">首頁</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#brand-story">品牌故事</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#food-gallery">美味圖鑑</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#delicious-menu">美味選單</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#store-info">店家資訊</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#shopping-cart">配送與購物</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">管理後台 (Admin)</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 12張食物一排輪播 (美味圖鑑) -->
+    <div class="container my-5" id="food-gallery">
+        <div class="text-center mb-4">
+            <span class="text-muted tracking-widest fs-6">— Food Gallery —</span>
+            <h3 class="fw-bold mt-2" style="color: #607254;">日式小清新美味圖鑑 (12張一排輪播)</h3>
+        </div>
+        <div class="food-track-container shadow-sm">
+            <button class="track-btn track-btn-prev" onclick="scrollTrack(-1)">&lt;</button>
+            <div class="food-track" id="foodTrack">
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物1">
+                    <div class="small mt-1 text-muted">翼板牛排</div>
+                </div>
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物2">
+                    <div class="small mt-1 text-muted">特製披薩</div>
+                </div>
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物3">
+                    <div class="small mt-1 text-muted">羅勒義麵</div>
+                </div>
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物4">
+                    <div class="small mt-1 text-muted">時蔬沙拉</div>
+                </div>
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物5">
+                    <div class="small mt-1 text-muted">豚骨拉麵</div>
+                </div>
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物6">
+                    <div class="small mt-1 text-muted">焦糖鬆餅</div>
+                </div>
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物7">
+                    <div class="small mt-1 text-muted">海鮮酸辣湯</div>
+                </div>
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1476124369491-e7addf5db371?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物8">
+                    <div class="small mt-1 text-muted">松露燉飯</div>
+                </div>
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物9">
+                    <div class="small mt-1 text-muted">鹽烤明蝦</div>
+                </div>
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物10">
+                    <div class="small mt-1 text-muted">紅酒燉牛肉</div>
+                </div>
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物11">
+                    <div class="small mt-1 text-muted">宇治抹茶塔</div>
+                </div>
+                <div class="track-card">
+                    <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=300&q=80"
+                        class="track-img" alt="食物12">
+                    <div class="small mt-1 text-muted">手作烤布丁</div>
+                </div>
+            </div>
+            <button class="track-btn track-btn-next" onclick="scrollTrack(1)">&gt;</button>
+        </div>
+    </div>
+
+    <!-- 品牌故事 (300字) -->
+    <div class="container my-5 py-3" id="brand-story">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&w=800&q=80"
+                    class="img-fluid rounded-4 shadow" alt="日式餐桌">
+            </div>
+            <div class="col-lg-6">
+                <span class="text-muted text-uppercase tracking-widest fs-7">Our Story</span>
+                <h2 class="fw-bold mt-2 mb-4" style="color: #607254;">「日和饗宴」的品牌故事</h2>
+                <p class="lh-lg" style="text-align: justify;">
+                    「日和饗宴」起源於一趟京都的尋味之旅。在質樸的町家木屋中，我們深深體會到「一期一會」的餐飲理念：每一次為您烹調，都當作是此生僅有一次的慎重相遇。我們摒棄繁瑣的人工添加，堅持選用與在地契作農夫合作的新鮮旬味，用純粹的柴魚、乾昆布與海鹽，溫柔喚醒食材本身的甘甜。我們用心雕琢每一道料理，從餐器擺盤到上菜溫度，皆融合了傳統美學與現代輕食的健康概念。無論是清晨的第一碗溫熱豚汁，抑或是午後充滿手作溫度的烤布丁，我們將生活中的細碎美好揉入餐點，化為餐桌上的陣陣暖風，期望能把這份悠然舒適的日系溫度，溫柔傳遞到您的心中。
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 店家資訊 (修正了錨點 ID 無法跳轉的錯誤) -->
+    <div class="py-5" style="background-color: #EAE3D2;" id="store-info">
+        <div class="container text-dark">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6 order-lg-2">
+                    <div class="d-flex gap-4 justify-content-center">
+                        <div class="text-center">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://facebook.com"
+                                class="qr-img" alt="FB QR">
+                            <div class="small mt-2 fw-bold text-muted">Facebook 專頁</div>
+                        </div>
+                        <div class="text-center">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://line.me"
+                                class="qr-img" alt="LINE QR">
+                            <div class="small mt-2 fw-bold text-muted">LINE 官方預約</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <span class="text-muted text-uppercase tracking-widest fs-7">Store Info</span>
+                    <h2 class="fw-bold mt-2 mb-4" style="color: #607254;">溫馨的用餐天地（店家資訊）</h2>
+                    <p class="lh-lg mb-4" style="text-align: justify;">
+                        日和饗宴旗艦店座落於鬧中取靜的林蔭大道旁，木造的外觀、明亮的玻璃窗，伴隨內部的暖黃燈光。店內特別引入自然光設計，搭配綠意盎然的盆栽造景，讓您在水泥叢林中，也能找到一處安心休憩的森林角落。我們秉持嚴格的衛生管理與貼心的日式桌邊服務，不論晴雨都準備了當季最頂級食材，讓美味洗滌您一整日的疲憊。無論是一個人享受安靜的午後，或與摯愛共享美味，這裡都是您最舒適的選擇[cite:
+                        1]。
+                    </p>
+                    <ul class="list-unstyled lh-lg text-secondary mb-0">
+                        <li>📍 <strong>店鋪地址：</strong>新北市泰山區工專路 84 號[cite: 1]</li>
+                        <li>📞 <strong>聯絡電話：</strong>(02) 2901-8218[cite: 1]</li>
+                        <li>🕒 <strong>營業時間：</strong>週二至週日 11:30 - 20:30 (每週一公休)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12款商品卡片區 -->
+    <div class="container my-5 py-4" id="delicious-menu">
+        <div class="text-center mb-5">
+            <span class="text-muted tracking-widest fs-6">— Delicious Menu —</span>
+            <h2 class="fw-bold mt-2 text-dark">主廚手作・12款旬味佳餚</h2>
+        </div>
+        <div class="row g-4" id="menu-container">
+            <!-- 由 JS 動態注入 12 款商品 -->
+        </div>
+    </div>
+
+    <!-- 購物清單與宅配表單 -->
+    <div class="py-5" style="background-color: #F3EDE0; border-top: 1px solid #E5DEC9;" id="shopping-cart">
+        <div class="container">
+            <div class="row g-5">
+                <!-- 購物籃 -->
+                <div class="col-lg-6">
+                    <h3 class="fw-bold mb-4" style="color: #607254;">🛒 您的點餐購物清單</h3>
+                    <div class="bg-white p-4 rounded-4 shadow-sm border border-light">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr class="text-secondary">
+                                    <th>品名</th>
+                                    <th>單價</th>
+                                    <th width="120">數量</th>
+                                    <th class="text-end">小計</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-items">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">您的購物籃目前是空的，快點擊上方「加入點餐」吧！</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <hr>
+                        <div class="text-end">
+                            <p class="mb-1 text-secondary">餐點總額: <span class="fw-bold text-dark">NT$ <span
+                                        id="cart-subtotal">0</span></span></p>
+                            <p class="mb-1 text-secondary">宅配運費: <span class="fw-bold text-dark">NT$ <span
+                                        id="cart-shipping">150</span></span> <small class="text-danger">(滿 $2000
+                                    免運)</small></p>
+                            <h4 class="fw-bold mt-3" style="color: #607254;">結帳總金額: <span class="text-danger">NT$ <span
+                                        id="cart-total">0</span></span></h4>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 配送表單 -->
+                <div class="col-lg-6">
+                    <h3 class="fw-bold mb-4" style="color: #607254;">📦 填寫配送資料</h3>
+                    <form onsubmit="event.preventDefault(); alert('預約配送成功！我們會盡速處理您的新鮮餐點。');"
+                        class="bg-white p-4 rounded-4 shadow-sm border border-light">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">收件人姓名</label>
+                            <input type="text" class="form-control" placeholder="例：林小和" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">聯絡電話</label>
+                            <input type="tel" class="form-control" placeholder="例：0912-345-678" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">配送地址</label>
+                            <input type="text" class="form-control" placeholder="例：台北市大安區新生南路..." required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">備註或期望配送時段</label>
+                            <textarea class="form-control" rows="2" placeholder="例：請於傍晚時段配送"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-japanese btn-lg w-100 fw-bold mt-2">確認送出配送訂單</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white-50 text-center py-4">
+        <p class="mb-0">&copy; 2026 日和饗宴 輕食餐飲品牌 共同串接版權所有</p>
+    </footer>
+
+    <script>
+        // 輪播左右滑動
+        function scrollTrack(direction) {
+            const track = document.getElementById('foodTrack');
+            const scrollAmount = 300;
+            track.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+
+        // 12 款精選食物資訊
+        const foods = [
+            { id: 1, name: "蜜汁香烤翼板牛排", price: 580, desc: "精選熟成翼板牛，抹上主廚蜜汁特調，烘烤香嫩無比。", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" },
+            { id: 2, name: "小清新瑪格麗特披薩", price: 320, desc: "手捍薄皮、新鮮番茄與特選羅勒葉，濃郁莫札瑞拉起司。", img: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80" },
+            { id: 3, name: "野菇培根羅勒義麵", price: 350, desc: "現採香草製成新鮮青醬，搭配厚切煙燻培根與鮮甜野菇。", img: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=400&q=80" },
+            { id: 4, name: "極鮮鮭魚時蔬沙拉", price: 290, desc: "進口生食級挪威鮭魚，佐低卡堅果與清爽和風檸檬醬汁。", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80" },
+            { id: 5, name: "醬燒豚骨慢熬拉麵", price: 260, desc: "溫潤鮮美的每日現熬豚骨高湯，鋪上手作焦香梅花炙燒叉燒。", img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=400&q=80" },
+            { id: 6, name: "法式蕉香焦糖鬆餅", price: 220, desc: "外酥內軟、現點現烘，配上香甜熟香蕉與香醇冰淇淋。", img: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=400&q=80" },
+            { id: 7, name: "泰式青檸海鮮酸辣湯", price: 420, desc: "天然香茅與檸檬葉微酸辣配方，內含野生大草蝦與豐厚文蛤。", img: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=400&q=80" },
+            { id: 8, name: "松露生食干貝燉飯", price: 460, desc: "義式飽滿米粒，極高溫炙燒生食級干貝，襯托奢華松露香氣。", img: "https://images.unsplash.com/photo-1476124369491-e7addf5db371?auto=format&fit=crop&w=400&q=80" },
+            { id: 9, name: "迷迭海鹽黃金明蝦", price: 480, desc: "新鮮野生明蝦，香抹地中海粗海鹽與新鮮迷迭香火候香烤。", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRG4Jt4MOfS6k7quOqKRriay6b-WmKKnkuk11vkxX6szg&s=10" },
+            { id: 10, name: "勃根地紅酒慢燉牛肉", price: 520, desc: "特選牛腱肉與陳年紅酒、紅蘿蔔長時間文火精慢燉，軟嫩入味。", img: "https://images.unsplash.com/photo-1534939561126-855b8675edd7?auto=format&fit=crop&w=400&q=80" },
+            { id: 11, name: "京都宇治熔岩抹茶塔", price: 180, desc: "酥脆手作抹茶杏仁塔殼，溫熱爆漿出香濃濃醇微苦抹茶醬。", img: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=400&q=80" },
+            { id: 12, name: "手工昭和焦糖香草布丁", price: 120, desc: "完全不加一滴水，精選農場放牧雞蛋，完美昭和微苦糖蜜口感。", img: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=400&q=80" }
+        ];
+
+        // 渲染 12 個食物商品
+        const container = document.getElementById("menu-container");
+        foods.forEach(f => {
+            container.innerHTML += `
+                <div class="col-sm-6 col-md-4 col-lg-3">
+                    <div class="product-card h-100 shadow-sm d-flex flex-column">
+                        <img src="${f.img}" class="product-img" alt="${f.name}">
+                        <div class="card-body d-flex flex-column p-3">
+                            <h6 class="fw-bold mb-1 text-dark text-truncate">${f.name}</h6>
+                            <p class="text-muted small flex-grow-1 mb-2" style="font-size: 0.8rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${f.desc}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="text-danger fw-bold">NT$ ${f.price}</span>
+                                <button onclick="addToCart(${f.id})" class="btn btn-japanese btn-sm fw-bold px-3">加入點餐</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        // 購物車功能邏輯
+        let cart = {};
+
+        window.addToCart = function (id) {
+            cart[id] = (cart[id] || 0) + 1;
+            renderCart();
+        }
+
+        window.updateQty = function (id, offset) {
+            cart[id] += offset;
+            if (cart[id] <= 0) delete cart[id];
+            renderCart();
+        }
+
+        function renderCart() {
+            const tbody = document.getElementById("cart-items");
+            tbody.innerHTML = "";
+            let subtotal = 0;
+            const keys = Object.keys(cart);
+
+            if (keys.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted py-4">您的購物籃目前是空的，快點擊上方「加入點餐」吧！</td></tr>`;
+            } else {
+                keys.forEach(id => {
+                    const item = foods.find(f => f.id == id);
+                    const qty = cart[id];
+                    const itemTotal = item.price * qty;
+                    subtotal += itemTotal;
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${item.name}</strong></td>
+                            <td>$${item.price}</td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-secondary py-0" onclick="updateQty(${id}, -1)">-</button>
+                                    <span class="btn btn-light disabled py-0">${qty}</span>
+                                    <button class="btn btn-outline-secondary py-0" onclick="updateQty(${id}, 1)">+</button>
+                                </div>
+                            </td>
+                            <td class="text-end">$${itemTotal}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            // 運費與免運設定
+            const shipping = (subtotal >= 2000 || subtotal === 0) ? 0 : 150;
+            const total = subtotal + shipping;
+
+            document.getElementById("cart-subtotal").innerText = subtotal;
+            document.getElementById("cart-shipping").innerText = shipping;
+            document.getElementById("cart-total").innerText = total;
+        }
+    </script>
+</body>
+
+</html>

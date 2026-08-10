@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幸運生活每一天 - 夢幻和風複利計算機</title>
+    <style>
+        /* ==========================================
+           櫻粉夢幻和風基礎美化
+        ========================================== */
+        body {
+            background-color: #fff0f5;
+            /* 薰衣草櫻粉襯底 */
+            background-image: radial-gradient(#ffb7c5 10%, transparent 11%), radial-gradient(#ffb7c5 10%, transparent 11%);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            /* 可愛日系微點點背景 */
+            font-family: 'PingFang TC', 'Heiti TC', 'Microsoft JhengHei', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 10px;
+            margin: 0;
+        }
+
+        /* 500px 櫻花夢幻大標題看板 */
+        .sakura-title {
+            width: 500px;
+            max-width: 100%;
+            background: linear-gradient(135deg, #ffb7c5, #ffa4b6);
+            /* 盛開櫻花粉 */
+            border: 4px solid #6b5458;
+            /* 和風栗梅色線條 */
+            border-radius: 25px;
+            text-align: center;
+            padding: 18px 0;
+            box-shadow: 0 8px 0 #6b5458;
+            /* 扁平化厚陰影 */
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .sakura-title h1 {
+            margin: 0;
+            font-size: 28px;
+            color: #ffffff;
+            letter-spacing: 5px;
+            text-shadow: 2px 2px 0px #6b5458;
+        }
+
+        /* 裝飾小櫻花 */
+        .sakura-title::before,
+        .sakura-title::after {
+            content: '🌸';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 22px;
+        }
+
+        .sakura-title::before {
+            left: 20px;
+        }
+
+        .sakura-title::after {
+            right: 20px;
+        }
+
+        /* 核心法規警語（朱砂紅溫馨提示） */
+        .warning-bar {
+            width: 640px;
+            max-width: 95%;
+            background-color: #fff5f6;
+            border: 3px dashed #ff8da1;
+            border-radius: 15px;
+            padding: 12px;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 13.5px;
+            color: #d14960;
+            font-weight: bold;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* 主容器 */
+        .main-container {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 660px;
+        }
+
+        /* 和風可愛輸入 Box */
+        .sakura-box {
+            width: 310px;
+            background-color: #ffffff;
+            border: 4px solid #6b5458;
+            border-radius: 24px;
+            padding: 22px 18px;
+            box-sizing: border-box;
+            box-shadow: 0 8px 0 #6b5458;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+        }
+
+        /* Box 標題櫻花襯底 */
+        .sakura-box h3 {
+            margin: 0 0 5px 0;
+            color: #6b5458;
+            font-size: 18px;
+            text-align: center;
+            background-color: #ffe4e8;
+            padding: 6px 0;
+            border-radius: 12px;
+            border: 2px solid #6b5458;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            color: #8a7377;
+            font-weight: bold;
+            padding-left: 4px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            height: 36px;
+            border-radius: 12px;
+            border: 3px solid #6b5458;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #4a3b3d;
+            background-color: #fffdfa;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        input[type="number"]:focus {
+            background-color: #fff0f2;
+        }
+
+        /* 甜美和風按鈕 */
+        .sakura-btn {
+            width: 100%;
+            height: 44px;
+            border-radius: 15px;
+            border: 3px solid #6b5458;
+            font-size: 15px;
+            font-weight: bold;
+            color: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #6b5458;
+            transition: all 0.1s;
+        }
+
+        .sakura-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 0px 0 #6b5458;
+        }
+
+        .btn-pink {
+            background-color: #ff94a8;
+        }
+
+        .btn-pink:hover {
+            background-color: #ff7d94;
+        }
+
+        .btn-purple {
+            background-color: #bfa3cd;
+        }
+
+        .btn-purple:hover {
+            background-color: #ae8ebd;
+        }
+
+        /* ==========================================
+           複合型：櫻花隨身計算機 & 結果顯示面板
+        ========================================== */
+        .output-and-calc {
+            width: 645px;
+            max-width: 95%;
+            background-color: #ffffff;
+            border: 4px solid #6b5458;
+            border-radius: 24px;
+            box-shadow: 0 8px 0 #6b5458;
+            margin-top: 30px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .panel-header {
+            font-size: 14px;
+            font-weight: bold;
+            color: #6b5458;
+            margin-bottom: 12px;
+            border-left: 5px solid #ff94a8;
+            padding-left: 8px;
+            text-align: left;
+        }
+
+        /* 複利顯示螢幕 */
+        .display-screen {
+            background-color: #fff5f6;
+            border: 3px solid #6b5458;
+            border-radius: 15px;
+            padding: 15px;
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 15.5px;
+            color: #524143;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .highlight-red {
+            color: #e65c73;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 3px;
+        }
+
+        /* 內嵌計算機按鍵區 */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .calc-btn {
+            height: 38px;
+            background-color: #fff0f2;
+            border: 2px solid #6b5458;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #6b5458;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #6b5458;
+            transition: all 0.05s;
+        }
+
+        .calc-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 0px 0 #6b5458;
+        }
+
+        .calc-btn.op {
+            background-color: #ffe4e8;
+            color: #d14960;
+        }
+
+        .calc-btn.clear {
+            background-color: #ebdbe0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sakura-title">
+        <h1>幸運生活每一天</h1>
+    </div>
+
+    <div class="warning-bar">
+        「投資一定有風險，投資有賺有賠，申購前應詳閱公開說明書。」
+    </div>
+
+    <div class="main-container">
+
+        <div class="sakura-box" style="background-color: #fff9fa;">
+            <h3>定期定額 (每月)</h3>
+            <div class="input-group">
+                <label for="money_monthly">每月投入金額 (元)</label>
+                <input type="number" id="money_monthly" value="9000">
+            </div>
+            <div class="input-group">
+                <label for="rate_monthly">預期年利率 (%)</label>
+                <input type="number" id="rate_monthly" value="10" step="0.1">
+            </div>
+            <div class="input-group">
+                <label for="year_monthly">投資時間 (年)</label>
+                <input type="number" id="year_monthly" value="40">
+            </div>
+            <button type="button" class="sakura-btn btn-pink" id="btn_monthly">計算定期定額</button>
+        </div>
+
+        <div class="sakura-box" style="background-color: #faf4fc;">
+            <h3>單筆投入 (一次性)</h3>
+            <div class="input-group">
+                <label for="money_single">單筆投入金額 (元)</label>
+                <input type="number" id="money_single" value="100000">
+            </div>
+            <div class="input-group">
+                <label for="rate_single">預期年利率 (%)</label>
+                <input type="number" id="rate_single" value="10" step="0.1">
+            </div>
+            <div class="input-group">
+                <label for="year_single">投資時間 (年)</label>
+                <input type="number" id="year_single" value="40">
+            </div>
+            <button type="button" class="sakura-btn btn-purple" id="btn_single">計算單筆投入</button>
+        </div>
+
+    </div>
+
+    <div class="output-and-calc">
+        <div class="panel-header">🌸 財富占卜螢幕與隨身計算機</div>
+
+        <div class="display-screen" id="myDisplay">
+            點擊上方和風按鈕開始計算，或使用下方小計算機運算。
+        </div>
+
+        <div class="calc-grid">
+            <button class="calc-btn clear" onclick="pressCalc('C')">C</button>
+            <button class="calc-btn op" onclick="pressCalc('(')">(</button>
+            <button class="calc-btn op" onclick="pressCalc(')')">)</button>
+            <button class="calc-btn op" onclick="pressCalc('/')">÷</button>
+
+            <button class="calc-btn" onclick="pressCalc('7')">7</button>
+            <button class="calc-btn" onclick="pressCalc('8')">8</button>
+            <button class="calc-btn" onclick="pressCalc('9')">9</button>
+            <button class="calc-btn op" onclick="pressCalc('*')">×</button>
+
+            <button class="calc-btn" onclick="pressCalc('4')">4</button>
+            <button class="calc-btn" onclick="pressCalc('5')">5</button>
+            <button class="calc-btn" onclick="pressCalc('6')">6</button>
+            <button class="calc-btn op" onclick="pressCalc('-')">-</button>
+
+            <button class="calc-btn" onclick="pressCalc('1')">1</button>
+            <button class="calc-btn" onclick="pressCalc('2')">2</button>
+            <button class="calc-btn" onclick="pressCalc('3')">3</button>
+            <button class="calc-btn op" onclick="pressCalc('+')">+</button>
+
+            <button class="calc-btn" onclick="pressCalc('0')">0</button>
+            <button class="calc-btn" onclick="pressCalc('.')">.</button>
+            <button class="calc-btn op" style="grid-column: span 2; background-color: #ff94a8; color: white;"
+                onclick="pressCalc('=')">=</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        let calcExpression = ""; // 暫存計算機輸入字串
+        let isShowingResult = false; // 是否正在顯示複利報告
+
+        $(document).ready(function () {
+            const myDisplay = $('#myDisplay');
+
+            // 1. 定期定額 (月複利)
+            $('#btn_monthly').click(function () {
+                let money = Number($('#money_monthly').val());
+                let rate = Number($('#rate_monthly').val());
+                let year = Number($('#year_monthly').val());
+
+                if (money <= 0 || rate <= 0 || year <= 0) {
+                    myDisplay.text("輸入的數值必須大於 0 唷！🌸");
+                    return;
+                }
+
+                const r = (rate / 100) / 12;
+                const n = year * 12;
+                let result = Math.round(money * (((1 + r) ** n - 1) / r));
+
+                let tmpText = `🌸 <b>【定期定額複利結果】</b> 🌸<br>每月存 <span class="highlight-red">$${money.toLocaleString()}</span> 元 · 年化 ${rate}% · 持續 ${year} 年<br>最終幸運本利和：<span class="highlight-red">$${result.toLocaleString()}</span> 元`;
+                myDisplay.html(tmpText);
+                isShowingResult = true;
+            });
+
+            // 2. 單筆投入 (年複利)
+            $('#btn_single').click(function () {
+                let money = Number($('#money_single').val());
+                let rate = Number($('#rate_single').val());
+                let year = Number($('#year_single').val());
+
+                if (money <= 0 || rate <= 0 || year <= 0) {
+                    myDisplay.text("輸入的數值必須大於 0 唷！🌸");
+                    return;
+                }
+
+                const r = rate / 100;
+                let result = Math.round(money * ((1 + r) ** year));
+
+                let tmpText = `🔮 <b>【單筆投入複利結果】</b> 🔮<br>一次性投入 <span class="highlight-red">$${money.toLocaleString()}</span> 元 · 年化 ${rate}% · 靜置 ${year} 年<br>最終幸運本利和：<span class="highlight-red">$${result.toLocaleString()}</span> 元`;
+                myDisplay.html(tmpText);
+                isShowingResult = true;
+            });
+        });
+
+        // 3. 內建隨身普通計算機邏輯
+        function pressCalc(val) {
+            const display = document.getElementById("myDisplay");
+
+            // 如果原本在顯示複利報告，按任意計算鍵就自動切換成計算機模式
+            if (isShowingResult) {
+                calcExpression = "";
+                isShowingResult = false;
+            }
+
+            if (val === 'C') {
+                calcExpression = "";
+                display.innerText = "0";
+            } else if (val === '=') {
+                try {
+                    if (calcExpression.trim() === "") return;
+                    // 使用安全的基本四則運算解析
+                    let evalResult = Function('"use strict";return (' + calcExpression + ')')();
+                    // 格式化成果，如果是小數則留到第四位
+                    if (evalResult % 1 !== 0) {
+                        evalResult = parseFloat(evalResult.toFixed(4));
+                    }
+                    display.innerHTML = `<span style="font-size: 22px; font-weight: bold; color: #6b5458;">${calcExpression} = <br><span class="highlight-red">${evalResult.toLocaleString()}</span></span>`;
+                    calcExpression = String(evalResult); // 讓結果可以繼續連加減
+                } catch (error) {
+                    display.innerText = "運算格式錯誤 🌸";
+                    calcExpression = "";
+                }
+            } else {
+                calcExpression += val;
+                display.innerText = calcExpression;
+            }
+        }
+    </script>
+</body>
+
+</html>

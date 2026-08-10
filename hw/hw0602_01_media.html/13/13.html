@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* =================================================== */
+        /* 1. 手機版樣式 (預設)：看得到 6 張圖，直排 */
+        /* =================================================== */
+        .container {
+            width: 100%;
+            /* 💡 改用 min-height，這樣 6 張圖直排往下延伸時，背景才不會斷掉 */
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column; /* 手機版：強制外框直排 */
+            align-items: center;
+            padding: 20px 0;
+            box-sizing: border-box;
+            background-color: #f5f5f5;
+        }
+
+        .item {
+            width: 80%;
+            height: 200px; /* 手機版固定高度 */
+            background-color: lightblue;
+            margin: 10px;
+            border-radius: 8px;
+            overflow: hidden; /* 💡 確保圖片超出外框的部分會被修剪掉 */
+        }
+
+        /* ✨ 關鍵核心：控制 div 裡面的圖片外觀 */
+        .item img {
+            width: 100%;       /* 寬度填滿外框 */
+            height: 100%;      /* 高度填滿外框 */
+            object-fit: cover; /* 👍 超重要！保持完美比例不變形，多餘的自動裁切 */
+        }
+
+        /* =================================================== */
+        /* 2. 平板版樣式 (螢幕寬度 768px 以上)：看得到 6 張圖，3x2 橫排 */
+        /* =================================================== */
+        @media screen and (min-width: 768px) {
+            .container {
+                flex-direction: row; /* 改回橫排 */
+                flex-wrap: wrap;     /* 允許換行 */
+                justify-content: center;
+            }
+
+            .item {
+                width: 30%;          /* 三個一排 (30% * 3 = 90%) */
+                height: 250px;       /* 平板的格子調高一點點 */
+                display: block;      /* 確保平板時大家都看得見 */
+            }
+        }
+
+        /* =================================================== */
+        /* 3. 電腦版樣式 (螢幕寬度 1024px 以上)：只看得到 1 張大圖 */
+        /* =================================================== */
+        @media screen and (min-width: 1024px) {
+            .item {
+                width: 60%;          /* 電腦版只有一張圖，給它霸氣的寬度 */
+                height: 500px;       /* 給它足夠的高度 */
+            }
+
+            /* ✨ 隱藏魔法：除了第一個 .item，其餘 5 個方塊通通隱藏 */
+            .item:not(:first-child) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="item"><img src="./img/07.jpg" alt="圖 1"></div>
+        <div class="item"><img src="./img/08.jpg" alt="圖 2"></div>
+        <div class="item"><img src="./img/09.jpg" alt="圖 3"></div>
+        <div class="item"><img src="./img/10.jpg" alt="圖 4"></div>
+        <div class="item"><img src="./img/11.jpg" alt="圖 5"></div>
+        <div class="item"><img src="./img/12.jpg" alt="圖 6"></div>
+    </div>
+</body>
+
+</html>

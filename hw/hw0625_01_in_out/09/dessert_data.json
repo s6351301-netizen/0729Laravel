@@ -1,0 +1,26 @@
+{
+  "store_info": {
+    "name": "幸福蛋糕專賣店",
+    "description": "傳遞手作溫度的甜點店，每一口都是滿滿的幸福感。",
+    "address": "台北市大安區幸福路 100 號",
+    "phone": "02-2345-6789"
+  },
+  "delivery_info": {
+    "method": "黑貓低溫冷凍宅配",
+    "fee": 180,
+    "free_shipping_threshold": 2000,
+    "notice": "蛋糕皆為新鮮現做，下單後預計 3-5 個工作天出貨。"
+  },
+  "desserts": [
+    { "id": 1, "name": "經典法式馬卡龍", "price": 350, "flavor": "覆盆子 / 抹茶 / 巧克力", "img": "https://picsum.photos/id/102/300/200" },
+    { "id": 2, "name": "法式草莓千層蛋糕", "price": 950, "flavor": "大湖草莓 / 香草卡士達", "img": "https://picsum.photos/id/106/300/200" },
+    { "id": 3, "name": "濃郁微苦熔岩巧克力", "price": 480, "flavor": "72% 比利時黑巧克力", "img": "https://picsum.photos/id/211/300/200" },
+    { "id": 4, "name": "盛夏芒果慕斯", "price": 750, "flavor": "愛文芒果 / 百香果凍", "img": "https://picsum.photos/id/225/300/200" },
+    { "id": 5, "name": "日式靜岡抹茶捲", "price": 420, "flavor": "靜岡抹茶 / 萬丹紅豆", "img": "https://picsum.photos/id/312/300/200" },
+    { "id": 6, "name": "紐約經典重乳酪蛋糕", "price": 600, "flavor": "澳洲乳酪 / 酥脆餅乾底", "img": "https://picsum.photos/id/429/300/200" },
+    { "id": 7, "name": "英式伯爵茶戚風", "price": 550, "flavor": "唐寧伯爵茶 / 鮮奶油", "img": "https://picsum.photos/id/493/300/200" },
+    { "id": 8, "name": "法式香香檸檬塔", "price": 450, "flavor": "在地青檸 / 酥脆塔皮", "img": "https://picsum.photos/id/514/300/200" },
+    { "id": 9, "name": "義式微醺提拉米蘇", "price": 520, "flavor": "馬斯卡彭 / 咖啡利口酒", "img": "https://picsum.photos/id/674/300/200" },
+    { "id": 10, "name": "炙燒香草焦糖布丁", "price": 320, "flavor": "大溪地香草莢 / 手作焦糖", "img": "https://picsum.photos/id/835/300/200" }
+  ]
+}

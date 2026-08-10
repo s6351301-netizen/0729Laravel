@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gemini - King of AI Calculator</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0b0f19 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-gradient);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Animated Background Stars/Particles effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(138,180,248,0.08) 0%, rgba(0,0,0,0) 60%);
+            animation: rotate 25s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 1;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        /* A glowing crown element */
+        .crown {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+            text-shadow: 0 0 15px gold;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 0;
+            background: linear-gradient(to right, #8ab4f8, #c58af9, #f28b82);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(197, 138, 249, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            color: #a8b2c1;
+            font-size: 1.1rem;
+            margin-top: 5px;
+            font-weight: 300;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 35px 25px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper label {
+            position: absolute;
+            left: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #8ab4f8;
+            pointer-events: none;
+        }
+
+        input[type="number"] {
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(138, 180, 248, 0.2);
+            border-radius: 12px;
+            padding: 12px 15px 12px 35px;
+            color: #fff;
+            font-size: 1.4rem;
+            font-family: 'Outfit', sans-serif;
+            width: 120px;
+            text-align: center;
+            transition: all 0.3s ease;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        input[type="number"]:focus {
+            border-color: #c58af9;
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(197, 138, 249, 0.3);
+        }
+        
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+        }
+
+        .divider {
+            font-size: 2rem;
+            color: rgba(255,255,255,0.1);
+            font-weight: 100;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .circle-btn {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            cursor: pointer;
+            font-size: 24px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .circle-btn:hover {
+            transform: translateY(-5px) scale(1.08);
+            background: linear-gradient(135deg, rgba(197, 138, 249, 0.3), rgba(138, 180, 248, 0.3));
+            border-color: rgba(197, 138, 249, 0.6);
+            box-shadow: 0 15px 30px rgba(197, 138, 249, 0.3), inset 0 0 15px rgba(255,255,255,0.2);
+            color: #fff;
+        }
+
+        .circle-btn:active {
+            transform: translateY(2px) scale(0.95);
+        }
+
+        .result-panel {
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 16px;
+            padding: 25px 20px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(138, 180, 248, 0.15);
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        /* Subtle glowing scan edge for result panel */
+        .result-panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, #c58af9, #8ab4f8, transparent);
+            animation: scan 2.5s ease-in-out infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        #demo {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin: 0;
+            letter-spacing: 0.5px;
+            line-height: 1.4;
+        }
+
+        .highlight {
+            display: block;
+            font-weight: 900;
+            background: linear-gradient(to right, #8ab4f8, #c58af9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.5rem;
+            margin-top: 8px;
+            text-shadow: 0px 5px 15px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="crown">👑</div>
+            <h1>GEMINI</h1>
+            <p>The King of AI</p>
+        </div>
+        
+        <div class="glass-panel">
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label for="xValue">X</label>
+                    <input type="number" id="xValue" value="5">
+                </div>
+                
+                <span class="divider">|</span>
+
+                <div class="input-wrapper">
+                    <label for="yValue">Y</label>
+                    <input type="number" id="yValue" value="2">
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="circle-btn" title="Add">+</button>
+                <button class="circle-btn" title="Subtract">-</button>
+                <button class="circle-btn" title="Multiply">*</button>
+                <button class="circle-btn" title="Divide">/</button>
+                <button class="circle-btn" title="Modulo">%</button>
+                <button class="circle-btn" title="Exponent">**</button>
+            </div>
+            
+            <div class="result-panel">
+                <p id="demo">Awaiting your command...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(() => {
+            const calc = op => {
+                let x = +$("#xValue").val() || 0, y = +$("#yValue").val() || 0;
+                
+                // Div/Mod by zero handling
+                if ((op === '/' || op === '%') && y === 0) {
+                    return $("#demo").html(`<span style="color: #f28b82; font-weight: 500;">Gemini System Error:<br>Division by zero is impossible even for the King.</span>`);
+                }
+                
+                // Calculation
+                let result = eval(`${x} ${op} ${y}`);
+                
+                // Format floating point decimals to prevent ultra-long numbers
+                if(!Number.isInteger(result)) result = parseFloat(result.toFixed(6));
+                
+                // Display
+                $("#demo").html(`
+                    <span style="color: #a8b2c1; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;">Gemini Computed</span><br>
+                    <span style="color: rgba(255,255,255,0.5); font-size: 1rem;">${x} ${op} ${y} =</span>
+                    <span class="highlight">${result}</span>
+                `);
+            };
+            
+            $(".circle-btn").on("click", function() { calc($(this).text()); });
+            calc('+');
+        });
+    </script>
+</body>
+</html>

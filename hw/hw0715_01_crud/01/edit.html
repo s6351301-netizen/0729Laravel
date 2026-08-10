@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <title>尋找貓咪的家</title>
+     <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+     <style>
+          body { background: #faf8f6; font-family: system-ui, sans-serif; }
+          h2 { color: #4a4540; font-weight: 700; font-size: 24px; margin-top: 30px; }
+          .navbar { background: #fff !important; border-bottom: 1px solid #eae5e0; padding: 12px 16px; }
+          .navbar-brand { color: #c08a70 !important; font-weight: bold; font-size: 18px; letter-spacing: 0.5px; }
+          .nav-link { color: #7d756d !important; font-weight: 500; margin-right: 15px; font-size: 14px; }
+          .nav-link:hover { color: #c08a70 !important; }
+          .navbar .form-control { border-radius: 6px; border: 1px solid #eae5e0; font-size: 14px; padding-left: 12px; background: #faf8f6; }
+          .navbar .form-control:focus { border-color: #c08a70; box-shadow: none; background: #fff; }
+          .navbar .btn-primary, .btn-primary { display: inline-block; background: #c08a70; color: #fff !important; border: none; border-radius: 6px; font-size: 14px; font-weight: 500; text-decoration: none; transition: background 0.2s; }
+          .navbar .btn-primary { padding: 6px 16px; margin-left: 8px; }
+          .navbar .btn-primary:hover, .btn-primary:hover { background: #ab775e; }
+          
+          form label { color: #5c554e; font-weight: 500; margin-bottom: 8px; font-size: 14px; display: block; }
+          .container .form-control { border-radius: 6px; border: 1px solid #eae5e0; padding: 10px 14px; font-size: 14px; background: #fff; }
+          .container .form-control:focus { border-color: #c08a70; box-shadow: none; }
+          .container .btn-primary { padding: 8px 24px; margin-top: 10px; }
+          .current-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #eae5e0; margin-bottom: 10px; }
+     </style>
+</head>
+
+<body>
+
+     <nav class="navbar navbar-expand-sm navbar-light bg-white">
+          <div class="container-fluid">
+               <a class="navbar-brand" href="javascript:void(0)">🐾 尋找貓咪的家</a>
+               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                    <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="mynavbar">
+                    <ul class="navbar-nav me-auto">
+                         <li class="nav-item">
+                              <a class="nav-link" href="../student/index.html">待收養貓咪</a>
+                         </li>
+                         <li class="nav-item">
+                              <a class="nav-link" href="../teacher/index.html">志工夥伴</a>
+                         </li>
+                         <li class="nav-item">
+                              <a class="nav-link" href="javascript:void(0)">領養諮詢</a>
+                         </li>
+                    </ul>
+                    <form class="d-flex">
+                         <input class="form-control" type="text" placeholder="搜尋貓咪...">
+                         <button class="btn btn-primary" type="button">搜尋</button>
+                    </form>
+               </div>
+          </div>
+     </nav>
+
+     <div class="container mt-3">
+               <h2>修改貓咪資料</h2>
+               <form action="./update.html" method="GET">
+                    <div class="mb-3 mt-4">
+                        <label for="name">貓咪名字：</label>
+                        <input type="text" class="form-control" id="name" placeholder="請輸入貓咪名字" name="name" value="" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>目前照片：</label>
+                        <img src="" id="avatar-preview" class="current-avatar">
+                        <label for="image">更換照片（若不修改請留空）：</label>
+                        <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary">確認修改</button>
+               </form>
+     </div>
+
+     <script>
+          const urlParams = new URLSearchParams(window.location.search);
+          const catId = urlParams.get('id');
+
+          const cats = {
+               "1": { name: "阿福 (Fuku)", img: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=150&h=150&fit=crop" },
+               "2": { name: "咪咪 (Mimi)", img: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?w=150&h=150&fit=crop" },
+               "3": { name: "歐歐 (Oreo)", img: "https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=150&h=150&fit=crop" },
+               "4": { name: "炭炭 (Tantan)", img: "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?w=150&h=150&fit=crop" },
+               "5": { name: "拿鐵 (Latte)", img: "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?w=150&h=150&fit=crop" }
+          };
+
+          const selectedCat = cats[catId] || cats["1"];
+          
+          document.getElementById('name').value = selectedCat.name;
+          document.getElementById('avatar-preview').src = selectedCat.img;
+     </script>
+
+</body>
+
+</html>

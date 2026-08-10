@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>顧客基本資料及專業驗光紀錄</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+
+            background:
+                linear-gradient(135deg,
+                    #f7f4ef,
+                    #efe5da,
+                    #e5d4c4);
+
+            min-height: 100vh;
+
+            position: relative;
+        }
+
+        /* 漂浮鏡片 */
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            width: 350px;
+            height: 350px;
+
+            border-radius: 50%;
+
+            left: -120px;
+            top: 80px;
+
+            background:
+                rgba(255, 255, 255, .15);
+
+            backdrop-filter: blur(10px);
+
+            border:
+                2px solid rgba(255, 255, 255, .35);
+
+            animation:
+                floatLens 15s infinite ease-in-out;
+
+            z-index: -1;
+        }
+
+        body::after {
+            content: "";
+
+            position: fixed;
+
+            width: 280px;
+            height: 280px;
+
+            border-radius: 50%;
+
+            right: -80px;
+            top: 180px;
+
+            background:
+                rgba(255, 255, 255, .12);
+
+            backdrop-filter: blur(10px);
+
+            border:
+                2px solid rgba(255, 255, 255, .3);
+
+            animation:
+                floatLens 18s infinite ease-in-out;
+
+            z-index: -1;
+        }
+
+        @keyframes floatLens {
+
+            0% {
+                transform:
+                    translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform:
+                    translateY(-30px) rotate(8deg);
+            }
+
+            100% {
+                transform:
+                    translateY(0px) rotate(0deg);
+            }
+        }
+
+        /* 主容器 */
+
+        .container {
+
+            background:
+                rgba(255, 255, 255, .82);
+
+            backdrop-filter: blur(15px);
+
+            border-radius: 30px;
+
+            padding: 35px;
+
+            margin-top: 30px;
+            margin-bottom: 30px;
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, .08);
+        }
+
+        /* 標題 */
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+
+            color: #8A3B2A;
+
+            font-weight: bold;
+        }
+
+        /* 卡片 */
+
+        .card {
+
+            border: none;
+
+            border-radius: 25px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, .08);
+
+            margin-bottom: 25px;
+        }
+
+        .card-header {
+
+            background:
+                linear-gradient(90deg,
+                    #B5523C,
+                    #D0735A);
+
+            color: white;
+
+            font-weight: bold;
+
+            border: none;
+        }
+
+        /* Label */
+
+        label {
+
+            font-weight: 600;
+
+            color: #5b463d;
+        }
+
+        /* Input */
+
+        .form-control,
+        .form-select {
+
+            border-radius: 15px;
+
+            border:
+                1px solid #ddd;
+
+            padding: 12px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+
+            border-color: #B5523C;
+
+            box-shadow:
+                0 0 0 .2rem rgba(181, 82, 60, .15);
+        }
+
+        /* Radio */
+
+        .form-check-input:checked {
+
+            background-color: #B5523C;
+            border-color: #B5523C;
+        }
+
+        /* Checkbox */
+
+        input[type="checkbox"]:checked {
+
+            accent-color: #B5523C;
+        }
+
+        /* 區塊標題 */
+
+        .section-title {
+
+            font-size: 22px;
+
+            color: #8A3B2A;
+
+            border-left:
+                6px solid #B5523C;
+
+            padding-left: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        /* 表格 */
+
+        table {
+
+            background: white;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        table th {
+
+            background: #F7EFE7;
+
+            color: #8A3B2A;
+        }
+
+        table td {
+
+            vertical-align: middle;
+        }
+
+        /* 按鈕 */
+
+        .btn-primary {
+
+            background: #B5523C;
+
+            border: none;
+
+            border-radius: 15px;
+
+            padding: 12px 25px;
+
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+
+            background: #9b4431;
+        }
+
+        .btn-success {
+
+            border-radius: 15px;
+        }
+
+        .btn-danger {
+
+            border-radius: 15px;
+        }
+
+        /* 送出按鈕 */
+
+        .submit-btn {
+
+            background:
+                linear-gradient(90deg,
+                    #B5523C,
+                    #D0735A);
+
+            border: none;
+
+            color: white;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            padding: 15px;
+
+            border-radius: 20px;
+
+            width: 100%;
+        }
+
+        /* 進度條 */
+
+        .progress {
+
+            height: 15px;
+
+            border-radius: 20px;
+
+            background: #f3e6dc;
+        }
+
+        .progress-bar {
+
+            background:
+                linear-gradient(90deg,
+                    #B5523C,
+                    #D0735A);
+        }
+
+        /* 手機版 */
+
+        @media(max-width:768px) {
+
+            .container {
+
+                padding: 20px;
+                margin: 15px;
+            }
+
+            h1,
+            h2,
+            h3 {
+
+                font-size: 1.5rem;
+            }
+
+            .card {
+
+                border-radius: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <!-- header 一 -->
+    <div class="container mt-3">
+        <!-- input text / number / date / radio / checkbox / select / file /  textarea / reset / button / submit  -->
+        <form action="/action_page.php">
+
+            <div class="h1">禾 米 眼 鏡 <br> HOME-OPTICAL</div>
+
+            <div class="col-12">
+                <div class="card border-primary bg-light mb-4 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="me-3 fs-1 text-primary">
+                                👓
+                            </div>
+                            <div>
+                                <h5 class="card-title text-primary fw-bold mb-1">
+                                    您好！歡迎光臨本合格驗光所(北市衛萬驗光 字第 5Y01190024 號)
+                                </h5>
+                                <p class="card-text text-muted mb-0" style="font-size: 0.95rem;">
+                                    為了保障您的眼睛健康與消費權益，今日由國家考核通過的合格
+                                    <strong class="text-dark bg-warning px-2 py-0.5 rounded">驗光師：Danny</strong>
+                                    為您提供專業的視力檢查與配鏡諮詢服務。在開始驗光前，請先協助我們填寫以下基本資料，謝謝您的配合！
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-2 pt-2 border-top border-2 border-white d-flex flex-wrap gap-2">
+                            <span class="badge bg-success"><i class="bi bi-patch-check"></i> 衛福部考試合格</span>
+                            <span class="badge bg-secondary">專任驗光師執業中</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- select -->
+                <div class="col-12 col-sm-6">
+                    <label for="sel1" class="form-label">合格驗光師 Optometrist：</label>
+                    <select class="form-select" id="sel1" name="sellist1">
+                        <option value="Danny">Danny</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <!-- date -->
+                    <div class="mb-3 mt-3">
+                        <label for="name">驗光日期 Exam Date：</label>
+                        <input type="date" class="form-control" id="name" placeholder="年/月/日 YYYY-MM-DD" name="name">
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="h2">顧 客 資 料 表 <br> Patient Information </div>
+            <!-- text -->
+            <div class="row">
+                <div class="col-12 col-sm-6">
+                    <div class="mb-3 mt-3">
+                        <label for="name">中文姓名 Full name：</label>
+                        <input type="text" class="form-control" id="name" placeholder="中文姓名 Full name" name="name">
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-sm-6">
+                    <div class="mb-3 mt-3">
+                        <label for="name">暱稱 Nick name：</label>
+                        <input type="text" class="form-control" id="name" placeholder="暱稱 Nick name" name="name">
+                    </div>
+                </div>
+
+                <!-- select -->
+                <div class="col-12 col-sm-6">
+                    <label for="sel1" class="form-label">性別 Gender：</label>
+                    <select class="form-select" id="sel1" name="sellist1">
+                        <option value="F">女生 Female</option>
+                        <option value="M">男生 Male</option>
+                    </select>
+                </div>
+
+                <div class="col-12 col-sm-6">
+                    <div class="mb-3 mt-3">
+                        <label for="name"><span class="text-danger">*</span>出生日期 Date of Birth：</label>
+                        <input type="date" class="form-control" id="name" placeholder="生日 Date of Birth" name="name">
+                    </div>
+                </div>
+
+                <!-- 聯絡電話 開始 -->
+                <div class="col-12 col-sm-6">
+                    <div class="mb-3 mt-3">
+                        <label for="phoneInput" class="form-label">
+                            <span class="text-danger">*</span>聯絡電話 Contact number：
+                        </label>
+
+                        <div class="input-group">
+                            <select class="form-select" id="phoneType" style="max-width: 120px;"
+                                onchange="handlePhoneTypeChange()">
+                                <option value="mobile" selected>手機</option>
+                                <option value="landline">市話</option>
+                            </select>
+
+                            <input type="tel" class="form-control" id="phoneInput" placeholder="請輸入手機號碼（例：0912345678）"
+                                name="user_phone" required maxlength="10" pattern="09[0-9]{8}"
+                                title="電話格式錯誤！必須為 09 開頭的 10 位純數字"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function handlePhoneTypeChange() {
+                        const phoneType = document.getElementById('phoneType').value;
+                        const phoneInput = document.getElementById('phoneInput');
+
+                        // 清空使用者已經輸入的內容，避免格式錯亂
+                        phoneInput.value = '';
+
+                        if (phoneType === 'mobile') {
+                            // 切換為手機格式
+                            phoneInput.placeholder = '請輸入手機號碼（例：0912345678）';
+                            phoneInput.maxLength = 10;
+                            phoneInput.pattern = '09[0-9]{8}';
+                            phoneInput.title = '電話格式錯誤！必須為 09 開頭的 10 位純數字';
+                        } else {
+                            // 切換為市話格式 (台灣市話包含區碼，總長度約為 9 到 10 碼，例如 0223456789 或 042345678)
+                            phoneInput.placeholder = '請包含區碼，勿填符號（例：0223456789）';
+                            phoneInput.maxLength = 10;
+                            phoneInput.pattern = '0[2-8][0-9]{7,8}';
+                            phoneInput.title = '市話格式錯誤！請包含區碼（如02），且總長度應為 9 或 10 位純數字';
+                        }
+                    }
+                </script>
+                <!-- 聯絡電話 結束-->
+
+                <!-- 職業 開始-->
+                <div class="col-12 col-sm-6">
+                    <div class="mb-3 mt-3">
+                        <label for="occupationSelect" class="form-label">
+                            <span class="text-danger">*</span>職業 Occupation ：
+                        </label>
+
+                        <select class="form-select" id="occupationSelect" name="occupation_select" required
+                            onchange="toggleOccupationInput()">
+                            <option value="" selected disabled>請選擇職業 Select Occupation</option>
+                            <option value="工程師">工程師 Engineer</option>
+                            <option value="學生">學生 Student</option>
+                            <option value="教師">教師 Teacher</option>
+                            <option value="服務業">服務業 Service Industry</option>
+                            <option value="自由業">自由業 Freelancer</option>
+                            <option value="other">其他 / 自行輸入 Others</option>
+                        </select>
+
+                        <input type="text" class="form-control mt-2" id="customOccupation" name="occupation_custom"
+                            placeholder="請輸入您的職業 Please enter your occupation" style="display: none;">
+                    </div>
+                </div>
+
+                <script>
+                    function toggleOccupationInput() {
+                        var selectElement = document.getElementById("occupationSelect");
+                        var customInput = document.getElementById("customOccupation");
+
+                        if (selectElement.value === "other") {
+                            customInput.style.display = "block";
+                            customInput.required = true; // 當選「其他」時，自填輸入框變成必填
+                        } else {
+                            customInput.style.display = "none";
+                            customInput.required = false; // 選回一般職業時，取消自填框的必填
+                            customInput.value = "";
+                        }
+                    }
+                </script>
+                <!-- 職業 結束-->
+
+                <!-- 身分證字號 開始 -->
+                <div class="col-12 col-sm-6">
+                    <div class="mb-3 mt-3">
+                        <label for="idNumberInput" class="form-label">
+                            身分證字號 ID No.：
+                        </label>
+
+                        <input type="text" class="form-control" id="idNumberInput" placeholder="請輸入身分證字號（例：A123456789）"
+                            name="user_id_no" required maxlength="10" list="idLetterHints" pattern="[A-Z][1-2][0-9]{8}"
+                            title="身分證字號格式錯誤！必須為 1 碼英文大寫 + 9 碼數字（共 10 碼）" style="text-transform: uppercase;"
+                            oninput="this.value = this.value.toUpperCase();" autocomplete="off">
+
+                        <datalist id="idLetterHints">
+                            <option value="A">A（臺北市）</option>
+                            <option value="B">B（臺中市）</option>
+                            <option value="C">C </option>
+                            <option value="D">D </option>
+                            <option value="E">E </option>
+                            <option value="F">F（新北市）</option>
+                            <option value="G">G </option>
+                            <option value="H">H </option>
+                            <option value="I">I </option>
+                            <option value="J">J </option>
+                            <option value="K">K </option>
+                            <option value="L">L </option>
+                            <option value="M">M </option>
+                            <option value="N">N </option>
+                            <option value="O">O </option>
+                            <option value="P">P </option>
+                            <option value="Q">Q </option>
+                            <option value="R">R </option>
+                            <option value="S">S </option>
+                            <option value="T">T </option>
+                            <option value="U">U </option>
+                            <option value="V">V </option>
+                            <option value="W">W </option>
+                            <option value="X">X </option>
+                            <option value="Y">Y </option>
+                            <option value="Z">Z </option>
+                        </datalist>
+                    </div>
+                </div>
+                <!-- 身分證字號 結束 -->
+
+                <div class="col-12 col-sm-6">
+                    <div class="mb-3 mt-3">
+                        <label for="emailInput" class="form-label">聯絡信箱 Email：</label>
+
+                        <input type="email" class="form-control" id="emailInput" placeholder="例如：example@gmail.com"
+                            name="user_email" list="emailExtensions" required autocomplete="off">
+
+                        <datalist id="emailExtensions">
+                            <option value="@gmail.com"></option>
+                            <option value="@yahoo.com.tw"></option>
+                            <option value="@hotmail.com"></option>
+                            <option value="@outlook.com"></option>
+                            <option value="@icloud.com"></option>
+                        </datalist>
+                    </div>
+                </div>
+                <!-- 信箱 結束 -->
+
+                <!-- 聯絡地址 開始 -->
+                <div class="col-12">
+                    <div class="mb-3 mt-3">
+                        <label class="form-label">聯絡地址 Address：</label>
+
+                        <div class="row g-2">
+
+                            <div class="col-12 col-sm-3">
+                                <select class="form-select" id="addressCity" name="address_city"
+                                    onchange="handleCityChange()">
+                                    <option value="" selected disabled>請選擇縣市 City</option>
+                                    <option value="基隆市">基隆市</option>
+                                    <option value="臺北市">臺北市</option>
+                                    <option value="新北市">新北市</option>
+                                    <option value="桃園市">桃園市</option>
+                                    <option value="新竹市">新竹市</option>
+                                    <option value="新竹縣">新竹縣</option>
+                                    <option value="苗栗縣">苗栗縣</option>
+                                    <option value="臺中市">臺中市</option>
+                                    <option value="彰化縣">彰化縣</option>
+                                    <option value="南投縣">南投縣</option>
+                                    <option value="雲林縣">雲林縣</option>
+                                    <option value="嘉義市">嘉義市</option>
+                                    <option value="嘉義縣">嘉義縣</option>
+                                    <option value="臺南市">臺南市</option>
+                                    <option value="高雄市">高雄市</option>
+                                    <option value="屏東縣">屏東縣</option>
+                                    <option value="宜蘭縣">宜蘭縣</option>
+                                    <option value="花蓮縣">花蓮縣</option>
+                                    <option value="臺東縣">臺東縣</option>
+                                    <option value="澎湖縣">澎湖縣</option>
+                                    <option value="金門縣">金門縣</option>
+                                    <option value="連江縣">連江縣</option>
+                                    <option value="Foreign">海外 / 外國 Foreign</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-sm-3">
+                                <select class="form-select" id="addressDistrict" name="address_district">
+                                    <option value="" selected disabled>請先選擇縣市</option>
+                                </select>
+                                <input type="text" class="form-control d-none" id="customDistrict"
+                                    name="custom_district" placeholder="省/州/城市 State/City">
+                            </div>
+
+                            <div class="col-12 col-sm-6">
+                                <input type="text" class="form-control" id="addressDetail" name="address_detail"
+                                    placeholder="請輸入其餘詳細地址 Detailed Address">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    // 全台灣 22 縣市完整的行政區資料庫
+                    const taiwanDistricts = {
+                        "基隆市": ["仁愛區", "信義區", "中正區", "中山區", "安樂區", "暖暖區", "七堵區"],
+                        "臺北市": ["中正區", "大同區", "中山區", "松山區", "大安區", "萬華區", "信義區", "士林區", "北投區", "內湖區", "南港區", "文山區"],
+                        "新北市": ["板橋區", "三重區", "中和區", "永和區", "新莊區", "新店區", "樹林區", "鶯歌區", "三峽區", "淡水區", "汐止區", "瑞芳區", "土城區", "蘆洲區", "五股區", "泰山區", "林口區", "深坑區", "石碇區", "坪林區", "三芝區", "石門區", "八里區", "平溪區", "雙溪區", "貢寮區", "金山區", "萬里區", "烏來區"],
+                        "桃園市": ["桃園區", "中壢區", "大溪區", "楊梅區", "蘆竹區", "大園區", "龜山區", "八德區", "龍潭區", "平鎮區", "新屋區", "觀音區", "復興區"],
+                        "新竹市": ["東區", "北區", "香山區"],
+                        "新竹縣": ["竹北市", "竹東鎮", "新埔鎮", "關西鎮", "湖口鄉", "新豐鄉", "芎林鄉", "橫山鄉", "北埔鄉", "寶山鄉", "峨眉鄉", "尖石鄉", "五峰鄉"],
+                        "苗栗縣": ["苗栗市", "頭份市", "竹南鎮", "後龍鎮", "通霄鎮", "苑裡鎮", "造橋鄉", "西湖鄉", "頭屋鄉", "公館鄉", "銅鑼鄉", "三義鄉", "大湖鄉", "獅潭鄉", "三灣鄉", "南庄鄉", "卓蘭鎮", "泰安鄉"],
+                        "臺中市": ["中區", "東區", "南區", "西區", "北區", "北屯區", "西屯區", "南屯區", "太平區", "大里區", "霧峰區", "烏日區", "豐原區", "后里區", "石岡區", "東勢區", "和平區", "新社區", "潭子區", "大雅區", "神岡區", "大肚區", "沙鹿區", "龍井區", "梧棲區", "清水區", "大甲區", "外埔區", "大安區"],
+                        "彰化縣": ["彰化市", "鹿港鎮", "和美鎮", "線西鄉", "伸港鄉", "福興鄉", "秀水鄉", "花壇鄉", "芬園鄉", "員林市", "溪湖鎮", "田中鎮", "大村鄉", "埔鹽鄉", "埔心鄉", "永靖鄉", "社頭鄉", "二水鄉", "北斗鎮", "二林鎮", "田尾鄉", "埤頭鄉", "芳苑鄉", "大城鄉", "竹塘鄉", "溪州鄉"],
+                        "南投縣": ["南投市", "埔里鎮", "草屯鎮", "竹山鎮", "集集鎮", "名間鄉", "鹿谷鄉", "中寮鄉", "魚池鄉", "國姓鄉", "水里鄉", "信義鄉", "仁愛鄉"],
+                        "雲林縣": ["斗六市", "斗南鎮", "虎尾鎮", "西螺鎮", "土庫鎮", "北港鎮", "古坑鄉", "大埤鄉", "莿桐鄉", "林內鄉", "二崙鄉", "崙背鄉", "麥寮鄉", "東勢鄉", "褒忠鄉", "臺西鄉", "元長鄉", "四湖鄉", "口湖鄉", "水林鄉"],
+                        "嘉義市": ["東區", "西區"],
+                        "嘉義縣": ["太保市", "朴子市", "布袋鎮", "大林鎮", "民雄鄉", "溪口鄉", "新港鄉", "六腳鄉", "東石鄉", "義竹鄉", "鹿草鄉", "水上鄉", "中埔鄉", "竹崎鄉", "梅山鄉", "番路鄉", "大埔鄉", "阿里山鄉"],
+                        "臺南市": ["中西區", "東區", "南區", "北區", "安平區", "安南區", "永康區", "歸仁區", "新化區", "左鎮區", "玉井區", "楠西區", "南化區", "仁德區", "關廟區", "龍崎區", "官田區", "麻豆區", "佳里區", "西港區", "七股區", "將軍區", "學甲區", "北門區", "新營區", "後壁區", "白河區", "東山區", "六甲區", "下營區", "柳營區", "鹽水區", "善化區", "大內區", "山上區", "新市區", "安定區"],
+                        "高雄市": ["新興區", "前金區", "苓雅區", "鹽埕區", "鼓山區", "旗津區", "前鎮區", "三民區", "楠梓區", "小港區", "左營區", "仁武區", "大社區", "岡山區", "路竹區", "阿蓮區", "田寮區", "燕巢區", "橋頭區", "梓官區", "彌陀區", "永安區", "湖內區", "鳳山區", "大寮區", "林園區", "鳥松區", "大樹區", "旗山區", "美濃區", "六龜區", "內門區", "杉林區", "甲仙區", "桃源區", "那瑪夏區", "茂林區", "茄萣區"],
+                        "屏東縣": ["屏東市", "三地門鄉", "霧臺鄉", "瑪家鄉", "九如鄉", "里港鄉", "高樹鄉", "鹽埔鄉", "長治鄉", "麟洛鄉", "竹田鄉", "內埔鄉", "萬丹鄉", "潮州鎮", "泰武鄉", "來義鄉", "萬巒鄉", "嵌頂鄉", "新埤鄉", "南州鄉", "林邊鄉", "東港鎮", "琉球鄉", "佳冬鄉", "新園鄉", "枋寮鄉", "枋山鄉", "春日鄉", "獅子鄉", "車城鄉", "牡丹鄉", "恆春鎮", "滿州鄉"],
+                        "宜蘭縣": ["宜蘭市", "羅東鎮", "蘇澳鎮", "頭城鎮", "礁溪鄉", "壯圍鄉", "員山鄉", "冬山鄉", "五結鄉", "三星鄉", "大同鄉", "南澳鄉"],
+                        "花蓮縣": ["花蓮市", "新城鄉", "秀林鄉", "吉安鄉", "壽豐鄉", "鳳林鎮", "光復鄉", "豐濱鄉", "瑞穗鄉", "萬榮鄉", "玉里鎮", "卓溪鄉", "富里鄉"],
+                        "臺東縣": ["臺東市", "綠島鄉", "蘭嶼鄉", "延平鄉", "卑南鄉", "鹿野鄉", "關山鎮", "海端鄉", "池上鄉", "東河鄉", "成功鎮", "長濱鄉", "太麻里鄉", "金峰鄉", "大武鄉", "達仁鄉"],
+                        "澎湖縣": ["馬公市", "湖西鄉", "白沙鄉", "西嶼鄉", "望安鄉", "七美鄉"],
+                        "金門縣": ["金城鎮", "金沙鎮", "金湖鎮", "金寧鄉", "烈嶼鄉", "烏坵鄉"],
+                        "連江縣": ["南竿鄉", "北竿鄉", "莒光鄉", "東引鄉"]
+                    };
+
+                    function handleCityChange() {
+                        const citySelect = document.getElementById('addressCity');
+                        const districtSelect = document.getElementById('addressDistrict');
+                        const customDistrict = document.getElementById('customDistrict');
+
+                        const selectedCity = citySelect.value;
+
+                        if (selectedCity === 'Foreign') {
+                            // 使用者選「海外」，隱藏下拉，顯示自填框
+                            districtSelect.classList.add('d-none');
+                            customDistrict.classList.remove('d-none');
+                            customDistrict.value = '';
+                        } else if (taiwanDistricts[selectedCity]) {
+                            // 使用者選台灣縣市，顯示下拉，隱藏自填框
+                            districtSelect.classList.remove('d-none');
+                            customDistrict.classList.add('d-none');
+
+                            // 重新生成對應縣市的鄉鎮市區選項
+                            districtSelect.innerHTML = '<option value="" selected disabled>請選擇行政區 District</option>';
+                            taiwanDistricts[selectedCity].forEach(dist => {
+                                const opt = document.createElement('option');
+                                opt.value = dist;
+                                opt.textContent = dist;
+                                districtSelect.appendChild(opt);
+                            });
+                        }
+                    }
+                </script>
+                <!-- 聯絡地址 結束 -->
+                <!-- 監護人聯絡方式 開始-->
+                <div class="row">
+                    <div class="col-12 col-sm-6">
+                        <div class="mb-3 mt-3">
+                            <label for="name">監護人中文姓名 Full name：(是未成年子女需填寫)</label>
+                            <input type="text" class="form-control" id="name" placeholder="監護人中文姓名 Full name"
+                                name="name">
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <div class="mb-3 mt-3">
+                            <label for="phoneInput" class="form-label">
+                                聯絡電話 Contact number <span class="text-danger">*</span>：
+                            </label>
+
+                            <div class="input-group">
+                                <select class="form-select" id="phoneType" style="max-width: 120px;"
+                                    onchange="handlePhoneTypeChange()">
+                                    <option value="mobile" selected>手機</option>
+                                    <option value="landline">市話</option>
+                                </select>
+
+                                <input type="tel" class="form-control" id="phoneInput"
+                                    placeholder="請輸入手機號碼（例：0912345678）" name="user_phone" required maxlength="10"
+                                    pattern="09[0-9]{8}" title="電話格式錯誤！必須為 09 開頭的 10 位純數字"
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function handlePhoneTypeChange() {
+                            const phoneType = document.getElementById('phoneType').value;
+                            const phoneInput = document.getElementById('phoneInput');
+
+                            // 清空使用者已經輸入的內容，避免格式錯亂
+                            phoneInput.value = '';
+
+                            if (phoneType === 'mobile') {
+                                // 切換為手機格式
+                                phoneInput.placeholder = '請輸入手機號碼（例：0912345678）';
+                                phoneInput.maxLength = 10;
+                                phoneInput.pattern = '09[0-9]{8}';
+                                phoneInput.title = '電話格式錯誤！必須為 09 開頭的 10 位純數字';
+                            } else {
+                                // 切換為市話格式 (台灣市話包含區碼，總長度約為 9 到 10 碼，例如 0223456789 或 042345678)
+                                phoneInput.placeholder = '請包含區碼，勿填符號（例：0223456789）';
+                                phoneInput.maxLength = 10;
+                                phoneInput.pattern = '0[2-8][0-9]{7,8}';
+                                phoneInput.title = '市話格式錯誤！請包含區碼（如02），且總長度應為 9 或 10 位純數字';
+                            }
+                        }
+                    </script>
+                    <!-- 監護人聯絡方式 結束-->
+
+
+                    <!-- header 二 -->
+
+                    <div class="h3">醫 療 與 用 眼 習 慣<br>Health & Ocular History</div>
+
+                    <!-- 問題1 開始--> <!-- checkbox --> <!-- radio -->
+                    <div class="col-12 col-sm-6">
+                        <div class="mb-3 mt-3">
+                            <label class="form-label">目前是否配戴眼鏡/隱形眼鏡 Current Prescription：</label>
+
+                            <!-- YES / NO 單選鈕 (預設勾選 NO) -->
+                            <div class="d-flex gap-3 mb-2">
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="prescYes" name="has_prescription"
+                                        value="Y" onchange="togglePrescriptionLogic()">
+                                    <label class="form-check-label" for="prescYes">YES</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" id="prescNo" name="has_prescription"
+                                        value="N" onchange="togglePrescriptionLogic()" checked>
+                                    <label class="form-check-label" for="prescNo">NO</label>
+                                </div>
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- 【延伸一】選 YES 顯示：配戴種類 與 客製化換鏡動機 -->
+                            <!-- ========================================== -->
+                            <div id="prescriptionDetails" class="d-none border rounded p-3 bg-light mt-2">
+                                <!-- 1. 種類複選 -->
+                                <label class="form-label small text-primary fw-bold">1. 請勾選目前配戴的種類 (可複選)：</label>
+                                <div class="form-check mb-2">
+                                    <input type="checkbox" class="form-check-input" id="typeGlasses" name="presc_type"
+                                        value="glasses">
+                                    <label class="form-check-label" for="typeGlasses">框架眼鏡 Glasses</label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input type="checkbox" class="form-check-input" id="typeContacts" name="presc_type"
+                                        value="contacts">
+                                    <label class="form-check-label" for="typeContacts">隱形眼鏡 Contact Lenses</label>
+                                </div>
+
+                                <!-- 2. 動機複選 -->
+                                <label class="form-label small text-primary fw-bold">2. 請問您本次想換/配鏡的原因是？(可複選)：</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="yesReasonFrame"
+                                        name="yes_presc_reason" value="change_frame">
+                                    <label class="form-check-label" for="yesReasonFrame">想更換現有的鏡框 Want to change
+                                        frame</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="yesReasonLens"
+                                        name="yes_presc_reason" value="change_lenses">
+                                    <label class="form-check-label" for="yesReasonLens">想更換現有的鏡片 Want to change
+                                        lenses</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="yesReasonTooLong"
+                                        name="yes_presc_reason" value="too_old">
+                                    <label class="form-check-label" for="yesReasonTooLong">現有眼鏡戴太久了，想做定期汰換 Worn for too
+                                        long</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="yesReasonBlurry"
+                                        name="yes_presc_reason" value="vision_change">
+                                    <label class="form-check-label" for="yesReasonBlurry">最近度數改變、感覺看不清楚 Blurry
+                                        vision</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="yesReasonFatigue"
+                                        name="yes_presc_reason" value="eye_fatigue">
+                                    <label class="form-check-label" for="yesReasonFatigue">眼睛容易疲倦、酸澀 Eye fatigue</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="yesReasonFashion"
+                                        name="yes_presc_reason" value="fashion_match">
+                                    <label class="form-check-label" for="yesReasonFashion">想要變換造型 / 日常穿搭搭配 Change style
+                                        & Fashion</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="yesReasonOther"
+                                        name="yes_presc_reason" value="other" onchange="toggleYesOtherInput()">
+                                    <label class="form-check-label" for="yesReasonOther">其他原因 Others</label>
+                                </div>
+                                <!-- YES 的其他原因輸入框 -->
+                                <input type="text" class="form-control form-control-sm mt-2 d-none"
+                                    id="yesOtherReasonText" name="yes_presc_reason_other" placeholder="請簡述您的更換原因...">
+                            </div>
+
+                            <!-- ========================================== -->
+                            <!-- 【延伸二】選 NO 顯示：配鏡原因 -->
+                            <!-- ========================================== -->
+                            <div id="noPrescriptionReason" class="d-none border rounded p-3 bg-light mt-2">
+                                <label class="form-label small text-success fw-bold">請問您本次想配鏡的原因是？(可複選)：</label>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="reasonFirst"
+                                        name="no_presc_reason" value="first_time">
+                                    <label class="form-check-label" for="reasonFirst">我是初次配鏡 First time getting
+                                        glasses</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="reasonBlurry"
+                                        name="no_presc_reason" value="blurry">
+                                    <label class="form-check-label" for="reasonBlurry">最近突然覺得看不清楚 Blurry vision
+                                        recently</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="reasonFashion"
+                                        name="no_presc_reason" value="fashion">
+                                    <label class="form-check-label" for="reasonFashion">日常穿搭/造型配件需要 Fashion &
+                                        Style</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="reasonOther"
+                                        name="no_presc_reason" value="other" onchange="toggleNoOtherInput()">
+                                    <label class="form-check-label" for="reasonOther">其他原因 Others</label>
+                                </div>
+                                <!-- NO 的其他原因輸入框 -->
+                                <input type="text" class="form-control form-control-sm mt-2 d-none"
+                                    id="noOtherReasonText" name="no_presc_reason_other" placeholder="請簡述您的原因...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ========================================== -->
+                    <!-- JavaScript 控制腳本 (置於 body 底部或現有 script 標籤內) -->
+                    <!-- ========================================== -->
+                    <script>
+                        // 核心：處理 YES / NO 調查區塊雙向切換與背景資料抹除
+                        function togglePrescriptionLogic() {
+                            const yesRadio = document.getElementById('prescYes');
+                            const detailsSection = document.getElementById('prescriptionDetails');
+                            const noReasonSection = document.getElementById('noPrescriptionReason');
+
+                            // 抓取區塊內所有輸入控制項以利切換時自動清空
+                            const yesInputs = detailsSection.querySelectorAll('input');
+                            const noInputs = noReasonSection.querySelectorAll('input');
+
+                            if (yesRadio.checked) {
+                                // 選 YES：顯示 YES 區塊、隱藏 NO 區塊
+                                detailsSection.classList.remove('d-none');
+                                noReasonSection.classList.add('d-none');
+
+                                // 抹除並隱藏 NO 區塊內先前填寫的暫存資料
+                                noInputs.forEach(input => {
+                                    if (input.type === 'checkbox') input.checked = false;
+                                    if (input.type === 'text') { input.value = ''; input.classList.add('d-none'); }
+                                });
+                            } else {
+                                // 選 NO：隱藏 YES 區塊、顯示 NO 區塊
+                                detailsSection.classList.add('d-none');
+                                noReasonSection.classList.remove('d-none');
+
+                                // 抹除並隱藏 YES 區塊內先前填寫的暫存資料
+                                yesInputs.forEach(input => {
+                                    if (input.type === 'checkbox') input.checked = false;
+                                    if (input.type === 'text') { input.value = ''; input.classList.add('d-none'); }
+                                });
+                            }
+                        }
+
+                        // 控制 YES 區塊的「其他原因」文字輸入框顯隱
+                        function toggleYesOtherInput() {
+                            const yesReasonOther = document.getElementById('yesReasonOther');
+                            const yesOtherReasonText = document.getElementById('yesOtherReasonText');
+                            if (yesReasonOther.checked) {
+                                yesOtherReasonText.classList.remove('d-none');
+                            } else {
+                                yesOtherReasonText.classList.add('d-none');
+                                yesOtherReasonText.value = '';
+                            }
+                        }
+
+                        // 控制 NO 區塊的「其他原因」文字輸入框顯隱
+                        function toggleNoOtherInput() {
+                            const reasonOther = document.getElementById('reasonOther');
+                            const noOtherReasonText = document.getElementById('noOtherReasonText');
+                            if (reasonOther.checked) {
+                                noOtherReasonText.classList.remove('d-none');
+                            } else {
+                                noOtherReasonText.classList.add('d-none');
+                                noOtherReasonText.value = '';
+                            }
+                        }
+
+                        // 網頁全部載入完成時，立刻跑一次初始化，確保初始畫面結構正常
+                        document.addEventListener("DOMContentLoaded", function () {
+                            togglePrescriptionLogic();
+                        });
+                    </script>
+                    <!-- 問題1 結束-->
+
+                    <!-- 問題2 開始-->
+                    <!-- 問題2 結束-->
+
+                    <!-- 問題3 開始-->
+                    <!-- 問題3 結束-->
+
+
+                </div>
+
+
+                <!-- file -->
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3 mt-3">
+                            <label for="file">其他資料補充 Additional information：</label>
+                            <input type="file" class="form-control" id="file" placeholder="請輸入其他補充資料說明..." name="name">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <!-- textarea -->
+                        <div class="mb-3 mt-3">
+                            <label for="comment">其他留言與備註 Comments：</label>
+                            <textarea class="form-control" rows="5" id="comment" placeholder="請輸入其他留言與備註..." name="text"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <button type="reset" class="btn btn-primary">重置 Reset</button>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">提交 Submit</button>
+                    </div>
+                </div>
+        </form>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+</body>
+
+</html>

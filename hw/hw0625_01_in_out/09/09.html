@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>和風美化網頁</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 全域重設與和風底色 --- */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f9f6f0; /* 胡粉色 (Gofun-iro) 米白 */
+            color: #2b2b2b;            /* 墨色 (Sumi-iro) */
+            font-family: 'Noto Serif JP', 'Noto Serif TC', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            /* 傳統日式格子/障子門風背景（淡淡的線條） */
+            background-image: 
+                linear-gradient(rgba(197, 181, 155, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(197, 181, 155, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* --- 主容器：和風框線與設計 --- */
+        .box {
+            background-color: #ffffff;
+            border: 2px solid #2b2b2b;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            box-shadow: 8px 8px 0px #c5b59b; /* 傳統沙色陰影 */
+            border-radius: 2px;
+            transition: all 0.4s ease;
+        }
+
+        /* 經典日式紅點/家徽意象點綴 */
+        .box::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 18px;
+            height: 18px;
+            background-color: #c81d25; /* 深緋 (Kokihi) 日之丸紅 */
+            border-radius: 50%;
+        }
+
+        /* 標題設計 */
+        .box h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2b2b2b;
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #2b2b2b;
+            letter-spacing: 2px;
+        }
+
+        /* 日式直排文字區塊（可選，這裡示範優雅的內文） */
+        .jp-intro {
+            font-size: 16px;
+            line-height: 1.8;
+            margin: 25px 0;
+            color: #4a4a4a;
+            text-align: justify;
+        }
+
+        /* --- 和風互動按鈕 --- */
+        .btn-wafu {
+            display: inline-block;
+            background-color: transparent;
+            color: #2b2b2b;
+            border: 1px solid #2b2b2b;
+            padding: 10px 25px;
+            font-family: 'Noto Serif JP', serif;
+            font-size: 14px;
+            cursor: pointer;
+            letter-spacing: 4px;
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s ease;
+        }
+
+        /* 按鈕滑過時的傳統色彩漆面效果 */
+        .btn-wafu::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: #2b2b2b; /* 墨色填滿 */
+            z-index: -1;
+            transition: width 0.3s ease;
+        }
+
+        .btn-wafu:hover {
+            color: #f9f6f0;
+        }
+
+        .btn-wafu:hover::after {
+            width: 100%;
+        }
+
+        /* 透過 jQuery 動態控制的樣式 */
+        .box.active {
+            border-color: #c81d25;
+            box-shadow: 8px 8px 0px #e09e96;
+        }
+    </style>
+</head>
+
+<body>
+    
+    <div class="box">
+        <h1>一期一會</h1>
+        <p class="jp-intro">
+            「一期」は一生、「一会」は一度の出会い。どの出会いも一生に一度限りの大切なものとして、誠意を尽くすべしという心構え。
+            <br><br>
+            每一段相遇都是生命中僅此一次的緣分，請溫柔且珍貴地對待當下的時光。
+        </p>
+        <button class="btn-wafu" id="actionBtn">御覧、點擊</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        // jquery 寫code
+        $(document).ready(function () {
+            
+            // 點擊按鈕時觸發和風邊框動態切換
+            $('#actionBtn').on('click', function() {
+                $('.box').toggleClass('active');
+                
+                // 淡淡的小驚喜：點擊時改變按鈕文字
+                if($('.box').hasClass('active')) {
+                    $(this).text('感謝、多謝');
+                } else {
+                    $(this).text('御覧、點擊');
+                }
+            });
+
+        });
+    </script>
+</body>
+
+</html>

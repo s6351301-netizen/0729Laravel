@@ -1,0 +1,431 @@
+body {
+     font-family: 'Cinzel', 'Noto Serif TC', 'Georgia', serif;
+     background-color: #F7F4EB;
+     color: #1A1A1A;
+     overflow-x: hidden;
+}
+
+/* 1. 精品半透明導覽列 */
+.custom-nav-wrapper {
+     position: absolute;
+     top: 20px;
+     width: 100%;
+     z-index: 1000;
+}
+
+.custom-navbar {
+     background-color: rgba(26, 26, 26, 0.95);
+     backdrop-filter: blur(10px);
+     border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+     padding: 15px 40px;
+}
+
+.navbar-brand {
+     font-weight: 700;
+     letter-spacing: 4px;
+     color: #E6CBB3 !important;
+}
+
+.nav-link {
+     color: #E0E0E0 !important;
+     letter-spacing: 2px;
+     font-size: 0.85rem;
+}
+
+.nav-link:hover {
+     color: #E6CBB3 !important;
+}
+
+/* 2. ZL& 品牌首頁英雄區 */
+.hero-section {
+     position: relative;
+     background: linear-gradient(135deg, #1A1A1A 0%, #2D2625 100%);
+     min-height: 80vh;
+     display: flex;
+     align-items: center;
+     padding-top: 140px; /* 增加上方內距，防止與絕對定位的導覽列重疊 */
+     padding-bottom: 60px;
+     border-bottom-right-radius: 80% 20px;
+     overflow: hidden;
+}
+
+.hero-bg-line {
+     position: absolute;
+     border: 1px solid rgba(230, 203, 179, 0.15);
+     border-radius: 50%;
+     pointer-events: none;
+}
+
+.line-1 {
+     width: 500px;
+     height: 500px;
+     top: -100px;
+     right: -50px;
+}
+
+.line-2 {
+     width: 350px;
+     height: 350px;
+     bottom: -50px;
+     left: 5%;
+     border-style: dashed;
+}
+
+.hero-title-en {
+     font-size: 4rem;
+     font-weight: 300;
+     letter-spacing: 10px;
+     color: #E6CBB3;
+     line-height: 1.2;
+}
+
+@media (max-width: 576px) {
+     .hero-title-en {
+          font-size: 2.8rem !important; /* 手機版縮小字體防止溢出 */
+     }
+}
+
+.hero-tagline {
+     font-size: 1.1rem;
+     letter-spacing: 3px;
+     color: #D0C5C3;
+     margin-top: 25px;
+     line-height: 1.8;
+}
+
+/* 3. 四欄式飾品分類 */
+.content-section {
+     padding: 80px 0;
+}
+
+.concept-card {
+     text-align: center;
+     padding: 30px 15px;
+     background-color: #FFFFFF;
+     border: 1px solid rgba(230, 203, 179, 0.2);
+     border-radius: 0px;
+     transition: all 0.3s ease;
+}
+
+.concept-card:hover {
+     transform: translateY(-8px);
+     box-shadow: 0 15px 35px rgba(45, 38, 37, 0.08);
+     border-color: #E6CBB3;
+}
+
+.icon-wrapper {
+     width: 70px;
+     height: 70px;
+     margin: 0 auto 20px auto;
+     position: relative;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
+
+.icon-gold-frame {
+     position: absolute;
+     width: 55px;
+     height: 55px;
+     border: 1px solid #E6CBB3;
+     transform: rotate(45deg);
+}
+
+.concept-title {
+     font-size: 1.05rem;
+     font-weight: 600;
+     color: #1A1A1A;
+     letter-spacing: 2px;
+     margin-bottom: 10px;
+}
+
+.concept-desc {
+     font-size: 0.8rem;
+     color: #666666;
+     line-height: 1.6;
+}
+
+/* 4. 品牌故事質感中框 */
+.quote-box {
+     border: 1px solid rgba(230, 203, 179, 0.5);
+     padding: 40px 30px;
+     background-color: #FFFFFF;
+     max-width: 100%;
+     margin: 80px auto 0 auto;
+     text-align: center;
+}
+
+/* 商品卡片樣式 */
+.zl-mini-card {
+     background: #FFFFFF;
+     border: 1px solid rgba(230, 203, 179, 0.2);
+     transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.zl-mini-img {
+     width: 100%;
+     aspect-ratio: 1 / 1;
+     overflow: hidden;
+}
+
+.zl-mini-img img {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     transition: transform 0.5s ease;
+}
+
+.zl-mini-info {
+     padding: 12px 8px;
+     text-align: center;
+}
+
+.zl-mini-info h6 {
+     font-size: 0.85rem;
+     letter-spacing: 1px;
+     color: #222;
+     margin-bottom: 4px;
+     /* 修正文字省略截斷 */
+     display: block;
+     width: 100%;
+     text-overflow: ellipsis;
+     overflow: hidden;
+     white-space: nowrap;
+}
+
+.zl-mini-info p {
+     font-size: 0.8rem;
+     color: #C5A880;
+     margin-bottom: 0;
+}
+
+.zl-mini-card:hover {
+     transform: translateY(-4px);
+     box-shadow: 0 10px 20px rgba(45, 38, 37, 0.05);
+     border-color: rgba(230, 203, 179, 0.5);
+}
+
+.zl-mini-card:hover .zl-mini-img img {
+     transform: scale(1.05);
+}
+
+/* 左右切換按鈕 */
+.mini-control {
+     width: 36px;
+     height: 36px;
+     background-color: rgba(26, 26, 26, 0.7);
+     top: 40%;
+     opacity: 0;
+     transition: all 0.3s ease;
+}
+
+#zlMultiProductCarousel:hover .mini-control {
+     opacity: 1;
+}
+
+/* 為了 RWD 調整按鈕定位，避免在大螢幕或手機上跑版 */
+.carousel-control-prev.mini-control {
+     left: -15px;
+}
+.carousel-control-next.mini-control {
+     right: -15px;
+}
+
+@media (max-width: 768px) {
+     .mini-control {
+          opacity: 1; /* 手機版無法 hover，所以維持一直顯示 */
+          top: 35%;
+     }
+     .carousel-control-prev.mini-control { left: 5px; }
+     .carousel-control-next.mini-control { right: 5px; }
+}
+
+.mini-control .carousel-control-prev-icon,
+.mini-control .carousel-control-next-icon {
+     width: 16px;
+     height: 16px;
+}
+
+/* ==========================================================================
+   商品總覽頁面專用樣式 (Products Page - 全域懸浮+下拉手風琴版)
+   ========================================================================== */
+
+/* 頁面大標題設計 */
+.page-title {
+     font-size: 2.2rem;
+     font-weight: 300;
+     letter-spacing: 6px;
+     color: #1A1A1A;
+     margin-bottom: 5px;
+}
+
+.page-subtitle {
+     font-size: 0.85rem;
+     letter-spacing: 2px;
+     color: #666666;
+}
+
+.title-line {
+     width: 40px;
+     height: 1px;
+     background-color: #E6CBB3;
+     margin: 15px auto 0 auto;
+}
+
+/* 工具列與排序選單 */
+.toolbox {
+     border-bottom: 1px solid rgba(230, 203, 179, 0.3);
+     padding-bottom: 15px;
+}
+
+.product-count {
+     font-size: 0.85rem;
+     color: #777;
+     letter-spacing: 0.5px;
+}
+
+.border-gold {
+     border-color: rgba(230, 203, 179, 0.6) !important;
+     font-size: 0.85rem;
+     color: #4A4A4A;
+}
+
+.border-gold:focus {
+     border-color: #C5A880 !important;
+     box-shadow: 0 0 0 0.25rem rgba(197, 168, 128, 0.15) !important;
+}
+
+/* 篩選按鈕 (通用) */
+.btn-filter-mobile {
+     background-color: #FFFFFF;
+     border: 1px solid rgba(230, 203, 179, 0.6);
+     color: #1A1A1A;
+     font-size: 0.85rem;
+     padding: 6px 15px;
+     border-radius: 0;
+     transition: all 0.2s ease;
+}
+
+.btn-filter-mobile:hover, .btn-filter-mobile:focus {
+     background-color: #1A1A1A;
+     color: #FFFFFF;
+     border-color: #1A1A1A;
+}
+
+/* 懸浮側欄背景底色與 RWD 寬度控制 */
+.filter-offcanvas {
+     background-color: #F7F4EB; /* 使用經典沙色背景 */
+     max-width: 85vw; /* 手機版預設佔寬 85% */
+     transition: transform 0.3s ease-in-out;
+}
+
+/* 當螢幕寬度大於 992px (電腦桌機版) 時，限制懸浮欄寬度為更精緻的 360px */
+@media (min-width: 992px) {
+     .filter-offcanvas {
+          max-width: 360px;
+     }
+}
+
+/* 頂部標題細節 */
+.filter-offcanvas .offcanvas-header {
+     border-bottom: 1px solid rgba(230, 203, 179, 0.5) !important;
+     padding: 20px;
+}
+
+.filter-offcanvas .offcanvas-body {
+     padding: 20px;
+}
+
+/* 覆寫 Bootstrap 預設的手風琴（下拉選單）外觀 */
+.custom-accordion .accordion-item {
+     background-color: transparent;
+     border: none;
+     border-bottom: 1px solid rgba(230, 203, 179, 0.3);
+}
+
+/* 下拉按鈕設計 */
+.custom-accordion .accordion-button {
+     background-color: transparent;
+     color: #1A1A1A;
+     font-weight: 600;
+     letter-spacing: 1.5px;
+     box-shadow: none; /* 移除點擊時藍色外框 */
+     padding: 18px 0;
+}
+
+/* 按鈕展開時的文字顏色 */
+.custom-accordion .accordion-button:not(.collapsed) {
+     color: #C5A880;
+     background-color: transparent;
+     box-shadow: none;
+}
+
+/* 將預設箭頭改為深色調 */
+.custom-accordion .accordion-button::after {
+     filter: brightness(0.2); 
+}
+
+/* 下拉展開後的內部選單菜單 */
+.custom-accordion .accordion-body {
+     padding: 0 0 20px 0;
+}
+
+.filter-menu {
+     list-style: none;
+     padding-left: 0;
+     margin-bottom: 0;
+}
+
+.filter-menu li {
+     margin-bottom: 12px;
+}
+
+.filter-menu li:last-child {
+     margin-bottom: 0;
+}
+
+.filter-menu li a {
+     font-size: 0.85rem;
+     color: #555555;
+     text-decoration: none;
+     letter-spacing: 1px;
+     transition: color 0.2s ease, padding-left 0.2s ease;
+     display: block;
+}
+
+.filter-menu li a:hover,
+.filter-menu li a.active {
+     color: #C5A880;
+     padding-left: 4px;
+     font-weight: 500;
+}
+
+/* 分頁優化樣式 */
+.custom-pagination .page-link {
+     color: #1A1A1A;
+     background-color: #FFFFFF;
+     border: 1px solid rgba(230, 203, 179, 0.3);
+     font-size: 0.85rem;
+     padding: 8px 16px;
+     border-radius: 0 !important;
+     margin: 0 3px;
+     transition: all 0.2s ease;
+}
+
+.custom-pagination .page-link:hover {
+     color: #C5A880;
+     background-color: #F7F4EB;
+     border-color: #E6CBB3;
+}
+
+.custom-pagination .page-item.active .page-link {
+     background-color: #1A1A1A;
+     border-color: #1A1A1A;
+     color: #E6CBB3;
+}
+
+.custom-pagination .page-item.disabled .page-link {
+     color: #CCCCCC;
+     background-color: #FFFFFF;
+     border-color: rgba(230, 203, 179, 0.15);
+}

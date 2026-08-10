@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人座右銘產生器</title>
+    <style>
+        /* 全域重設，讓排版更精準 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        /* 整個網頁背景：舒服的淡藍色漸層 */
+        body {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* 主卡片：加大寬度以容納更多內容 */
+        .box {
+            width: 450px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            text-align: center;
+            padding: 35px 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 段落間距 */
+        p {
+            margin-bottom: 20px;
+        }
+
+        /* 輸入框美化 */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        /* 輸入框點擊時變藍色外框 */
+        input[type="text"]:focus {
+            border-color: #3b82f6;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        }
+
+        /* 按鈕美化 */
+        #myBtn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(29, 78, 216, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        #myBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(29, 78, 216, 0.3);
+            filter: brightness(1.1);
+        }
+
+        #myBtn:active {
+            transform: translateY(0);
+        }
+
+        /* 下方文字顯示區 */
+        .result-container {
+            margin-top: 25px;
+            padding: 15px;
+            background-color: #eff6ff;
+            border-radius: 12px;
+            border-left: 5px solid #3b82f6;
+            text-align: center; /* 讓大字維持居中 */
+        }
+
+        #mySpan {
+            display: inline-block;
+            font-size: 18px;
+            color: #1e3a8a;
+            font-weight: 600;
+            line-height: 1.8; /* 加大行高，換行後比較不會太擠 */
+            word-break: break-all;
+            
+            /* 【核心修改】允許文字識別 \n 進行換行 */
+            white-space: pre-line; 
+        }
+
+        /* 分隔線 */
+        hr {
+            margin: 25px 0 15px 0;
+            border: 0;
+            border-top: 1px dashed #cbd5e1;
+        }
+
+        /* 歷史紀錄區塊樣式 */
+        .history-box {
+            text-align: left;
+        }
+
+        .history-title {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        #historyList {
+            list-style: none;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        #historyList li {
+            font-size: 13px;
+            color: #475569;
+            padding: 8px 10px;
+            background-color: #f1f5f9;
+            margin-bottom: 6px;
+            border-radius: 6px;
+            border-left: 3px solid #94a3b8;
+            word-break: break-all;
+            
+            /* 【核心修改】讓下方的歷史紀錄點擊時，也同步支援換行顯示 */
+            white-space: pre-line; 
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <p>
+            <input type="text" id="name" placeholder="請輸入名字....">
+        </p>
+        <p>
+            <input type="text" id="text" placeholder="請輸入座右銘....">
+        </p>
+        <p>
+            <button type="button" id="myBtn">送出資料</button>
+        </p>
+
+        <div class="result-container">
+            <span id="mySpan">我是系統，
+            我的人生座右銘是盡力而為，無愧於心!</span>
+        </div>
+
+        <hr>
+
+        <div class="history-box">
+            <div class="history-title">📋 歷史輸入紀錄</div>
+            <ul id="historyList">
+                </ul>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            
+            const btn = document.getElementById('myBtn');
+            const historyList = document.getElementById('historyList');
+            
+            btn.addEventListener('click', function() {
+                
+                const nameValue = document.getElementById('name').value.trim();
+                const textValue = document.getElementById('text').value.trim();
+                const mySpan = document.getElementById('mySpan');
+                
+                if(nameValue === "" && textValue === "") {
+                    mySpan.innerText = "你什麼都沒填喔！";
+                    return;
+                }
+                
+                // 【核心修改】在名字與座右銘中間，按下 Enter 直接換行寫法
+                // 或者用 `我是${nameValue}\n我的人生座右銘是：${textValue}`
+                const resultText = `我是${nameValue}
+                我的人生座右銘是：${textValue}`;
+                
+                // 更新大字顯示區
+                mySpan.innerText = resultText;
+                
+                // 動態新增歷史紀錄
+                const newLi = document.createElement('li');
+                newLi.innerText = resultText;
+                
+                historyList.insertBefore(newLi, historyList.firstChild);
+            });
+            
+        };
+    </script>
+</body>
+
+</html>

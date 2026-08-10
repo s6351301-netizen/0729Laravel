@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>電影評分統計 | Web Design Portfolio</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: '微軟正黑體', sans-serif;
+        }
+        .header {
+            padding: 40px 0;
+            background: linear-gradient(135deg, #1f1c2c, #928DAB);
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #f1c40f;
+        }
+        .stat-card {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .progress-bar-custom {
+            background-color: #f1c40f;
+            color: #000;
+            font-weight: bold;
+        }
+        .movie-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ff4757;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="container">
+            <h1 class="display-4 fw-bold">📊 評分統計</h1>
+            <p class="lead">看看大家最愛的電影是哪一部</p>
+            <div class="mt-4">
+                <a href="index.html" class="btn btn-outline-light me-2">回到電影搜尋</a>
+                <a href="statistics.html" class="btn btn-warning text-dark fw-bold">查看評分統計</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h3 class="mb-4 border-bottom border-secondary pb-2">電影評分排行榜</h3>
+                
+                <div id="loadingMsg" class="text-center text-warning my-4">資料載入中...</div>
+                
+                <!-- 統計資料列表 -->
+                <div id="statList">
+                    <!-- 動態產生的統計長條圖會放在這裡 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script>
+        $(document).ready(function () {
+
+            // 頁面載入時自動抓取資料
+            fetchStatistics();
+
+            function fetchStatistics() {
+                $('#loadingMsg').show();
+                
+                $.ajax({
+                    type: "GET",
+                    url: "./api.php",
+                    data: { action: 'get_movies' },
+                    dataType: "json",
+                    success: function (res) {
+                        $('#loadingMsg').hide();
+                        
+                        if(res.status === 'success') {
+                            renderStatistics(res.data);
+                        } else {
+                            alert("讀取資料失敗！");
+                        }
+                    },
+                    error: function (err) {
+                        $('#loadingMsg').hide();
+                        console.error('AJAX Error:', err);
+                        $('#statList').html('<div class="text-center text-danger">伺服器發生錯誤，請稍後再試。</div>');
+                    }
+                });
+            }
+
+            function renderStatistics(movies) {
+                const listContainer = $('#statList');
+                listContainer.empty();
+
+                // 根據評分由高到低排序 (遞減排序)
+                movies.sort(function(a, b) {
+                    return b.rating - a.rating;
+                });
+
+                $.each(movies, function (index, movie) {
+                    // 計算百分比 (最高 10 分，所以乘以 10 就是百分比)
+                    let percentage = movie.rating * 10;
+                    
+                    // 前三名給予皇冠圖示
+                    let rankIcon = '';
+                    if (index === 0) rankIcon = '👑 ';
+                    else if (index === 1) rankIcon = '🥈 ';
+                    else if (index === 2) rankIcon = '🥉 ';
+
+                    let html = `
+                        <div class="stat-card">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div class="movie-title">${rankIcon}${movie.title} <span class="text-muted fs-6">(${movie.year})</span></div>
+                                <div class="fw-bold text-warning fs-5">${movie.rating} 分</div>
+                            </div>
+                            <div class="progress" style="height: 25px; background-color: #333;">
+                                <div class="progress-bar progress-bar-custom progress-bar-striped progress-bar-animated" 
+                                     role="progressbar" 
+                                     style="width: ${percentage}%;" 
+                                     aria-valuenow="${movie.rating}" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="10">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    listContainer.append(html);
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>

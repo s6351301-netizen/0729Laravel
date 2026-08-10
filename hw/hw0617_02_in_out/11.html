@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小試身手</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top left, #7c3aed 0%, #4f46e5 45%, #111827 100%);
+            color: #f8fafc;
+        }
+
+        .container {
+            width: min(540px, calc(100% - 32px));
+            padding: 40px 30px;
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 26px;
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+            text-align: center;
+        }
+
+        .container>div {
+            margin-top: 18px;
+        }
+
+        .container>div:first-child {
+            margin-top: 0;
+            text-align: left;
+        }
+
+        h1 {
+            margin-bottom: 24px;
+            color: #fff;
+            font-size: clamp(2.2rem, 4vw, 3.8rem);
+            line-height: 1.05;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        a {
+            color: #c4b5fd;
+            text-decoration: none;
+            transition: color 0.25s ease;
+        }
+
+        a:hover {
+            color: #e0e7ff;
+        }
+
+        .container a {
+            display: inline-block;
+            padding: 12px 22px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #4338ca;
+            text-decoration: none;
+            border-radius: 999px;
+            font-weight: 700;
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .container a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 26px rgba(0, 0, 0, 0.2);
+        }
+
+        .container button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #4f46e5 100%);
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 18px 30px rgba(79, 70, 229, 0.24);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+        }
+
+        .container button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+            box-shadow: 0 22px 34px rgba(79, 70, 229, 0.28);
+        }
+
+        .container input {
+            width: 100%;
+            padding: 16px 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.16);
+            color: #edf2f7;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .container input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .container input:focus {
+            border-color: #a78bfa;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 6px rgba(167, 139, 250, 0.12);
+        }
+
+        #total {
+            display: inline-block;
+            min-height: 1.5em;
+            color: #f8fafc;
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: rgba(30, 41, 59, 0.7);
+            margin-top: 10px;
+        }
+
+        @media (max-width: 680px) {
+            .container {
+                padding: 28px 20px;
+            }
+
+            .container>div:first-child {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <a href="./04_beginning.html">返回前頁</a>
+        </div>
+
+        <h1></h1>
+
+        <ul>
+            <li>bmi < 18.5 體重過輕</li>
+            <li>18.5 <= bmi < 24 標準體重</li>
+            <li>24 <= bmi < 27 體重過重</li>
+            <li>27 <= bmi < 30 輕度肥胖</li>
+            <li>30 <= bmi < 35 中度肥胖</li>
+            <li>bmi => 35 重度肥胖</li>
+        </ul>
+
+        <div>
+            <input type="text" id="tall" placeholder="身高 (cm)" value="180">
+        </div>
+
+        <div>
+            <input type="text" id="weight" placeholder="體重 (kg)" value="90">
+        </div>
+
+        <div>
+            <button id="button">計算</button>
+        </div>
+
+        <div>
+            <span id="total"></span>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <script>
+        $(document).ready(function(){
+            let tall = $('#tall');
+            let weight = $('#weight');
+            let button = $('#button');
+            let total = $('#total');
+
+            console.log('tall', tall);
+            console.log('weight', weight);
+            console.log('button', button);
+            console.log('total', total);
+
+            button.on('click', function(){
+                console.log('button', button);
+                let getTall = tall.val();
+                let getWeight = weight.val();
+                let bmi = getWeight / (getTall / 100) ** 2;
+                console.log('getTall', getTall);
+                console.log('getWeight', getWeight);
+                let result = `身高${getTall}，體重${getWeight}，BMI 為${Math.round(bmi)}。<br>`;
+                switch(true){
+                    case (bmi < 18.5):
+                        result += `體重過輕`;
+                        break;
+                    case (bmi >= 18.5 && bmi < 24):
+                        result += `標準體重`;
+                        break;
+                    case (bmi >= 24 && bmi < 27):
+                        result += `體重過重`;
+                        break;
+                    case (bmi >= 27 && bmi < 30):
+                        result += `輕度肥胖`;
+                        break;
+                    case (bmi >= 30 && bmi < 35):
+                        result += `中度肥胖`;
+                        break;
+                    case (bmi >= 35):
+                        result += `你他媽太胖了`;
+                        break;
+                }
+                console.log('result', result);
+                total.html(result);
+            });
+        });
+    </script>
+</body>
+</html>

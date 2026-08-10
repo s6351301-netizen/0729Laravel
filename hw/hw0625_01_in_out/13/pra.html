@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Spotify 職人風格：AJAX 智慧運算器</title>
+     <style>
+          /* 🌟 1. 全域初始化：防爆框設定與 Spotify 經典深色背景 */
+          * {
+               box-sizing: border-box;
+               font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+          }
+
+          body {
+               background-color: #121212; /* Spotify 招牌極致黑 */
+               margin: 0;
+               padding: 0;
+               display: flex;
+               flex-direction: column;
+               justify-content: center;
+               align-items: center;
+               min-height: 100vh;
+          }
+
+          /* 🌟 2. 標題美化：酷炫霓虹字體 */
+          h3 {
+               color: #1db954; /* Spotify 經典綠 */
+               text-align: center;
+               font-size: 36px;
+               margin-bottom: 20px;
+               font-weight: 700;
+               letter-spacing: 2px;
+               text-transform: uppercase;
+               text-shadow: 0 0 10px rgba(29, 185, 84, 0.3);
+          }
+
+          /* 🌟 3. 主卡片外框美化 (.box) */
+          .box {
+               width: 360px;
+               background: linear-gradient(180deg, #181818 0%, #000000 100%); /* 漸層黑 */
+               border-radius: 16px;
+               padding: 30px 24px;
+               box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+               border: 1px solid #282828;
+          }
+
+          /* 🌟 4. 表單內部間距與排版 */
+          form p {
+               margin: 18px 0;
+               text-align: left;
+          }
+
+          /* 欄位標籤提示文字 */
+          label {
+               display: block;
+               font-size: 13px;
+               color: #b3b3b3; /* 質感灰 */
+               font-weight: bold;
+               margin-bottom: 8px;
+               letter-spacing: 0.5px;
+          }
+
+          /* 🌟 5. 輸入框高級感美化 */
+          input[type="text"] {
+               width: 100%;
+               padding: 12px;
+               background-color: #2a2a2a; /* 深灰輸入底色 */
+               border: 1px solid transparent;
+               border-radius: 8px;
+               outline: none;
+               color: #ffffff; /* 輸入呈現白色字 */
+               font-size: 15px;
+               font-weight: 500;
+               transition: 0.3s ease;
+               text-align: center;
+          }
+
+          /* 當點擊輸入框時，邊框亮起 Spotify 大綠光 */
+          input[type="text"]:focus {
+               border-color: #1db954;
+               background-color: #333333;
+               box-shadow: 0 0 8px rgba(29, 185, 84, 0.2);
+          }
+
+          /* 🌟 6. 送出按鈕美化 (Submit Button) */
+          input[type="submit"] {
+               width: 100%;
+               padding: 14px;
+               background-color: #1db954; /* Spotify 經典綠 */
+               color: #000000;
+               border: none;
+               border-radius: 25px; /* 圓角膠囊鈕 */
+               font-size: 16px;
+               font-weight: bold;
+               cursor: pointer;
+               transition: 0.2s ease;
+               letter-spacing: 1px;
+               margin-top: 10px;
+               text-transform: uppercase;
+          }
+
+          /* 滑鼠移到按鈕上時微微放大、提高亮度 */
+          input[type="submit"]:hover {
+               background-color: #1ed760;
+               transform: scale(1.03);
+          }
+
+          input[type="submit"]:active {
+               transform: scale(0.98);
+          }
+     </style>
+</head>
+
+<body>
+
+     <h3>Calculators</h3>
+     
+     <div class="box">
+          <form id="myForm">
+               <p>
+                    <label for="num1">請填入數字 1</label>
+                    <input type="text" name="num1" id="num1" value="600">
+               </p>
+               <p>
+                    <label for="num2">請填入數字 2</label>
+                    <input type="text" name="num2" id="num2" value="200">
+               </p>
+               <p>
+                    <label for="opt">運算符號 (OPT)</label>
+                    <input type="text" name="opt" id="opt" value="-">
+               </p>
+               <p>
+                    <input type="submit" value="SUBMIT DATA">
+               </p>
+          </form>
+     </div>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        
+     <script>
+          $(document).ready(function (){
+
+               // 1. bind —— 綁定表單元素
+               const myForm = $('#myForm');
+               
+               // 2. action —— 監聽表單送出動作
+               myForm.submit(function (e) {
+                    e.preventDefault(); // 阻擋 HTML 表單傳統的轉頁重整刷新
+                    
+                    // 🎯 修正點二：原程式碼拼錯成 consolo.log，會導致整段 JS 癱瘓！已修正為 console.log
+                    console.log('myForm submit ok');
+                    console.log('this', this);
+                    console.log('$(this)', $(this));
+
+                    // 自動將表單內的所有欄位打包成一串 URL 參數字串（例如: num1=600&num2=200&opt=-）
+                    let data = $(this).serialize();
+                    console.log('data', data);
+
+                    let url = './s20260625_03_calc_pradata.php';
+                    
+                    // 🚀 發動 AJAX 非同步請求，悄悄把資料送給後端 PHP
+                    $.ajax({
+                         type: "get",
+                         url: url,
+                         data: data,
+                         dataType: "json",
+                         success: function (res) {
+                              console.log('res', res);
+                              console.log('res typeof', typeof(res));
+                              
+                              // 💡 小建議：等你 PHP 寫好後，可以在這邊寫：
+                              // alert("計算結果是：" + res.result); 
+                              // 這樣畫面上就會跳出後端幫你算好的正確答案囉！
+                         },
+                         error: function (xhr, status, error) {
+                              console.log('連線失敗，可能因為 PHP 檔案還沒建立：', error);
+                         }
+                    });
+               });
+
+          });
+     </script>
+
+</body>
+
+</html>

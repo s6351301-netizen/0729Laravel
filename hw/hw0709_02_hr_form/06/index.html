@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>威聖窗飾布藝館 - 專業客製化窗簾設計</title>
+    <meta name="description" content="威聖窗飾布藝館深耕泰山二十年，專業客製化窗簾設計安裝。提供精緻布窗簾、紗簾、現代調光簾、捲簾、木百葉、風琴簾及壁紙、塑膠地板服務。雙北地區免費到府丈量估價！">
+    <meta name="keywords" content="泰山/新北窗簾推薦, 台北/新北客製化窗簾, 免費到府丈量, 調光簾, 捲簾, 百葉窗, 風琴簾, 威聖窗飾">
+    <link rel="canonical" href="https://weishen-curtain.netlify.app//">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://weishen-curtain.netlify.app//">
+    <meta property="og:title" content="威聖窗飾布藝館 - 專業客製化窗簾設計｜雙北免費到府丈量">
+    <meta property="og:description" content="深耕在地二十年，堅持用好布料、好工藝。提供蛇行簾、調光簾、百葉窗、風琴簾等全方位窗飾規劃，馬上預約免費到府丈量！">
+    <meta property="og:image"
+        content="https://images.unsplash.com/photo-1582582621959-48d27397dc69?auto=format&fit=crop&w=1200&h=630&q=80">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="zh_TW">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        /* Custom Colors */
+        :root {
+            --primary-color: #5C6B73;
+            /* Muted Blue/Gray */
+            --secondary-color: #A39171;
+            /* Elegant Gold/Beige */
+            --dark-bg: #253237;
+        }
+
+        .text-primary-custom {
+            color: var(--primary-color) !important;
+        }
+
+        .bg-primary-custom {
+            background-color: var(--primary-color) !important;
+        }
+
+        .text-secondary-custom {
+            color: var(--secondary-color) !important;
+        }
+
+        .bg-secondary-custom {
+            background-color: var(--secondary-color) !important;
+        }
+
+        .border-secondary-custom {
+            border-color: var(--secondary-color) !important;
+        }
+
+        /* Smooth transitions for cards */
+        .card.transition-transform {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card.transition-transform:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <!-- 1. Header/Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm bg-primary-custom">
+        <div class="container">
+            <a class="navbar-brand fs-3 fw-bold" href="#">威聖窗飾布藝館</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">產品與服務</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gallery">精選案例</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">聯絡我們</a>
+                    </li>
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <!-- CTA Button -->
+                        <button class="btn text-white fw-bold px-4 rounded-pill shadow-sm bg-secondary-custom"
+                            data-bs-toggle="modal" data-bs-target="#bookingModal">
+                            免費到府丈量
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 2. Hero Section -->
+    <header id="home">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <!-- Slide 1 -->
+                <div class="carousel-item active" data-bs-interval="5000">
+                    <img src="https://images.unsplash.com/photo-1582582621959-48d27397dc69?auto=format&fit=crop&w=1920&q=80"
+                        class="d-block w-100 object-fit-cover" style="height: 70vh;" alt="精緻布窗簾">
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 start-0 w-100"
+                        style="background: rgba(0,0,0,0.4);">
+                        <h1 class="display-3 fw-bold text-white mb-3">打造您的質感生活</h1>
+                        <p class="lead fs-4 text-white mb-4">威聖窗飾為您量身訂做，讓光影成為家中最美的風景。</p>
+                        <button class="btn btn-lg text-white fw-bold px-5 rounded-pill shadow bg-secondary-custom"
+                            data-bs-toggle="modal" data-bs-target="#bookingModal">了解更多</button>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="carousel-item" data-bs-interval="5000">
+                    <img src="https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&w=1920&q=80"
+                        class="d-block w-100 object-fit-cover" style="height: 70vh;" alt="現代調光簾">
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 start-0 w-100"
+                        style="background: rgba(0,0,0,0.4);">
+                        <h1 class="display-3 fw-bold text-white mb-3">專業客製化窗簾設計</h1>
+                        <p class="lead fs-4 text-white mb-4">百葉窗、調光簾、蛇行簾，滿足各種風格需求。</p>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="carousel-item" data-bs-interval="5000">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80"
+                        class="d-block w-100 object-fit-cover" style="height: 70vh;" alt="客廳窗戶">
+                    <div class="carousel-caption d-flex flex-column justify-content-center align-items-center h-100 start-0 w-100"
+                        style="background: rgba(0,0,0,0.4);">
+                        <h1 class="display-3 fw-bold text-white mb-3">免費到府丈量估價</h1>
+                        <p class="lead fs-4 text-white mb-4">從挑選布料到安裝，我們提供一站式專業服務。</p>
+                        <button class="btn btn-lg text-white fw-bold px-5 rounded-pill shadow bg-secondary-custom"
+                            data-bs-toggle="modal" data-bs-target="#bookingModal">立即預約</button>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">上一張</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">下一張</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 3. Services / Products -->
+    <section id="services" class="container py-5 my-4">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-primary-custom">產品與服務</h2>
+            <div class="mx-auto border-bottom border-2 w-25 pb-2 border-secondary-custom"></div>
+            <p class="text-muted mt-3">我們提供多樣化的窗飾選擇，完美契合您的空間風格</p>
+        </div>
+        <div class="row g-4 justify-content-center">
+            <!-- Product 1 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm rounded-4 pt-4 px-3 text-center transition-transform">
+                    <img src="sample/728315289_1462553535917437_4753155042749510559_n.jpg"
+                        class="card-img-top rounded-circle mx-auto object-fit-cover shadow-sm border border-3 border-white"
+                        style="width: 180px; height: 180px;" alt="布窗簾/紗簾">
+                    <div class="card-body mt-2">
+                        <h3 class="card-title h5 fw-bold text-dark">布窗簾 / 紗簾</h3>
+                        <p class="card-text text-muted small">經典優雅的蛇行簾、打摺簾，搭配透光不透影的質感紗簾，營造溫馨浪漫氛圍。</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 2 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm rounded-4 pt-4 px-3 text-center transition-transform">
+                    <img src="sample/726432439_1462549542584503_1595139624670195851_n.jpg"
+                        class="card-img-top rounded-circle mx-auto object-fit-cover shadow-sm border border-3 border-white"
+                        style="width: 180px; height: 180px;" alt="調光簾/捲簾">
+                    <div class="card-body mt-2">
+                        <h3 class="card-title h5 fw-bold text-dark">調光簾 / 捲簾</h3>
+                        <p class="card-text text-muted small">現代簡約首選，自由調節光線。防焰、遮光材質齊全，適合臥室與辦公空間。</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Product 3 -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm rounded-4 pt-4 px-3 text-center transition-transform">
+                    <img src="sample/710202969_1442513851254739_2018423548334697155_n.jpg"
+                        class="card-img-top rounded-circle mx-auto object-fit-cover shadow-sm border border-3 border-white"
+                        style="width: 180px; height: 180px;" alt="百葉窗/風琴簾">
+                    <div class="card-body mt-2">
+                        <h3 class="card-title h5 fw-bold text-dark">木百葉 / 風琴簾</h3>
+                        <p class="card-text text-muted small">獨特的蜂巢結構風琴簾具備優異的隔熱效果；實木百葉為居家注入自然氣息與極佳的調光性。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Gallery -->
+    <section id="gallery" class="py-5 bg-white">
+        <div class="container my-4">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold text-primary-custom">精選案例</h2>
+                <div class="mx-auto border-bottom border-2 w-25 pb-2 border-secondary-custom"></div>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/706981995_1438491061657018_26603122752019736_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/707005083_1438490821657042_9004176068371063642_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/707655921_1438491358323655_7448981017405215377_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/710202969_1442513851254739_2018423548334697155_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/710537808_1442514617921329_5672078059454535227_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/710742259_1442513324588125_663761584961088858_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/710755636_1442513327921458_6998458203539421636_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/710781907_1442514934587964_2694068668890165594_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/723831005_1462551399250984_6628073886816653590_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/723866180_1462552735917517_5746732164917910776_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/725922230_1462550572584400_4269873447966011032_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/726432439_1462549542584503_1595139624670195851_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/727178794_1462550575917733_2597927224613855035_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/727236053_1462550035917787_8946502628174676405_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/727304523_1462553785917412_7457716211815840893_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/727446369_1462551052584352_8368028776933623760_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/727497321_1462551372584320_602500110977653479_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/727498063_1462547075918083_5113491953278345776_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/727773616_1462552235917567_9035932374336045303_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/727788407_1462553179250806_5055262649814210697_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/727823775_1462551049251019_4336683372199300530_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/727919044_1462550562584401_4222079116066014855_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="position-relative overflow-hidden rounded-3 shadow-sm h-100" style="cursor: pointer;"
+                        data-bs-toggle="modal" data-bs-target="#lightboxModal"
+                        onclick="document.getElementById('lightboxImg').src=this.querySelector('img').src"><img
+                            src="sample/728315289_1462553535917437_4753155042749510559_n.jpg"
+                            class="img-fluid object-fit-cover w-100 transition-transform" style="height: 200px;"
+                            alt="完工案例"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Contact / Booking -->
+    <section id="contact" class="container py-5 my-4">
+        <div class="row g-5 align-items-center">
+            <!-- FAQs Accordion -->
+            <div class="col-lg-6">
+                <h2 class="display-6 fw-bold mb-4 text-primary-custom">常見問題</h2>
+                <div class="accordion shadow-sm rounded-4 overflow-hidden" id="faqAccordion">
+                    <div class="accordion-item border-0 border-bottom">
+                        <h2 class="accordion-header" id="faq1">
+                            <button class="accordion-button bg-light fw-bold text-dark" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapse1">
+                                到府丈量需要收費嗎？
+                            </button>
+                        </h2>
+                        <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                我們提供雙北地區「免費」到府丈量與估價服務！丈量師會帶樣本目錄與您討論，確認喜歡再下訂。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 border-bottom">
+                        <h2 class="accordion-header" id="faq2">
+                            <button class="accordion-button collapsed bg-light fw-bold text-dark" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapse2">
+                                訂做窗簾大概需要多久時間？
+                            </button>
+                        </h2>
+                        <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                依照選擇的材質與款式，一般製作時間約需 7 至 14 個工作天。若有急件需求，我們也會盡量協助配合。
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0">
+                        <h2 class="accordion-header" id="faq3">
+                            <button class="accordion-button collapsed bg-light fw-bold text-dark" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#collapse3">
+                                窗簾安裝後有保固嗎？
+                            </button>
+                        </h2>
+                        <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body text-muted">
+                                當然有！威聖窗飾提供完善的售後服務，軌道與五金配件皆享有「一年保固」，讓您安心使用。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div
+                    class="card border-0 shadow-lg rounded-4 p-4 p-md-5 bg-white text-center h-100 d-flex flex-column justify-content-center">
+                    <h3 class="h4 fw-bold mb-3 text-primary-custom">專人快速諮詢</h3>
+                    <p class="text-muted mb-4">有任何窗簾款式問題？想看更多案例？歡迎直接來電，或使用電話號碼將我們加入 LINE 好友，馬上為您線上初步估價！</p>
+
+                    <div class="fs-4 fw-bold text-dark mb-4">
+                        <i class="bi bi-telephone-fill text-primary-custom me-2"></i>0916-811-926
+                        <div class="fs-6 text-muted mt-2 fw-normal"><i class="bi bi-line text-success me-1"></i>LINE
+                            可直接用此號碼搜尋加入</div>
+                    </div>
+
+                    <div class="d-grid gap-3 mt-auto">
+
+                        <a href="tel:0916811926"
+                            class="btn text-white fw-bold py-3 rounded-3 d-flex align-items-center justify-content-center"
+                            style="background-color: var(--primary-color); transition: 0.2s; box-shadow: 0 4px 15px rgba(92,107,115,0.3);">
+                            <i class="bi bi-telephone fs-5 me-2"></i>立即撥打電話
+                        </a>
+                        <button type="button" class="btn text-white fw-bold py-3 rounded-3 bg-secondary-custom"
+                            data-bs-toggle="modal" data-bs-target="#bookingModal">或是 預約免費到府丈量</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 6. Footer -->
+    <footer class="text-white pt-5 pb-4 mt-auto" style="background-color: var(--dark-bg);">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="fw-bold mb-3">威聖窗飾布藝館</h4>
+                    <p class="text-white-50 small">
+                        深耕在地二十年，品質與誠信服務一向是我們的目標。
+                        不論在居家、豪宅、公司、我們均可提供最新產品，
+                        配合專業設計團隊的精心規劃，以現代最新款式及時尚捲簾、調光簾、柔紗簾、風琴簾、精緻窗簾、羅馬簾、木竹簾、垂直簾、窗紗、橫軌、窗簾布、木織簾、壁紙、塑膠地板、沙發訂製....等堅持用好布料、好工藝，為您的家穿上最美麗的衣裳。
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="fw-bold mb-3">快速連結</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-2">
+                        <li><a href="#home" class="text-white-50 text-decoration-none hover-white">首頁</a></li>
+                        <li><a href="#services" class="text-white-50 text-decoration-none hover-white">產品與服務</a></li>
+                        <li><a href="#gallery" class="text-white-50 text-decoration-none hover-white">精選案例</a></li>
+                        <li><a href="#contact" class="text-white-50 text-decoration-none hover-white">聯絡我們</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-3">聯絡資訊</h5>
+                    <div class="d-flex gap-3 mb-3">
+                        <a href="https://www.facebook.com/weishengbuyi/about/"
+                            class="bg-white bg-opacity-10 text-white rounded-circle d-flex justify-content-center align-items-center text-decoration-none"
+                            style="width: 40px; height: 40px;">FB</a>
+                        <a href="https://www.instagram.com/weisheng2013/"
+                            class="bg-white bg-opacity-10 text-white rounded-circle d-flex justify-content-center align-items-center text-decoration-none"
+                            style="width: 40px; height: 40px;">IG</a>
+                        <a href="https://line.me/ti/p/uaPJu_-_Y1"
+                            class="bg-white bg-opacity-10 text-white rounded-circle d-flex justify-content-center align-items-center text-decoration-none"
+                            style="width: 40px; height: 40px;">LINE</a>
+                    </div>
+                    <p class="text-white-50 small mb-0">🏠 新北市泰山區明志路二段7巷7號</p>
+                    <p class="text-white-50 small mb-0">📞 (02)2297-8863</p>
+                    <p class="text-white-50 small mb-0">🏢 統編：54045588</p>
+                    <p class="text-white-50 small">✉️ weisheng20130315@gmail.com</p>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="fw-bold mb-3">門市位置</h5>
+                    <div class="rounded-3 overflow-hidden shadow-sm h-100" style="min-height: 200px;">
+                        <iframe width="100%" height="100%" style="border:0; min-height: 200px;" loading="lazy"
+                            allowfullscreen
+                            src="https://maps.google.com/maps?q=新北市泰山區明志路二段7巷7號&t=&z=16&ie=UTF8&iwloc=&output=embed"></iframe>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary opacity-25">
+            <div class="text-center text-white-50 small mt-4">
+                &copy; 2026 威聖窗飾布藝館. 版權所有。
+            </div>
+        </div>
+    </footer>
+
+    <!-- Booking Modal (丈量預約) -->
+    <div class="modal fade" id="bookingModal" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-bottom-0 pb-0 px-4 pt-4">
+                    <h4 class="modal-title fw-bold text-primary-custom" id="bookingModalLabel">預約免費到府丈量</h4>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-muted small mb-4">請填寫下方資料，我們的專員將在 24 小時內與您聯繫安排丈量時間。</p>
+                    <form id="bookingForm">
+                        <!-- Honeypot (機器人誘餌，隱藏欄位) -->
+                        <div style="display:none; visibility:hidden;">
+                            <label for="bookWebsite">請勿填寫此欄位</label>
+                            <input type="text" id="bookWebsite" name="bookWebsite" autocomplete="off" tabindex="-1">
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="bookName" class="form-label text-muted small fw-bold">聯絡人姓名 <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-lg bg-light border-0" id="bookName"
+                                    placeholder="王先生/小姐" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="bookPhone" class="form-label text-muted small fw-bold">聯絡電話 <span
+                                        class="text-danger">*</span></label>
+                                <input type="tel" class="form-control form-control-lg bg-light border-0" id="bookPhone"
+                                    placeholder="09xx-xxx-xxx" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bookAddress" class="form-label text-muted small fw-bold">完整安裝地址 <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-lg bg-light border-0" id="bookAddress"
+                                placeholder="請輸入欲安裝窗簾的地址" required>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="bookDate" class="form-label text-muted small fw-bold">希望丈量日期 (選填)</label>
+                                <input type="date" class="form-control form-control-lg bg-light border-0" id="bookDate">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="bookType" class="form-label text-muted small fw-bold">房屋型態</label>
+                                <select class="form-select form-select-lg bg-light border-0" id="bookType">
+                                    <option value="未選擇" selected disabled>請選擇</option>
+                                    <option value="新成屋">新成屋</option>
+                                    <option value="中古屋翻新">中古屋翻新</option>
+                                    <option value="局部換新">局部換新</option>
+                                    <option value="商業空間">商業空間</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-muted small fw-bold">預計想做的窗飾種類 (可複選)</label>
+                            <div class="d-flex flex-wrap gap-3">
+                                <div class="form-check">
+                                    <input class="form-check-input style-check" type="checkbox" value="布簾/紗簾"
+                                        id="check1">
+                                    <label class="form-check-label text-muted" for="check1">布簾/紗簾</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input style-check" type="checkbox" value="捲簾/調光簾"
+                                        id="check2">
+                                    <label class="form-check-label text-muted" for="check2">捲簾/調光簾</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input style-check" type="checkbox" value="百葉窗" id="check3">
+                                    <label class="form-check-label text-muted" for="check3">百葉窗</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input style-check" type="checkbox" value="風琴簾" id="check4">
+                                    <label class="form-check-label text-muted" for="check4">風琴簾</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid mt-2">
+                            <button type="submit"
+                                class="btn text-white fw-bold py-3 rounded-3 bg-secondary-custom">送出預約表單</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div class="modal fade" id="lightboxModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-header border-0 pb-0 position-absolute top-0 end-0 z-3">
+                    <button type="button" class="btn-close btn-close-white fs-4 shadow-none m-3" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0 text-center">
+                    <img id="lightboxImg" src="" class="img-fluid rounded-3 shadow-lg" style="max-height: 90vh;"
+                        alt="放大觀看">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle (Includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // 阻止原本的表單跳轉
+
+            // --- 1. Honeypot ---
+            if (document.getElementById('bookWebsite').value !== "") {
+                console.log("Bot detected by honeypot");
+                alert('預約成功！我們將盡快與您聯繫安排丈量。');
+                this.reset();
+                return;
+            }
+
+            // --- 2. 防真人連點/灌水 (冷卻時間機制) ---
+            const lastSubmitTime = localStorage.getItem('lastBookingSubmit');
+            const now = new Date().getTime();
+            if (lastSubmitTime && (now - lastSubmitTime < 60000)) {
+                alert('您送出得太頻繁了，請等待一分鐘後再試！');
+                return;
+            }
+
+            const btn = this.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '送出中...';
+            btn.disabled = true;
+
+            // 1. 收集
+            const formData = new URLSearchParams();
+            formData.append('bookName', document.getElementById('bookName').value);
+            formData.append('bookPhone', document.getElementById('bookPhone').value);
+            formData.append('bookAddress', document.getElementById('bookAddress').value);
+            formData.append('bookDate', document.getElementById('bookDate').value);
+            formData.append('bookType', document.getElementById('bookType').value);
+
+            const styles = Array.from(document.querySelectorAll('.style-check:checked'))
+                .map(cb => cb.value)
+                .join(', ');
+            formData.append('bookStyles', styles || '未選擇');
+
+            const GAS_URL = 'https://script.google.com/macros/s/AKfycbyQQz25yqaHKBW0TxYwbDmk7TllwZj7NW2ORqgo32YqNasNWesAX_FvBsMwSETRTIRH/exec';
+
+            if (GAS_URL === 'YOUR_GAS_WEB_APP_URL') {
+                alert('【提醒】您尚未設定 Google Apps Script 網址！\n請參照教學設定並將網址貼上後，再進行測試。');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                return;
+            }
+
+            // 3. 發送請求
+            fetch(GAS_URL, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            }).then(() => {
+                alert('預約成功！我們將盡快與您聯繫安排丈量。');
+                // 記錄成功提交
+                localStorage.setItem('lastBookingSubmit', new Date().getTime());
+
+                // 關閉
+                const modalEl = document.getElementById('bookingModal');
+                const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+                modal.hide();
+                this.reset();
+            }).catch(err => {
+                alert('發生錯誤，請稍後再試或直接來電預約！');
+                console.error(err);
+            }).finally(() => {
+                // 恢復
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+        });
+    </script>
+
+    <!-- 懸浮 LINE 快速按鈕 (電腦/手機都適合) -->
+    <a href="https://line.me/ti/p/uaPJu_-_Y1" target="_blank"
+        class="position-fixed bottom-0 end-0 m-4 z-3 d-flex align-items-center justify-content-center rounded-circle"
+        style="width: 65px; height: 65px; background-color: #06C755; box-shadow: 0 5px 15px rgba(6,199,85,0.4); transition: transform 0.2s;">
+        <i class="bi bi-line text-white" style="font-size: 2.2rem;"></i>
+    </a>
+
+</body>
+
+</html>

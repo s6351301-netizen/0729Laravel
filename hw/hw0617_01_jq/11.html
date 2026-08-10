@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>計算機</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: radial-gradient(circle at top left, #7c3aed 0%, #4f46e5 45%, #111827 100%);
+            color: #f8fafc;
+        }
+
+        .container {
+            width: min(540px, calc(100% - 32px));
+            padding: 40px 30px;
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 26px;
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+            text-align: center;
+        }
+
+        .container > div {
+            margin-top: 18px;
+        }
+
+        .container > div:first-child {
+            margin-top: 0;
+            text-align: left;
+        }
+
+        h1 {
+            margin-bottom: 24px;
+            color: #fff;
+            font-size: clamp(2.2rem, 4vw, 3.8rem);
+            line-height: 1.05;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        p {
+            margin: 1.4em 0;
+            color: rgba(238, 242, 255, 0.87);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        a {
+            color: #c4b5fd;
+            text-decoration: none;
+            transition: color 0.25s ease;
+        }
+
+        a:hover {
+            color: #e0e7ff;
+        }
+
+        .back-link,
+        .container > div a {
+            display: inline-block;
+            padding: 12px 22px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #4338ca;
+            border-radius: 999px;
+            font-weight: 700;
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .back-link:hover,
+        .container > div a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 26px rgba(0, 0, 0, 0.2);
+        }
+
+        .box {
+            width: min(380px, 100%);
+            margin: 0 auto 22px;
+            padding: 22px;
+            background: linear-gradient(180deg, rgba(17, 24, 39, 0.94), rgba(30, 41, 59, 0.92));
+            border-radius: 24px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 40px rgba(15, 23, 42, 0.35);
+        }
+
+        .box form {
+            display: grid;
+            gap: 12px;
+        }
+
+        .box input,
+        .box select,
+        .box button {
+            width: 100%;
+        }
+
+        .box input,
+        .box select {
+            padding: 16px 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.12);
+            color: #eef2ff;
+            font-size: 1rem;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .box input::placeholder {
+            color: rgba(238, 242, 255, 0.6);
+        }
+
+        .box input:focus,
+        .box select:focus {
+            border-color: #c4b5fd;
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 0 0 6px rgba(196, 181, 253, 0.16);
+        }
+
+        .box button {
+            min-height: 56px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #8b5cf6 0%, #4f46e5 100%);
+            color: #fff;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 18px 34px rgba(79, 70, 229, 0.24);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+        }
+
+        .box button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
+        }
+
+        .output {
+            width: min(380px, 100%);
+            min-height: 68px;
+            margin: 0 auto;
+            padding: 18px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.72);
+            color: #f8fafc;
+            font-size: 1.4rem;
+            font-weight: 800;
+            border-radius: 18px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 12px 24px rgba(15, 23, 42, 0.22);
+        }
+
+        @media (max-width: 680px) {
+            .container {
+                padding: 28px 20px;
+            }
+
+            .container > div:first-child {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <a href="./index.html" class="back-link">返回首頁</a>
+        </div>
+
+        <h1>計算機</h1>
+        <p>jquery 計算機</p>
+
+        <div class="box">
+            <form action="">
+                <!-- <input type="text" class="one" placeholder="key in the first number">
+                <input type="text" class="two" placeholder="key in the second number">
+                <input type="text" class="opt" placeholder="key in a operator(ex: +, -, *, /, %, ^)"> -->
+                <input type="number" class="one" placeholder="key in the first number">
+                <input type="number" class="two" placeholder="key in the second number">
+                 <select class="opt">
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value="*">*</option>
+                    <option value="/">/</option>
+                    <option value="^">^</option>
+                 </select>
+                <button class="btn">計算</button>
+            </form>
+        </div>
+
+        <div class="output"></div>
+    </div>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <script>
+        $(function(){
+            const one = $('.one');
+            const two = $('.two');
+            const opt = $('.opt');
+            const btn = $('.btn');
+            const output = $('.output');
+
+            console.log('one', one);
+            console.log('two', two);
+            console.log('opt', opt);
+            console.log('btn', btn);
+            console.log('output', output);
+
+            btn.click(function(e){
+                console.log('e', e);
+                e.preventDefault(); //如果用form 表單 可以禁止其送出
+                console.log('btn click ok', btn);
+                
+                let num1 = Number(one.val());
+                let num2 = Number(two.val());
+                let operator = opt.val();
+
+                console.log('num1', num1);
+                console.log('typeof num1', typeof (num1));
+                console.log('num2', num2);
+                console.log('typeof num2', typeof (num2));
+                console.log('operator', operator);
+                console.log('typeof operator', typeof (operator));
+
+                let result = 0;
+                switch(operator){
+                    case '+':
+                        result = num1 + num2;
+                        break;
+                    case '-':
+                        result = num1 - num2;
+                        break;
+                    case '*':
+                        result = num1 * num2;
+                        break;
+                    case '/':
+                        result = num1 / num2;
+                        break;
+                    case '%':
+                        result = num1 % num2;
+                        break;
+                    case '^':
+                        result = num1 ** num2;
+                        break;
+                    default:
+                        alert('wrong input');
+                        location.reload();
+                        return false;
+                }
+
+                console.log('result', result);
+
+                output.text(result);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Query 實戰</title>
+    <style>
+        /* 1. 外層媽媽：負責決定一排要放幾個小孩 */
+        .container {
+            display: grid;
+            /* 電腦版（大螢幕）：一排均分放 3 個盒子 */
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            /* 盒子之間的間距 */
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        /* 2. 內層小孩：你原本的 box，我們把尺寸稍微調整，讓它能自適應寬度 */
+        .box1,
+        .box2,
+        .box3,
+        .box4,
+        .box5,
+        .box6 {
+            height: 200px;
+            /* 固定高度就好，寬度交給 Grid 彈性分配 */
+            width: auto;
+            background-color: aqua;
+            /* 電腦版：水藍色 */
+            border: 5px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            /* 關鍵：解決圖片變形的三行黃金設定 */
+            background-size: cover;
+            /* 1. 自動等比例縮放，保證填滿格子且「絕對不變形」 */
+            background-position: center;
+            /* 2. 把圖片的中心點對齊格子的正中央 */
+            background-repeat: no-repeat;
+            /* 3. 確保圖片不會因為格子太大而像磁磚一樣重複拼貼 */
+
+        }
+
+        .box1 {
+            background-image: url(./20170617170114_86281.png);
+        }
+
+        .box2 {
+            background-image: url(./1622596294654.gif);
+        }
+
+        .box3 {
+            background-image: url(./5464.gif);
+        }
+
+        .box4 {
+            background-image: url(./849.gif);
+        }
+
+        .box5 {
+            background-image: url(./DOrFwp.gif);
+        }
+
+        .box6 {
+            background-image: url(./GCCTLTP.gif);
+        }
+
+        /* 3. 平板版 Media Query：當螢幕小於 992px 時 */
+        @media (max-width: 1080px) {
+            .container {
+                grid-template-columns: repeat(2, 1fr);
+                /* 變成一排只能放 2 個 */
+            }
+
+            .box {
+                background-color: lightyellow;
+                /* 平板版順便變成淡黃色 */
+            }
+        }
+
+        /* 4. 手機版 Media Query：當螢幕小於 600px 時 */
+        @media (max-width: 600px) {
+            .container {
+                grid-template-columns: 1fr;
+                /* 空間太小了，變成一排只放 1 個（直排） */
+            }
+
+            .box {
+                background-color: lightpink;
+                /* 手機版變成你設定的粉紅色 */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="box1">1</div>
+        <div class="box2">2</div>
+        <div class="box3">3</div>
+        <div class="box4">4</div>
+        <div class="box5">5</div>
+        <div class="box6">6</div>
+    </div>
+</body>
+
+</html>

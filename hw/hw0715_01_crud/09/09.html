@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <title>天天美味 - 日式早午餐與會員系統</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入 Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Google Fonts: 融入日式氣息的字型 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --jp-bg: #fbf9f5;
+            /* 暖米白背景 */
+            --jp-dark: #3a3530;
+            /* 深炭灰（取代純黑） */
+            --jp-primary: #7d9d7f;
+            /* 溫和抹茶綠 */
+            --jp-primary-hover: #668268;
+            --jp-accent: #d9a05b;
+            /* 烤吐司金黃 */
+            --jp-card-bg: #ffffff;
+            --jp-border: #e6dfd5;
+            /* 淺木色框線 */
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--jp-bg);
+            color: var(--jp-dark);
+            letter-spacing: 0.05em;
+        }
+
+        /* 導覽列日式微調 */
+        .navbar-jp {
+            background-color: var(--jp-dark);
+            border-bottom: 3px solid var(--jp-primary);
+        }
+
+        .navbar-jp .navbar-brand {
+            font-weight: 700;
+            color: #ffffff !important;
+            letter-spacing: 0.1em;
+        }
+
+        .navbar-jp .nav-link {
+            color: #d1cbc4 !important;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .navbar-jp .nav-link:hover {
+            color: var(--jp-accent) !important;
+        }
+
+        /* 日式極簡卡片與區塊 */
+        .jp-card {
+            background: var(--jp-card-bg);
+            border: 1px solid var(--jp-border);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(184, 172, 155, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .jp-card:hover {
+            transform: translateY(-2px);
+        }
+
+        /* 按鈕美化 */
+        .btn-jp-primary {
+            background-color: var(--jp-primary);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1.5rem;
+            transition: background 0.3s;
+        }
+
+        .btn-jp-primary:hover {
+            background-color: var(--jp-primary-hover);
+            color: #fff;
+        }
+
+        .btn-jp-accent {
+            background-color: transparent;
+            border: 1px solid var(--jp-accent);
+            color: var(--jp-accent);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-jp-accent:hover {
+            background-color: var(--jp-accent);
+            color: #fff;
+        }
+
+        /* 圖片排版樣式 */
+        .food-img-hero {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid var(--jp-border);
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .gallery-img:hover {
+            transform: scale(1.03);
+        }
+
+        /* 會員卡與資料區 */
+        .member-badge {
+            background-color: #f4eee1;
+            color: #8c7355;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        /* SPA 頁面切換控制 */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 頁尾日式布簾裝飾線 */
+        footer {
+            background-color: #ede7dd;
+            border-top: 1px solid var(--jp-border);
+            color: #615a52;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 導覽列 (Navigation Bar) -->
+    <nav class="navbar navbar-expand-sm navbar-jp py-3">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="showPage('index')">
+                🇯🇵 天天美味 <span style="font-size: 0.8rem; font-weight: 300; color: var(--jp-accent);">デイリー・ブランチ</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mynavbar">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#" onclick="showPage('index')">首頁與會員管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#" onclick="showPage('create')">
+                            <span class="text-white bg-success px-2 py-1 rounded-pill" style="font-size: 0.8rem;">新增預約
+                                +</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. 首頁與會員管理區塊 (Index Page) -->
+    <div id="page-index" class="container my-5 page-section active">
+
+        <!-- 精選主視覺區 -->
+        <div class="row g-4 mb-5 align-items-center">
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=800"
+                    alt="日式極簡店面" class="food-img-hero shadow-sm">
+            </div>
+            <div class="col-lg-6 ps-lg-4">
+                <span class="text-uppercase"
+                    style="color: var(--jp-accent); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.2em;">DAILY
+                    BRUNCH & CAFE</span>
+                <h2 class="mt-2 mb-3 fw-bold" style="color: var(--jp-dark);">用一份質樸的早餐，開啟溫柔的晨光時光</h2>
+                <p class="text-muted leading-relaxed" style="font-size: 0.95rem; line-height: 1.8;">
+                    「天天美味」堅持選用在地新鮮食材，結合日式極簡的美學概念。在這裡，我們不僅為您調製暖心的晨間咖啡，更提供高質感的線上會員點餐預約管理。您可以在下方輕鬆查詢、新增、修改或取消預約紀錄，享受井然有序的慢活日常。
+                </p>
+                <div class="d-flex gap-3 mt-4">
+                    <button class="btn btn-jp-primary" onclick="showPage('create')">✍️ 預訂明日朝食</button>
+                    <a href="#store-info" class="btn btn-jp-accent d-flex align-items-center">📍 店舖資訊</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 經典餐點圖案牆 & 目錄價格 (日式美編排版 4 張圖片展示) -->
+        <div class="mb-5">
+            <h4 class="fw-bold mb-4 text-center" style="letter-spacing: 0.15em;">
+                <span style="border-bottom: 2px solid var(--jp-accent); padding-bottom: 6px;">旬味餐點目錄 ＆ 單價</span>
+            </h4>
+            <div class="row g-3">
+                <div class="col-6 col-md-3">
+                    <div class="jp-card p-2 text-center">
+                        <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=400"
+                            alt="起司牛肉堡" class="gallery-img mb-2">
+                        <small class="fw-bold d-block">起司牛肉堡 + 美式咖啡</small>
+                        <span class="text-muted d-block mb-1" style="font-size: 0.75rem;">濃郁起司與手打牛</span>
+                        <span class="fw-bold" style="color: var(--jp-accent); font-size: 1.1rem;">NT$ 150</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="jp-card p-2 text-center">
+                        <img src="https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&q=80&w=400"
+                            alt="卡啦雞腿堡" class="gallery-img mb-2">
+                        <small class="fw-bold d-block">咔啦雞腿堡 + 奶茶</small>
+                        <span class="text-muted d-block mb-1" style="font-size: 0.75rem;">香脆多汁現炸口感</span>
+                        <span class="fw-bold" style="color: var(--jp-accent); font-size: 1.1rem;">NT$ 125</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="jp-card p-2 text-center">
+                        <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&q=80&w=400"
+                            alt="原味蛋餅" class="gallery-img mb-2">
+                        <small class="fw-bold d-block">原味蛋餅 + 豆漿</small>
+                        <span class="text-muted d-block mb-1" style="font-size: 0.75rem;">職人手作 Q 彈餅皮</span>
+                        <span class="fw-bold" style="color: var(--jp-accent); font-size: 1.1rem;">NT$ 65</span>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="jp-card p-2 text-center">
+                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=400"
+                            alt="美式咖啡與茶" class="gallery-img mb-2">
+                        <small class="fw-bold d-block">明太子法式吐司 + 紅茶</small>
+                        <span class="text-muted d-block mb-1" style="font-size: 0.75rem;">日式與法式的精緻交織</span>
+                        <span class="fw-bold" style="color: var(--jp-accent); font-size: 1.1rem;">NT$ 110</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 會員訂單與資料專區 -->
+        <div class="row g-4">
+            <!-- 左側：精選會員尊榮卡片與金額統計 -->
+            <div class="col-lg-4">
+                <div class="jp-card p-4 h-100"
+                    style="background-image: radial-gradient(circle at top right, #fbfaf7, #ffffff);">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <span class="fw-bold text-muted"
+                            style="font-size: 0.8rem; letter-spacing: 0.1em;">MEMBERSHIP</span>
+                        <span class="member-badge">VIP 專屬福利</span>
+                    </div>
+                    <h4 class="fw-bold mb-3">天天美味常客特權</h4>
+                    <ul class="list-unstyled text-muted mb-4" style="font-size: 0.85rem; line-height: 2;">
+                        <li>• 每日線上登記預約免排隊</li>
+                        <li>• 消費滿額享有 9 折日式小點招待</li>
+                        <li>• 每週三會員日享有點數雙倍送</li>
+                    </ul>
+                    <hr class="my-3" style="border-color: var(--jp-border);">
+                    <div class="row g-2 text-center">
+                        <div class="col-6">
+                            <div class="py-2" style="background-color: var(--jp-bg); border-radius: 8px;">
+                                <span class="d-block text-muted" style="font-size: 0.75rem;">今日預約數</span>
+                                <span id="order-count" class="fs-4 fw-bold text-success">3</span> <span
+                                    class="text-muted" style="font-size:0.8rem;">組</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="py-2" style="background-color: var(--jp-bg); border-radius: 8px;">
+                                <span class="d-block text-muted" style="font-size: 0.75rem;">預估總金額</span>
+                                <span class="text-muted" style="font-size:0.8rem;">$</span><span id="total-price"
+                                    class="fs-4 fw-bold text-success">340</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側：SPA 管理系統表格 -->
+            <div class="col-lg-8">
+                <div class="jp-card p-4 h-100">
+                    <div
+                        class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center mb-4 gap-2">
+                        <div>
+                            <h3 class="fw-bold mb-1" style="font-size: 1.3rem;">📋 今日預約訂單與會員資料</h3>
+                            <span class="text-muted" style="font-size: 0.8rem;">管理當日預訂、金額與取餐狀態</span>
+                        </div>
+                        <button class="btn btn-jp-primary btn-sm align-self-start" onclick="showPage('create')">
+                            ➕ 新增預約訂單
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle" style="border-color: var(--jp-border);">
+                            <thead>
+                                <tr style="background-color: var(--jp-bg); font-size: 0.9rem;">
+                                    <th class="text-center py-3" width="12%">預約 ID</th>
+                                    <th class="py-3" width="48%">會員名稱及點購餐點</th>
+                                    <th class="text-end py-3" width="18%">金額 (NT$)</th>
+                                    <th class="text-center py-3" width="22%">系統操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data-list" style="font-size: 0.95rem;">
+                                <!-- 由 JavaScript 動態繪製 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 2. 新增表單區塊 (Create Page) -->
+    <div id="page-create" class="container my-5 page-section">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="jp-card p-4">
+                    <div class="text-center mb-4">
+                        <span class="text-success fw-bold" style="font-size: 0.8rem; letter-spacing: 0.1em;">NEW
+                            ORDER</span>
+                        <h3 class="fw-bold mt-1">✨ 新增預約餐點</h3>
+                        <p class="text-muted" style="font-size: 0.85rem;">為會員新增一份明早的心動好味道</p>
+                    </div>
+
+                    <form id="form-create" onsubmit="handleCreate(event)">
+                        <div class="mb-3">
+                            <label for="create-name" class="form-label fw-bold" style="font-size: 0.9rem;">會員姓名 ＆
+                                點餐內容：</label>
+                            <input type="text" class="form-control form-control-lg" id="create-name"
+                                style="border-color: var(--jp-border); font-size: 0.95rem; border-radius: 8px;"
+                                placeholder="例如：林小明 - 原味蛋餅+豆漿" required>
+                            <div class="form-text text-muted">請輸入格式如：「姓名 - 餐點組合」</div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="create-price" class="form-label fw-bold" style="font-size: 0.9rem;">單筆餐點金額
+                                (NT$)：</label>
+                            <input type="number" class="form-control form-control-lg" id="create-price"
+                                style="border-color: var(--jp-border); font-size: 0.95rem; border-radius: 8px;"
+                                placeholder="例如：150" min="0" required>
+                        </div>
+                        <div class="d-flex gap-2 justify-content-end">
+                            <button type="button" class="btn btn-light px-4" onclick="showPage('index')">取消</button>
+                            <button type="submit" class="btn btn-jp-primary px-4">確認儲存訂單 (Store)</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 修改表單區塊 (Edit Page) -->
+    <div id="page-edit" class="container my-5 page-section">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="jp-card p-4">
+                    <div class="text-center mb-4">
+                        <span class="text-warning fw-bold" style="font-size: 0.8rem; letter-spacing: 0.1em;">UPDATE
+                            ORDER</span>
+                        <h3 class="fw-bold mt-1">✏️ 修改預約資料</h3>
+                        <p class="text-muted" style="font-size: 0.85rem;">即時更新會員點單或調整餐點與金額</p>
+                    </div>
+
+                    <form id="form-edit" onsubmit="handleUpdate(event)">
+                        <input type="hidden" id="edit-id">
+                        <div class="mb-3">
+                            <label for="edit-name" class="form-label fw-bold"
+                                style="font-size: 0.9rem;">更新會員及餐點內容：</label>
+                            <input type="text" class="form-control form-control-lg" id="edit-name"
+                                style="border-color: var(--jp-border); font-size: 0.95rem; border-radius: 8px;"
+                                required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="edit-price" class="form-label fw-bold" style="font-size: 0.9rem;">修改餐點金額
+                                (NT$)：</label>
+                            <input type="number" class="form-control form-control-lg" id="edit-price"
+                                style="border-color: var(--jp-border); font-size: 0.95rem; border-radius: 8px;" min="0"
+                                required>
+                        </div>
+                        <div class="d-flex gap-2 justify-content-end">
+                            <button type="button" class="btn btn-light px-4" onclick="showPage('index')">取消</button>
+                            <button type="submit" class="btn btn-jp-primary px-4"
+                                style="background-color: var(--jp-accent);">更新保存 (Update)</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. 新增存檔完成區塊 -->
+    <div id="page-store-success" class="container my-5 page-section">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <div class="jp-card p-5">
+                    <div class="mb-4">
+                        <span style="font-size: 4rem;">🍙</span>
+                    </div>
+                    <h3 class="fw-bold text-success mb-3">預約點單已成功存檔！</h3>
+                    <p class="text-muted mb-4" style="font-size: 0.9rem;">感謝您的登記。我們已同步更新至 LocalStorage，廚房將在預約時間為您悉心準備。
+                    </p>
+                    <button class="btn btn-jp-primary px-5" onclick="showPage('index')">回首頁 (Index)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 修改存檔完成區塊 -->
+    <div id="page-update-success" class="container my-5 page-section">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <div class="jp-card p-5">
+                    <div class="mb-4">
+                        <span style="font-size: 4rem;">🍵</span>
+                    </div>
+                    <h3 class="fw-bold text-success mb-3">訂單修改已完成更新！</h3>
+                    <p class="text-muted mb-4" style="font-size: 0.9rem;">會員資料、餐點內容與金額已同步修正完畢。</p>
+                    <button class="btn btn-jp-primary px-5" onclick="showPage('index')">回首頁 (Index)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 頁尾店面資訊與地址電話 -->
+    <footer id="store-info" class="py-5 mt-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-5">
+                    <h5 class="fw-bold mb-3" style="color: var(--jp-dark);">🍳 天天美味 Daily Brunch</h5>
+                    <p class="mb-1" style="font-size: 0.85rem; line-height: 1.8;">
+                        一間藏身於靜謐街角、專注於手作朝食與會員精緻體驗的慢活早午餐店。期望透過每日的新鮮溫度，陪伴您度過美好的晨光。
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold mb-3" style="color: var(--jp-dark);">📍 聯絡與資訊</h5>
+                    <ul class="list-unstyled" style="font-size: 0.85rem; line-height: 1.8;">
+                        <li><strong>店面地址：</strong>台北市大安區青田街溫州巷 7 號 1 樓</li>
+                        <li><strong>預約專線：</strong>(02) 2368-9988</li>
+                        <li><strong>營業時間：</strong>週一至週日 07:00 - 14:30 (每週二公休)</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 text-md-end">
+                    <h5 class="fw-bold mb-3" style="color: var(--jp-dark);">日式・安心・朝食</h5>
+                    <span class="d-inline-block p-2 bg-white rounded shadow-sm"
+                        style="font-size: 0.75rem; color: var(--jp-primary); font-weight: 700;">
+                        新鮮手作・朝食預約中
+                    </span>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: #dcd6cb;">
+            <div class="text-center text-muted" style="font-size: 0.75rem;">
+                © 2026 天天美味 Daily Brunch. All Rights Reserved. Designed with Japanese Aesthetics.
+            </div>
+        </div>
+    </footer>
+
+    <!-- 模擬前端 LocalStorage 資料庫與 SPA 路由邏輯 -->
+    <script>
+        // 預設資料庫初始數據，特別新增價格（Price）屬性
+        const defaultData = [
+            { id: 1, name: "Amy - 起司牛肉堡+美式咖啡", price: 150 },
+            { id: 2, name: "Bob - 咔啦雞腿堡+奶茶", price: 125 },
+            { id: 3, name: "Cat - 原味蛋餅+豆漿", price: 65 }
+        ];
+
+        // 讀取 LocalStorage 資料庫
+        function getDB() {
+            let data = localStorage.getItem('brunch_orders_jp_v2');
+            if (!data) {
+                localStorage.setItem('brunch_orders_jp_v2', JSON.stringify(defaultData));
+                return defaultData;
+            }
+            return JSON.parse(data);
+        }
+
+        // 寫入 LocalStorage
+        function saveDB(data) {
+            localStorage.setItem('brunch_orders_jp_v2', JSON.stringify(data));
+        }
+
+        // SPA 頁面路由切換
+        function showPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('page-' + pageId).classList.add('active');
+
+            if (pageId === 'index') {
+                renderTable();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 渲染主表格資料、動態更新會員數量與累積金額
+        function renderTable() {
+            const db = getDB();
+            const tbody = document.getElementById('data-list');
+            const countBadge = document.getElementById('order-count');
+            const totalPriceBadge = document.getElementById('total-price');
+
+            tbody.innerHTML = '';
+            countBadge.textContent = db.length;
+
+            // 計算當日預期總金額
+            const totalSum = db.reduce((sum, item) => sum + (Number(item.price) || 0), 0);
+            totalPriceBadge.textContent = totalSum;
+
+            if (db.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-5">
+                            🌸 目前暫無預約登記，歡迎加入第一筆朝食預訂！
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            db.forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="text-center fw-bold text-muted">#${item.id}</td>
+                        <td>
+                            <div class="fw-medium text-dark">${item.name}</div>
+                        </td>
+                        <td class="text-end fw-bold text-secondary" style="font-family: monospace; padding-right: 20px;">
+                            $ ${item.price}
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-jp-accent me-1" onclick="openEdit(${item.id})">修改</button>
+                            <button class="btn btn-sm btn-outline-danger border-0" onclick="handleDelete(${item.id})">
+                                <span style="font-size: 0.9rem;">🗑️</span>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // 處理新增資料 (Create -> Store)
+        function handleCreate(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('create-name');
+            const priceInput = document.getElementById('create-price');
+            const newName = nameInput.value.trim();
+            const newPrice = parseInt(priceInput.value, 10) || 0;
+
+            if (newName) {
+                const db = getDB();
+                const nextId = db.length > 0 ? Math.max(...db.map(item => item.id)) + 1 : 1;
+
+                db.push({ id: nextId, name: newName, price: newPrice });
+                saveDB(db);
+
+                nameInput.value = '';
+                priceInput.value = '';
+                showPage('store-success');
+            }
+        }
+
+        // 開啟編輯畫面 (Edit)
+        function openEdit(id) {
+            const db = getDB();
+            const target = db.find(item => item.id === id);
+            if (target) {
+                document.getElementById('edit-id').value = target.id;
+                document.getElementById('edit-name').value = target.name;
+                document.getElementById('edit-price').value = target.price || 0;
+                showPage('edit');
+            }
+        }
+
+        // 處理修改更新 (Update)
+        function handleUpdate(event) {
+            event.preventDefault();
+            const id = parseInt(document.getElementById('edit-id').value);
+            const updatedName = document.getElementById('edit-name').value.trim();
+            const updatedPrice = parseInt(document.getElementById('edit-price').value, 10) || 0;
+
+            if (updatedName) {
+                let db = getDB();
+                db = db.map(item => {
+                    if (item.id === id) {
+                        return { ...item, name: updatedName, price: updatedPrice };
+                    }
+                    return item;
+                });
+                saveDB(db);
+                showPage('update-success');
+            }
+        }
+
+        // 處理刪除功能 (Delete)
+        function handleDelete(id) {
+            if (confirm(`確定要取消編號 #${id} 的預約點單嗎？`)) {
+                let db = getDB();
+                db = db.filter(item => item.id !== id);
+                saveDB(db);
+                renderTable();
+            }
+        }
+
+        // 網頁初始載入
+        window.onload = function () {
+            renderTable();
+        };
+    </script>
+</body>
+
+</html>

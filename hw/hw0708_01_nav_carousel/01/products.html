@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+     <title>商品總覽 ｜ ZL&amp; accessories</title>
+     <meta charset="utf-8" />
+     <meta content="width=device-width, initial-scale=1" name="viewport" />
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+     <!-- 延用首頁的 CSS 檔案 -->
+     <link rel="stylesheet" href="./css/style.css">
+     <!-- 商品頁專用微調樣式 -->
+     <style>
+          .page-header {
+               background: linear-gradient(135deg, #1A1A1A 0%, #2D2625 100%);
+               padding: 100px 0 40px 0;
+               text-align: center;
+               border-bottom-right-radius: 40% 10px;
+          }
+
+          .filter-title {
+               font-size: 0.95rem;
+               letter-spacing: 2px;
+               font-weight: 600;
+               border-bottom: 1px solid #E6CBB3;
+               padding-bottom: 8px;
+               margin-bottom: 15px;
+               color: #1A1A1A;
+          }
+
+          .filter-link {
+               display: block;
+               color: #666666;
+               text-decoration: none;
+               font-size: 0.85rem;
+               padding: 6px 0;
+               letter-spacing: 1px;
+               transition: color 0.2s;
+          }
+
+          .filter-link:hover,
+          .filter-link.active {
+               color: #C5A880;
+               padding-left: 4px;
+          }
+
+          .product-sort-select {
+               font-size: 0.85rem;
+               border-color: rgba(230, 203, 179, 0.5);
+               color: #4A4A4A;
+               border-radius: 0;
+               letter-spacing: 1px;
+          }
+
+          .product-sort-select:focus {
+               border-color: #E6CBB3;
+               box-shadow: none;
+          }
+
+          .breadcrumb-item a {
+               color: #A0A0A0;
+               text-decoration: none;
+               font-size: 0.8rem;
+               letter-spacing: 1px;
+          }
+
+          .breadcrumb-item.active {
+               color: #E6CBB3;
+               font-size: 0.8rem;
+          }
+
+          /* === 新增：商品詳細介紹區塊樣式 === */
+          .zl-mini-card {
+               cursor: pointer;
+               transition: transform 0.3s ease, box-shadow 0.3s ease;
+               border: 1px solid transparent;
+          }
+
+          .zl-mini-card:hover {
+               transform: translateY(-5px);
+               border-color: rgba(230, 203, 179, 0.3);
+          }
+
+          .product-detail-story {
+               max-height: 0;
+               overflow: hidden;
+               transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+               opacity: 0;
+               font-size: 0.75rem;
+               color: #777;
+               line-height: 1.6;
+               letter-spacing: 1px;
+               border-top: 1px dashed rgba(230, 203, 179, 0.3);
+               margin-top: 0;
+               padding-top: 0;
+          }
+
+          .product-detail-story.show {
+               max-height: 300px;
+               /* 給予足夠的展開高度 */
+               opacity: 1;
+               margin-top: 10px;
+               padding-top: 10px;
+          }
+
+          .spec-tag {
+               display: inline-block;
+               background-color: #F7F4F0;
+               color: #8C7B6E;
+               padding: 2px 6px;
+               border-radius: 2px;
+               font-size: 0.7rem;
+               margin-top: 4px;
+          }
+     </style>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+     <!-- ===================== Navbar (保持與首頁一致) ===================== -->
+     <div class="custom-nav-wrapper">
+          <div class="container">
+               <nav class="navbar navbar-expand-lg custom-navbar shadow">
+                    <a class="navbar-brand" href="./20260708_hw01.html">
+                         ZL&amp;
+                         <span style="font-size: 0.6rem; letter-spacing: 1px; font-weight: 300;">accessories</span>
+                    </a>
+                    <button class="navbar-toggler navbar-dark" data-bs-target="#mynavbar" data-bs-toggle="collapse"
+                         type="button">
+                         <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="mynavbar">
+                         <ul class="navbar-nav ms-auto me-4">
+                              <li class="nav-item"><a class="nav-link" href=">品牌介紹</a></li>
+                              <li class="nav-item"><a class="nav-link active" href="products.html"
+                                        style="color: #E6CBB3 !important;">商品總覽</a></li>
+                              <li class="nav-item"><a class="nav-link" href="#">服務專區</a></li>
+                              <li class="nav-item"><a class="nav-link" href="#">個人檔案</a></li>
+                         </ul>
+                         <a class="btn btn-outline-light rounded-0 px-4 mt-2 mt-lg-0" href="#"
+                              style="border-color: #E6CBB3; color: #E6CBB3; font-size: 0.8rem; letter-spacing: 1px;">
+                              登入
+                         </a>
+                    </div>
+               </nav>
+          </div>
+     </div>
+
+     <!-- ===================== Page Header ===================== -->
+     <div class="page-header">
+          <div class="container mt-4">
+               <h2 style="color: #E6CBB3; letter-spacing: 4px; font-weight: 300; font-size: 1.8rem;">SHOP ALL</h2>
+               <p style="color: #D0C5C3; font-size: 0.85rem; letter-spacing: 2px;" class="mb-0">飾品是一種未完待續的氛圍</p>
+
+               <!-- 麵包屑導航 -->
+               <nav aria-label="breadcrumb" class="d-flex justify-content-center mt-3">
+                    <ol class="breadcrumb mb-0">
+                         <li class="breadcrumb-item"><a href="./20260708_hw01.html">首頁</a></li>
+                         <li class="breadcrumb-item active" aria-current="page">商品總覽</li>
+                    </ol>
+               </nav>
+          </div>
+     </div>
+
+     <!-- ===================== Main Content ===================== -->
+     <div class="container my-5">
+          <div class="row g-4">
+
+               <!-- 左側：分類篩選器 -->
+               <div class="col-lg-3 col-md-4">
+                    <div class="sticky-top" style="top: 100px; z-index: 10;">
+                         <!-- 商品分類 -->
+                         <div class="mb-4">
+                              <div class="filter-title">商品分類</div>
+                              <a href="#" class="filter-link filter-btn active" data-filter="all">全部商品 (8)</a>
+                              <a href="#" class="filter-link filter-btn" data-filter="bracelet">BRACELET 手鍊</a>
+                              <a href="#" class="filter-link filter-btn" data-filter="earrings">EARRINGS 耳環</a>
+                              <a href="#" class="filter-link filter-btn" data-filter="necklace">NECKLACE 項鍊</a>
+                              <a href="#" class="filter-link filter-btn" data-filter="ring">RING 戒指</a>
+                         </div>
+
+                         <!-- 材質篩選 -->
+                         <div class="mb-4">
+                              <div class="filter-title">材質工藝</div>
+                              <a href="#" class="filter-link">925 純銀</a>
+                              <a href="#" class="filter-link">14K / 18K 注金</a>
+                              <a href="#" class="filter-link">天然珍珠 / 巴洛克珠</a>
+                              <a href="#" class="filter-link">莫桑鑽 / 鋯石</a>
+                         </div>
+                    </div>
+               </div>
+
+               <!-- 右側：商品列表與排序 -->
+               <div class="col-lg-9 col-md-8">
+
+                    <!-- 工具列 -->
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-2"
+                         style="border-bottom: 1px solid rgba(230, 203, 179, 0.2);">
+                         <div style="font-size: 0.85rem; color: #666; letter-spacing: 1px;">
+                              共顯示 8 個商品
+                         </div>
+                         <div class="d-flex align-items-center">
+                              <span class="me-2 text-nowrap"
+                                   style="font-size: 0.85rem; color: #666; letter-spacing: 1px;">排序方式：</span>
+                              <select class="form-select product-sort-select">
+                                   <option selected>精選推薦</option>
+                                   <option value="1">價格：由低至高</option>
+                                   <option value="2">價格：由高至低</option>
+                                   <option value="3">上架日期：由新至舊</option>
+                              </select>
+                         </div>
+                    </div>
+
+                    <!-- 商品網格 -->
+                    <div class="row g-3 g-md-4">
+
+                         <!-- 商品 1：爪鑲莫桑石活圍戒指 (戒指) -->
+                         <div class="col-6 col-lg-4 product-item" data-category="ring">
+                              <div class="zl-mini-card shadow-sm p-2 rounded">
+                                   <div class="zl-mini-img"><img alt="爪鑲莫桑石活圍戒指" src="./image/爪鑲莫桑石活圍戒指.png" /></div>
+                                   <div class="zl-mini-info">
+                                        <h6>爪鑲莫桑石活圍戒指</h6>
+                                        <p class="mb-1">NT$ 1,580</p>
+                                        <small class="text-muted" style="font-size:0.65rem;">✨ 點擊看介紹</small>
+                                   </div>
+                                   <!-- 介紹區塊 -->
+                                   <div class="product-detail-story">
+                                        如花瓣般綻放的設計，將光芒層層映射。<br>
+                                        中央莫桑石晶瑩澄澈，四周小鑽簇擁而立，如同一朵盛開的小花，在指尖綻放出恆久不滅的璀璨。<br><br>
+                                        <strong>戒圍｜</strong>美圍 6.5 號（可調節）<br>
+                                        <strong>主石面寬｜</strong>約 8.5mm<br><br>
+                                        <span class="spec-tag">材質｜莫桑鑽 / 925純銀</span><br>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <!-- 商品 2：扭結愛心C字耳貼 (耳環) -->
+                         <div class="col-6 col-lg-4 product-item" data-category="earrings">
+                              <div class="zl-mini-card shadow-sm p-2 rounded">
+                                   <div class="zl-mini-img"><img alt="扭結愛心C字耳貼" src="./image/扭結愛心C字耳貼.png" /></div>
+                                   <div class="zl-mini-info">
+                                        <h6>扭結愛心C字耳貼</h6>
+                                        <p class="mb-1">NT$ 1,130</p>
+                                        <small class="text-muted" style="font-size:0.65rem;">✨ 點擊看介紹</small>
+                                   </div>
+                                   <!-- 介紹區塊 -->
+                                   <div class="product-detail-story">
+                                        在極簡的世界裡，真正的個性是——安靜卻難以忽視。<br>
+                                        銀色線條交纏成結，如同思緒與力量的流動，<br>
+                                        不言語，也足夠有態度。<br><br>
+
+                                        低調的光，藏著不妥協的堅定。<br>
+                                        無需裝飾，只需存在。<br><br>
+                                        <strong>尺寸｜</strong>外徑約21mm／內徑約15mm<br><br>
+                                        <span class="spec-tag">材質｜925銀</span>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <!-- 商品 3：愛心粉玉隨拼接小珍珠項鍊 (項鍊) -->
+                         <div class="col-6 col-lg-4 product-item" data-category="necklace">
+                              <div class="zl-mini-card shadow-sm p-2 rounded">
+                                   <div class="zl-mini-img"><img alt="愛心粉玉隨拼接小珍珠項鍊" src="./image/愛心粉玉隨拼接小珍珠項鍊.png" />
+                                   </div>
+                                   <div class="zl-mini-info">
+                                        <h6>愛心粉玉隨拼接小珍珠項鍊</h6>
+                                        <p class="mb-1">NT$ 1,130</p>
+                                        <small class="text-muted" style="font-size:0.65rem;">✨ 點擊看介紹</small>
+                                   </div>
+                                   <!-- 介紹區塊 -->
+                                   <div class="product-detail-story">
+                                        七夕，是牛郎與織女跨越銀河的相會；<br>
+                                        這一夜將愛情化作最溫柔的誓言。
+                                        <br><br>
+                                        <strong>鍊長｜</strong>約16cm（延長鍊3mm）<br>
+                                        <strong>愛心面寬｜</strong>約8.5mm<br><br>
+                                        <span class="spec-tag">材質｜925銀</span>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <!-- 商品 4：《靜影流光》雙鍊珍珠手鍊 (手鍊) -->
+                         <div class="col-6 col-lg-4 product-item" data-category="bracelet">
+                              <div class="zl-mini-card shadow-sm p-2 rounded">
+                                   <div class="zl-mini-img"><img alt="雙鍊珍珠手鍊"
+                                             src="./image/《靜影流光》｜溫柔與俐落的交織・雙鍊珍珠手鍊.png" /></div>
+                                   <div class="zl-mini-info">
+                                        <h6>《靜影流光》雙鍊珍珠手鍊</h6>
+                                        <p class="mb-1">NT$ 1,200</p>
+                                        <small class="text-muted" style="font-size:0.65rem;">✨ 點擊看介紹</small>
+                                   </div>
+                                   <!-- 介紹區塊 -->
+                                   <div class="product-detail-story">
+                                        「每一種溫柔，都獨一無二。」<br>
+                                        靜靜戴上這條手鍊，讓你的故事在光影中流動。<br>
+                                        柔軟，但不脆弱；安靜，卻不無聲；閃耀，但從不張揚。<br><br>
+                                        <strong>鍊長｜</strong>16.5cm + 延長鍊3cm<br>
+                                        <strong>墜飾｜</strong>天然珍珠（6mm）+ 銀珠（5mm）<br><br>
+                                        <span class="spec-tag">材質｜天然珍珠 / 925純銀</span>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <!-- 商品 5：雛菊珍珠碎銀手鍊 (手鍊) -->
+                         <div class="col-6 col-lg-4 product-item" data-category="bracelet">
+                              <div class="zl-mini-card shadow-sm p-2 rounded">
+                                   <div class="zl-mini-img"><img alt="雛菊珍珠碎銀手鍊" src="./image/雛菊珍珠碎銀手鍊.png" /></div>
+                                   <div class="zl-mini-info">
+                                        <h6>雛菊珍珠碎銀手鍊</h6>
+                                        <p class="mb-1">NT$ 1,600</p>
+                                        <small class="text-muted" style="font-size:0.65rem;">✨ 點擊看介紹</small>
+                                   </div>
+                                   <!-- 介紹區塊 -->
+                                   <div class="product-detail-story">
+                                        「總有些飾品，不是為了裝飾，而是為了提醒你，曾經相信過溫柔的自己。」<br>
+                                        用一朵小雛菊，替你的日常加點溫柔。<br><br>
+                                        <strong>鍊長｜</strong>15.5cm + 延長鍊3cm<br>
+                                        <strong>墜飾｜</strong>小雛菊7mm，珍珠4.5mm<br><br>
+                                        <span class="spec-tag">材質｜925純銀 / 天然珍珠・天然石</span>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <!-- 商品 6：Double Line Star Bracelet (手鍊) -->
+                         <div class="col-6 col-lg-4 product-item" data-category="bracelet">
+                              <div class="zl-mini-card shadow-sm p-2 rounded">
+                                   <div class="zl-mini-img"><img alt="Double Line Star Bracelet"
+                                             src="./image/Double Line Star Bracelet.png" /></div>
+                                   <div class="zl-mini-info">
+                                        <h6>Double Line Star Bracelet</h6>
+                                        <p class="mb-1">NT$ 1,200</p>
+                                        <small class="text-muted" style="font-size:0.65rem;">✨ 點擊看介紹</small>
+                                   </div>
+                                   <!-- 這裡放入你寫的超美詩意文字 -->
+                                   <div class="product-detail-story">
+                                        雙鍊設計，<br>
+                                        讓線條自然落在手腕的弧度上。<br>
+                                        一顆小星垂墜於中央，<br>
+                                        不是為了閃耀，<br>
+                                        而是成為細節裡剛好的焦點。<br><br>
+                                        純銀的冷調光澤，<br>
+                                        在舉手投足間輕輕晃動，<br>
+                                        低調，卻始終被看見。<br><br>
+                                        <strong>鍊長｜</strong>15.5cm + 延長鍊3cm<br>
+                                        <strong>墜飾｜</strong>小雛菊7mm，珍珠4.5mm<br>
+                                        <strong>雙鍊粗｜</strong>約 2mm<br><br>
+                                        <span class="spec-tag">材質｜925純銀</span>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <!-- 商品 7：水滴鑽石垂墜耳貼 (藍) (耳環) -->
+                         <div class="col-6 col-lg-4 product-item" data-category="earrings">
+                              <div class="zl-mini-card shadow-sm p-2 rounded">
+                                   <div class="zl-mini-img"><img alt="水滴鑽石垂墜耳貼 (藍)" src="./image/水滴鑽石垂墜耳貼 (藍).png" />
+                                   </div>
+                                   <div class="zl-mini-info">
+                                        <h6>水滴鑽石垂墜耳貼 (藍)</h6>
+                                        <p class="mb-1">NT$ 850</p>
+                                        <small class="text-muted" style="font-size:0.65rem;">✨ 點擊看氛圍介紹</small>
+                                   </div>
+                                   <!-- 介紹區塊 -->
+                                   <div class="product-detail-story">
+                                        隨著妳步伐輕盈搖曳，像是隨身攜帶的一縷晨光<br>
+                                        而每一次的回眸，都讓妳散發低調卻難以忽視的光芒<br><br>
+                                        <strong>尺寸｜</strong>19×5mm<br><br>
+                                        <span class="spec-tag">材質｜藍寶 / 925純銀</span>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <!-- 商品 8：《光的交響曲》幾何造型項鍊 (項鍊) -->
+                         <div class="col-6 col-lg-4 product-item" data-category="necklace">
+                              <div class="zl-mini-card shadow-sm p-2 rounded">
+                                   <div class="zl-mini-img"><img alt="幾何造型項鍊" src="./image/《光的交響曲》✨ 爪鑲拼接幾何造型項鍊 ✨.png" />
+                                   </div>
+                                   <div class="zl-mini-info">
+                                        <h6>《光的交響曲》幾何造型項鍊</h6>
+                                        <p class="mb-1">NT$ 790</p>
+                                        <small class="text-muted" style="font-size:0.65rem;">✨ 點擊看介紹</small>
+                                   </div>
+                                   <!-- 介紹區塊 -->
+                                   <div class="product-detail-story">
+                                        繁星閃爍之間，總有兩顆星最特別⭐<br>
+                                        一顆明亮耀眼，一顆溫柔相依。<br>
+                                        它們從不孤單，因為彼此的存在，讓銀河有了故事。<br><br>
+
+                                        雙鑽設計象徵守護與相伴，<br>
+                                        主石晶瑩剔透，副石緊緊相隨，<br>
+                                        像愛與希望般交織，閃爍不息。<br><br>
+                                        <strong>鍊長｜</strong>39.5cm ＋ 延長鍊5cm<br>
+                                        <strong>墜飾｜</strong>10×6mm<br><br>
+                                        <span class="spec-tag">材質｜925純銀</span>
+                                   </div>
+                              </div>
+                         </div>
+
+                    </div>
+
+                    <!-- 分頁導航 (Pagination) -->
+                    <nav class="d-flex justify-content-center mt-5">
+                         <ul class="pagination">
+                              <li class="page-item disabled">
+                                   <a class="page-list-link px-3 py-2 text-decoration-none" href="#"
+                                        style="color: #A0A0A0; font-size: 0.85rem;">上一頁</a>
+                              </li>
+                              <li class="page-item active">
+                                   <a class="page-list-link px-3 py-2 text-decoration-none" href="#"
+                                        style="background-color: #E6CBB3; border-color: #E6CBB3; color: white; font-size: 0.85rem;">1</a>
+                              </li>
+                              <li class="page-item">
+                                   <a class="page-list-link px-3 py-2 text-decoration-none" href="#"
+                                        style="color: #1A1A1A; font-size: 0.85rem;">2</a>
+                              </li>
+                              <li class="page-item">
+                                   <a class="page-list-link px-3 py-2 text-decoration-none" href="#"
+                                        style="color: #1A1A1A; font-size: 0.85rem;">下一頁</a>
+                              </li>
+                         </ul>
+                    </nav>
+
+               </div>
+          </div>
+     </div>
+
+     <!-- ===================== JavaScript 篩選邏輯與展開功能 ===================== -->
+     <script>
+          document.addEventListener("DOMContentLoaded", function () {
+               // 1. 商品分類篩選
+               const filterBtns = document.querySelectorAll(".filter-btn");
+               const productItems = document.querySelectorAll(".product-item");
+
+               filterBtns.forEach(btn => {
+                    btn.addEventListener("click", function (e) {
+                         e.preventDefault();
+
+                         filterBtns.forEach(b => b.classList.remove("active"));
+                         this.classList.add("active");
+
+                         const filterValue = this.getAttribute("data-filter");
+
+                         productItems.forEach(item => {
+                              if (filterValue === "all" || item.getAttribute("data-category") === filterValue) {
+                                   item.style.display = "block";
+                              } else {
+                                   item.style.display = "none";
+                              }
+                         });
+
+                         const offcanvasElement = document.getElementById('globalFilterOffcanvas');
+                         const bootstrapOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                         if (bootstrapOffcanvas) {
+                              bootstrapOffcanvas.hide();
+                         }
+                    });
+               });
+
+               // 2. 新增：點擊卡片展開/縮回詳細故事介紹
+               const productCards = document.querySelectorAll(".zl-mini-card");
+               productCards.forEach(card => {
+                    card.addEventListener("click", function () {
+                         const storySection = this.querySelector(".product-detail-story");
+                         if (storySection) {
+                              storySection.classList.toggle("show");
+                         }
+                    });
+               });
+          });
+     </script>
+</body>
+
+</html>

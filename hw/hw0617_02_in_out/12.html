@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>隨機語句產生器</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding: 50px; background-color: #f4f4f9; }
+        .container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 320px; text-align: center; }
+        input { width: 100%; margin-bottom: 15px; padding: 10px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background-color: #ff6b81; color: white; border: none; cursor: pointer; border-radius: 5px; }
+        
+        /* 轉動特效 */
+        .spinning { animation: spin 0.5s ease-in-out; color: #ff6b81; font-weight: bold; }
+        @keyframes spin {
+            0% { transform: rotateX(0deg); opacity: 0; }
+            50% { transform: rotateX(180deg); opacity: 0.5; }
+            100% { transform: rotateX(360deg); opacity: 1; }
+        }
+        #result { margin-top: 20px; font-size: 1.2em; min-height: 50px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h3>幸運語句產生器</h3>
+    <input type="text" id="name" placeholder="請輸入名字">
+    <div id="place-display">地點：隨機選取中...</div>
+    <div id="action-display">行為：隨機選取中...</div>
+    <br>
+    <button onclick="generate()">轉動產生語句</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    // === 文字庫區：請在這裡修改你想要的文字 ===
+    const wordPool = {
+        places: ["臥室床上", "圖書館", "泰山訓練場", "川普的廁所", "轉角小七", "三商巧福", "教室"],
+        actions: ["倒吃甘蔗", "寫程式", "邊看日劇邊哭", "聽瑞克搖", "吃爆米花", "想喜歡的女生","談戀愛","金雞獨立"]
+    };
+    // =====================================
+
+    function generate() {
+        const name = document.getElementById('name').value;
+        if (!name) { alert("請先輸入名字喔！"); return; }
+
+        // 隨機選取邏輯
+        const place = wordPool.places[Math.floor(Math.random() * wordPool.places.length)];
+        const action = wordPool.actions[Math.floor(Math.random() * wordPool.actions.length)];
+
+        // 顯示結果並加入轉動特效
+        const resDiv = document.getElementById('result');
+        resDiv.className = "spinning";
+        resDiv.innerText = `${name} 在 ${place} ${action}。`;
+        
+        // 移除特效 class 以便下次觸發
+        setTimeout(() => { resDiv.className = ""; }, 500);
+    }
+</script>
+
+</body>
+</html>

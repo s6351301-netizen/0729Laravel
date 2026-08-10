@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Document</title>
+</head>
+<style>
+    * {
+    background-image: url(./logocats.jpg);
+   
+}   
+
+    /* 滑鼠懸停（Hover）：按鈕填滿肉球粉，文字變成深巧克力色，做出高對比 */
+    .btn-login-sync:hover {
+        background-color: #FFB6C1 !important;
+        /* 變成滿版肉球粉 */
+        color: #4E342E !important;
+        /* 文字變深巧克力色，超清晰 */
+        border-color: #FFB6C1 !important;
+    }
+
+    /* 點擊（Active）或聚焦（Focus）時的效果 */
+    .btn-login-sync:active,
+    .btn-login-sync:focus {
+        background-color: #FFE0E6 !important;
+        /* 點擊時轉為極輕微的淺粉 */
+        box-shadow: 0 0 0 0.25rem rgba(255, 182, 193, 0.5) !important;
+        /* 肉球粉發光外圈 */
+    }
+</style>
+
+<body>
+    <div class="container py-4" style="max-width: 400px;">
+        <form action="./front.html" method="GET">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label fw-bold fs-5" style="color: #FFB6C1;">喵喵帳號 🐾</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" style="border-color: #FFB6C1;">
+                <div id="emailHelp" class="form-text fw-medium" style="color: #FFB6C1; opacity: 0.85;">請輸入奴才的郵件 📧</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label fw-bold fs-5" style="color: #FFB6C1;">罐罐密碼 🔑</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" style="border-color: #FFB6C1;">
+            </div>
+
+            <div class="mb-3 form-check d-flex align-items-center">
+                <input type="checkbox" class="form-check-input me-2" id="exampleCheck1" style="border-color: #FFB6C1;">
+                <label class="form-check-label fw-bold fs-5" for="exampleCheck1" style="color: #FFB6C1;">
+                    記住奴才與罐罐 🐈
+                </label>
+            </div>
+
+            <!-- 用 <a> 標籤，把 href 直接指向 front.html -->
+            <a href="./front.html" class="btn btn-login-sync w-30 fw-bold fs-8 text-decoration-none d-inline-block text-center">
+                登入喵！ 🐾
+            </a>
+        </form>
+    </div>
+</body>
+
+</html>
